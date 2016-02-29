@@ -30,7 +30,6 @@ import io.vertx.core.dns.DnsClient;
 import io.vertx.core.dns.impl.DnsClientImpl;
 import io.vertx.core.eventbus.EventBus;
 import io.vertx.core.eventbus.impl.EventBusImpl;
-import io.vertx.core.eventbus.impl.clustered.ClusteredEventBus;
 import io.vertx.core.file.FileSystem;
 import io.vertx.core.file.impl.FileSystemImpl;
 import io.vertx.core.file.impl.WindowsFileSystem;
@@ -162,11 +161,8 @@ public class VertxImpl implements VertxInternal, MetricsProvider {
   }
 
   private void createAndStartEventBus(VertxOptions options, Handler<AsyncResult<Vertx>> resultHandler) {
-    if (options.isClustered()) {
-      eventBus = new ClusteredEventBus(this, options, clusterManager, haManager);
-    } else {
-      eventBus = new EventBusImpl(this);
-    }
+    eventBus = new EventBusImpl(this);
+
     eventBus.start(ar2 -> {
       if (ar2.succeeded()) {
         // If the metric provider wants to use the event bus, it cannot use it in its constructor as the event bus

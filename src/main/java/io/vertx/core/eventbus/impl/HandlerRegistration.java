@@ -5,7 +5,6 @@ import io.vertx.core.eventbus.Message;
 import io.vertx.core.eventbus.MessageConsumer;
 import io.vertx.core.eventbus.ReplyException;
 import io.vertx.core.eventbus.ReplyFailure;
-import io.vertx.core.eventbus.impl.clustered.ClusteredMessage;
 import io.vertx.core.impl.Arguments;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
@@ -177,17 +176,6 @@ public class HandlerRegistration<T> implements MessageConsumer<T>, Handler<Messa
         }
       } else {
         checkNextTick();
-        if (metrics.isEnabled()) {
-          boolean local = true;
-          if (message instanceof ClusteredMessage) {
-            // A bit hacky
-            ClusteredMessage cmsg = (ClusteredMessage)message;
-            if (cmsg.isFromWire()) {
-              local = false;
-            }
-          }
-          metrics.beginHandleMessage(metric, local);
-        }
         theHandler = handler;
       }
     }
