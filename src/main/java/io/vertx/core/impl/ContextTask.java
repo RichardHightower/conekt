@@ -22,5 +22,5 @@ package io.vertx.core.impl;
 @FunctionalInterface
 public interface ContextTask {
 
-  public void run() throws Exception;
+    public void run() throws Exception;
 }

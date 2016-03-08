@@ -29,12 +29,12 @@ import io.vertx.core.Handler;
 @VertxGen(concrete = false)
 public interface StreamBase {
 
-  /**
-   * Set an exception handler.
-   *
-   * @param handler the handler
-   * @return a reference to this, so the API can be used fluently
-   */
-  @Fluent
-  StreamBase exceptionHandler(@Nullable Handler<Throwable> handler);
+    /**
+     * Set an exception handler.
+     *
+     * @param handler the handler
+     * @return a reference to this, so the API can be used fluently
+     */
+    @Fluent
+    StreamBase exceptionHandler(@Nullable Handler<Throwable> handler);
 }

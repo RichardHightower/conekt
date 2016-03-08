@@ -22,12 +22,13 @@ import java.util.Comparator;
  * @author <a href="mailto:nmaurer@redhat.com">Norman Maurer</a>
  */
 final class MxRecordComparator implements Comparator<MxRecordImpl> {
-  static final Comparator<MxRecordImpl> INSTANCE = new MxRecordComparator();
+    static final Comparator<MxRecordImpl> INSTANCE = new MxRecordComparator();
 
-  private MxRecordComparator() {}
+    private MxRecordComparator() {
+    }
 
-  @Override
-  public int compare(MxRecordImpl o1, MxRecordImpl o2) {
-    return o1.compareTo(o2);
-  }
+    @Override
+    public int compare(MxRecordImpl o1, MxRecordImpl o2) {
+        return o1.compareTo(o2);
+    }
 }

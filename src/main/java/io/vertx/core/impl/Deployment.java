@@ -28,21 +28,21 @@ import java.util.Set;
  */
 public interface Deployment {
 
-  void addChild(Deployment deployment);
+    void addChild(Deployment deployment);
 
-  void removeChild(Deployment deployment);
+    void removeChild(Deployment deployment);
 
-  void undeploy(Handler<AsyncResult<Void>> completionHandler);
+    void undeploy(Handler<AsyncResult<Void>> completionHandler);
 
-  void doUndeploy(ContextImpl undeployingContext, Handler<AsyncResult<Void>> completionHandler);
+    void doUndeploy(ContextImpl undeployingContext, Handler<AsyncResult<Void>> completionHandler);
 
-  String deploymentID();
+    String deploymentID();
 
-  String verticleIdentifier();
+    String verticleIdentifier();
 
-  DeploymentOptions deploymentOptions();
+    DeploymentOptions deploymentOptions();
 
-  Set<Verticle> getVerticles();
+    Set<Verticle> getVerticles();
 
-  boolean isChild();
+    boolean isChild();
 }

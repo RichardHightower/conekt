@@ -28,16 +28,16 @@ import java.util.List;
  * @author <a href="mailto:nmaurer@redhat.com">Norman Maurer</a>
  */
 final class VertxHttpResponseEncoder extends HttpResponseEncoder {
-  private ChannelHandlerContext context;
+    private ChannelHandlerContext context;
 
-  @Override
-  protected void encode(ChannelHandlerContext ctx, Object msg, List<Object> out) throws Exception {
-    super.encode(context, msg, out);
-  }
+    @Override
+    protected void encode(ChannelHandlerContext ctx, Object msg, List<Object> out) throws Exception {
+        super.encode(context, msg, out);
+    }
 
-  @Override
-  public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
-    this.context = PartialPooledByteBufAllocator.forceDirectAllocator(ctx);
-    super.handlerAdded(ctx);
-  }
+    @Override
+    public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
+        this.context = PartialPooledByteBufAllocator.forceDirectAllocator(ctx);
+        super.handlerAdded(ctx);
+    }
 }

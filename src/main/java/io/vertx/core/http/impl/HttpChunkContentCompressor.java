@@ -26,13 +26,13 @@ import io.netty.handler.codec.http.HttpContentCompressor;
  */
 final class HttpChunkContentCompressor extends HttpContentCompressor {
 
-  @Override
-  public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
-    if (msg instanceof ByteBuf) {
-      // convert ByteBuf to HttpContent to make it work with compression. This is needed as we use the
-      // ChunkedWriteHandler to send files when compression is enabled.
-      msg =  new DefaultHttpContent((ByteBuf) msg);
+    @Override
+    public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
+        if (msg instanceof ByteBuf) {
+            // convert ByteBuf to HttpContent to make it work with compression. This is needed as we use the
+            // ChunkedWriteHandler to send files when compression is enabled.
+            msg = new DefaultHttpContent((ByteBuf) msg);
+        }
+        super.write(ctx, msg, promise);
     }
-    super.write(ctx, msg, promise);
-  }
 }

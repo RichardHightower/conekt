@@ -33,181 +33,181 @@ import java.util.concurrent.atomic.AtomicInteger;
 @SuppressWarnings("deprecation")
 public final class VertxEventLoopGroup extends AbstractEventExecutorGroup implements EventLoopGroup {
 
-  private int pos;
-  private final List<EventLoopHolder> workers = new ArrayList<>();
-  private final CountDownLatch latch = new CountDownLatch(1);
-  private final AtomicBoolean gracefulShutdown = new AtomicBoolean();
-  private final Promise<?> terminationFuture = new DefaultPromise<Void>(GlobalEventExecutor.INSTANCE);
+    private final List<EventLoopHolder> workers = new ArrayList<>();
+    private final CountDownLatch latch = new CountDownLatch(1);
+    private final AtomicBoolean gracefulShutdown = new AtomicBoolean();
+    private final Promise<?> terminationFuture = new DefaultPromise<Void>(GlobalEventExecutor.INSTANCE);
+    private int pos;
 
-  @Override
-  public synchronized EventLoop next() {
-    if (workers.isEmpty()) {
-      throw new IllegalStateException();
-    } else {
-      EventLoop worker = workers.get(pos).worker;
-      pos++;
-      checkPos();
-      return worker;
+    @Override
+    public synchronized EventLoop next() {
+        if (workers.isEmpty()) {
+            throw new IllegalStateException();
+        } else {
+            EventLoop worker = workers.get(pos).worker;
+            pos++;
+            checkPos();
+            return worker;
+        }
     }
-  }
 
-  @Override
-  public Iterator<EventExecutor> iterator() {
-    return new EventLoopIterator(workers.iterator());
-  }
-
-  @Override
-  public ChannelFuture register(Channel channel) {
-    return next().register(channel);
-  }
-
-  @Override
-  public ChannelFuture register(Channel channel, ChannelPromise promise) {
-    return next().register(channel, promise);
-  }
-
-  @Override
-  public boolean isShutdown() {
-    return latch.getCount() == 0;
-  }
-
-  @Override
-  public boolean isTerminated() {
-    return isShutdown();
-  }
-
-  @Override
-  public synchronized boolean awaitTermination(long timeout, TimeUnit unit) throws InterruptedException {
-    return latch.await(timeout, unit);
-  }
-
-
-  public synchronized void addWorker(EventLoop worker) {
-    EventLoopHolder holder = findHolder(worker);
-    if (holder == null) {
-      workers.add(new EventLoopHolder(worker));
-    } else {
-      holder.count++;
+    @Override
+    public Iterator<EventExecutor> iterator() {
+        return new EventLoopIterator(workers.iterator());
     }
-  }
 
-  public synchronized void shutdown() {
-    for (EventLoopHolder holder : workers) {
-      holder.worker.shutdown();
+    @Override
+    public ChannelFuture register(Channel channel) {
+        return next().register(channel);
     }
-    latch.countDown();
-  }
 
-  @Override
-  public boolean isShuttingDown() {
-    return gracefulShutdown.get();
-  }
+    @Override
+    public ChannelFuture register(Channel channel, ChannelPromise promise) {
+        return next().register(channel, promise);
+    }
 
-  @Override
-  public Future<?> shutdownGracefully(long quietPeriod, long timeout, TimeUnit unit) {
-    if (gracefulShutdown.compareAndSet(false, true)) {
-      final AtomicInteger counter = new AtomicInteger(workers.size());
-      for (EventLoopHolder holder : workers) {
-        // We don't use a lambda here just to keep IntelliJ happy as it (incorrectly) flags a syntax error
-        // here
-        holder.worker.shutdownGracefully().addListener(new GenericFutureListener() {
-          @Override
-          public void operationComplete(Future future) throws Exception {
-            if (counter.decrementAndGet() == 0) {
-              terminationFuture.setSuccess(null);
+    @Override
+    public boolean isShutdown() {
+        return latch.getCount() == 0;
+    }
+
+    @Override
+    public boolean isTerminated() {
+        return isShutdown();
+    }
+
+    @Override
+    public synchronized boolean awaitTermination(long timeout, TimeUnit unit) throws InterruptedException {
+        return latch.await(timeout, unit);
+    }
+
+
+    public synchronized void addWorker(EventLoop worker) {
+        EventLoopHolder holder = findHolder(worker);
+        if (holder == null) {
+            workers.add(new EventLoopHolder(worker));
+        } else {
+            holder.count++;
+        }
+    }
+
+    public synchronized void shutdown() {
+        for (EventLoopHolder holder : workers) {
+            holder.worker.shutdown();
+        }
+        latch.countDown();
+    }
+
+    @Override
+    public boolean isShuttingDown() {
+        return gracefulShutdown.get();
+    }
+
+    @Override
+    public Future<?> shutdownGracefully(long quietPeriod, long timeout, TimeUnit unit) {
+        if (gracefulShutdown.compareAndSet(false, true)) {
+            final AtomicInteger counter = new AtomicInteger(workers.size());
+            for (EventLoopHolder holder : workers) {
+                // We don't use a lambda here just to keep IntelliJ happy as it (incorrectly) flags a syntax error
+                // here
+                holder.worker.shutdownGracefully().addListener(new GenericFutureListener() {
+                    @Override
+                    public void operationComplete(Future future) throws Exception {
+                        if (counter.decrementAndGet() == 0) {
+                            terminationFuture.setSuccess(null);
+                        }
+                    }
+                });
             }
-          }
-        });
-      }
-    }
-    return terminationFuture;
-  }
-
-  @Override
-  public Future<?> terminationFuture() {
-    return terminationFuture;
-  }
-
-  private EventLoopHolder findHolder(EventLoop worker) {
-    EventLoopHolder wh = new EventLoopHolder(worker);
-    for (EventLoopHolder holder : workers) {
-      if (holder.equals(wh)) {
-        return holder;
-      }
-    }
-    return null;
-  }
-
-  public synchronized void removeWorker(EventLoop worker) {
-    //TODO can be optimised
-    EventLoopHolder holder = findHolder(worker);
-    if (holder != null) {
-      holder.count--;
-      if (holder.count == 0) {
-        workers.remove(holder);
-      }
-      checkPos();
-    } else {
-      throw new IllegalStateException("Can't find worker to remove");
-    }
-  }
-
-  public synchronized int workerCount() {
-    return workers.size();
-  }
-
-  private void checkPos() {
-    if (pos == workers.size()) {
-      pos = 0;
-    }
-  }
-
-  private static class EventLoopHolder {
-    int count = 1;
-    final EventLoop worker;
-
-    EventLoopHolder(EventLoop worker) {
-      this.worker = worker;
+        }
+        return terminationFuture;
     }
 
     @Override
-    public boolean equals(Object o) {
-      if (this == o) return true;
-      if (o == null || getClass() != o.getClass()) return false;
-
-      EventLoopHolder that = (EventLoopHolder) o;
-
-      if (worker != null ? !worker.equals(that.worker) : that.worker != null) return false;
-
-      return true;
+    public Future<?> terminationFuture() {
+        return terminationFuture;
     }
 
-    @Override
-    public int hashCode() {
-      return worker != null ? worker.hashCode() : 0;
-    }
-  }
-
-  private static final class EventLoopIterator implements Iterator<EventExecutor> {
-    private final Iterator<EventLoopHolder> holderIt;
-
-    public EventLoopIterator(Iterator<EventLoopHolder> holderIt) {
-      this.holderIt = holderIt;
+    private EventLoopHolder findHolder(EventLoop worker) {
+        EventLoopHolder wh = new EventLoopHolder(worker);
+        for (EventLoopHolder holder : workers) {
+            if (holder.equals(wh)) {
+                return holder;
+            }
+        }
+        return null;
     }
 
-    @Override
-    public boolean hasNext() {
-      return holderIt.hasNext();
+    public synchronized void removeWorker(EventLoop worker) {
+        //TODO can be optimised
+        EventLoopHolder holder = findHolder(worker);
+        if (holder != null) {
+            holder.count--;
+            if (holder.count == 0) {
+                workers.remove(holder);
+            }
+            checkPos();
+        } else {
+            throw new IllegalStateException("Can't find worker to remove");
+        }
     }
 
-    @Override
-    public EventExecutor next() {
-      return holderIt.next().worker;
+    public synchronized int workerCount() {
+        return workers.size();
     }
 
-    @Override
-    public void remove() {
-      throw new UnsupportedOperationException("read-only");
+    private void checkPos() {
+        if (pos == workers.size()) {
+            pos = 0;
+        }
     }
-  }
+
+    private static class EventLoopHolder {
+        final EventLoop worker;
+        int count = 1;
+
+        EventLoopHolder(EventLoop worker) {
+            this.worker = worker;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            EventLoopHolder that = (EventLoopHolder) o;
+
+            if (worker != null ? !worker.equals(that.worker) : that.worker != null) return false;
+
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            return worker != null ? worker.hashCode() : 0;
+        }
+    }
+
+    private static final class EventLoopIterator implements Iterator<EventExecutor> {
+        private final Iterator<EventLoopHolder> holderIt;
+
+        public EventLoopIterator(Iterator<EventLoopHolder> holderIt) {
+            this.holderIt = holderIt;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return holderIt.hasNext();
+        }
+
+        @Override
+        public EventExecutor next() {
+            return holderIt.next().worker;
+        }
+
+        @Override
+        public void remove() {
+            throw new UnsupportedOperationException("read-only");
+        }
+    }
 }

@@ -27,19 +27,19 @@ import io.vertx.core.spi.WebSocketFrameFactory;
 public class WebSocketFrameFactoryImpl implements WebSocketFrameFactory {
 
 
-  @Override
-  public WebSocketFrame binaryFrame(Buffer data, boolean isFinal) {
-    return new WebSocketFrameImpl(FrameType.BINARY, data.getByteBuf(), isFinal);
-  }
+    @Override
+    public WebSocketFrame binaryFrame(Buffer data, boolean isFinal) {
+        return new WebSocketFrameImpl(FrameType.BINARY, data.getByteBuf(), isFinal);
+    }
 
-  @Override
-  public WebSocketFrame textFrame(String str, boolean isFinal) {
-    return new WebSocketFrameImpl(str, isFinal);
-  }
+    @Override
+    public WebSocketFrame textFrame(String str, boolean isFinal) {
+        return new WebSocketFrameImpl(str, isFinal);
+    }
 
-  @Override
-  public WebSocketFrame continuationFrame(Buffer data, boolean isFinal) {
-    return new WebSocketFrameImpl(FrameType.CONTINUATION, data.getByteBuf(), isFinal);
-  }
+    @Override
+    public WebSocketFrame continuationFrame(Buffer data, boolean isFinal) {
+        return new WebSocketFrameImpl(FrameType.CONTINUATION, data.getByteBuf(), isFinal);
+    }
 
 }

@@ -32,11 +32,9 @@ public class TextDecoder implements RecordDecoder<List<String>> {
      * Returns a decoded TXT (text) resource record, stored as an
      * {@link java.util.ArrayList} of {@code String}s.
      *
-     * @param response
-     *            the DNS response that contains the resource record being
-     *            decoded
-     * @param resource
-     *            the resource record being decoded
+     * @param response the DNS response that contains the resource record being
+     *                 decoded
+     * @param resource the resource record being decoded
      */
     @Override
     public List<String> decode(DnsResponse response, DnsResource resource) {

@@ -26,18 +26,18 @@ import java.util.concurrent.Executor;
  */
 public class MultiThreadedWorkerContext extends WorkerContext {
 
-  public MultiThreadedWorkerContext(VertxInternal vertx, Executor orderedInternalExec, Executor workerExec,
-                                    String deploymentID, JsonObject config, ClassLoader tccl) {
-    super(vertx, orderedInternalExec, workerExec, deploymentID, config, tccl);
-  }
+    public MultiThreadedWorkerContext(VertxInternal vertx, Executor orderedInternalExec, Executor workerExec,
+                                      String deploymentID, JsonObject config, ClassLoader tccl) {
+        super(vertx, orderedInternalExec, workerExec, deploymentID, config, tccl);
+    }
 
-  @Override
-  public void executeAsync(Handler<Void> task) {
-    workerExec.execute(wrapTask(null, task, false));
-  }
+    @Override
+    public void executeAsync(Handler<Void> task) {
+        workerExec.execute(wrapTask(null, task, false));
+    }
 
-  @Override
-  public boolean isMultiThreadedWorkerContext() {
-    return true;
-  }
+    @Override
+    public boolean isMultiThreadedWorkerContext() {
+        return true;
+    }
 }

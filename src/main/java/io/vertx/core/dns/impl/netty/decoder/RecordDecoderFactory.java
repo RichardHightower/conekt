@@ -30,27 +30,6 @@ import java.util.Objects;
 public final class RecordDecoderFactory {
 
     private static RecordDecoderFactory factory = new RecordDecoderFactory(null);
-
-    /**
-     * Returns the active {@link io.vertx.core.dns.impl.netty.decoder.RecordDecoderFactory}, which is the same as the
-     * default factory if it has not been changed by the user.
-     */
-    public static RecordDecoderFactory getFactory() {
-        return factory;
-    }
-
-    /**
-     * Sets the active {@link io.vertx.core.dns.impl.netty.decoder.RecordDecoderFactory} to be used for decoding
-     * resource records.
-     *
-     * @param factory
-     *            the {@link io.vertx.core.dns.impl.netty.decoder.RecordDecoderFactory} to use
-     */
-    public static void setFactory(RecordDecoderFactory factory) {
-      Objects.requireNonNull(factory, "Cannot set record decoder factory to null.");
-      RecordDecoderFactory.factory = factory;
-    }
-
     private final Map<Integer, RecordDecoder<?>> decoders = new HashMap<>();
 
     /**
@@ -65,9 +44,8 @@ public final class RecordDecoderFactory {
      * Creates a new {@link io.vertx.core.dns.impl.netty.decoder.RecordDecoderFactory} using the default decoders and
      * custom decoders (custom decoders override defaults).
      *
-     * @param customDecoders
-     *            user supplied resource record decoders, mapping the resource
-     *            record's type to the decoder
+     * @param customDecoders user supplied resource record decoders, mapping the resource
+     *                       record's type to the decoder
      */
     public RecordDecoderFactory(Map<Integer, RecordDecoder<?>> customDecoders) {
         this(true, customDecoders);
@@ -78,10 +56,8 @@ public final class RecordDecoderFactory {
      * record decoders, default decoders, or both. If a custom decoder has the
      * same record type as a default decoder, the default decoder is overriden.
      *
-     * @param useDefaultDecoders
-     *            if {@code true}, adds default decoders
-     * @param customDecoders
-     *            if not {@code null} or empty, adds custom decoders
+     * @param useDefaultDecoders if {@code true}, adds default decoders
+     * @param customDecoders     if not {@code null} or empty, adds custom decoders
      */
     public RecordDecoderFactory(boolean useDefaultDecoders, Map<Integer, RecordDecoder<?>> customDecoders) {
         if (!useDefaultDecoders && (customDecoders == null || customDecoders.isEmpty())) {
@@ -105,15 +81,31 @@ public final class RecordDecoderFactory {
     }
 
     /**
+     * Returns the active {@link io.vertx.core.dns.impl.netty.decoder.RecordDecoderFactory}, which is the same as the
+     * default factory if it has not been changed by the user.
+     */
+    public static RecordDecoderFactory getFactory() {
+        return factory;
+    }
+
+    /**
+     * Sets the active {@link io.vertx.core.dns.impl.netty.decoder.RecordDecoderFactory} to be used for decoding
+     * resource records.
+     *
+     * @param factory the {@link io.vertx.core.dns.impl.netty.decoder.RecordDecoderFactory} to use
+     */
+    public static void setFactory(RecordDecoderFactory factory) {
+        Objects.requireNonNull(factory, "Cannot set record decoder factory to null.");
+        RecordDecoderFactory.factory = factory;
+    }
+
+    /**
      * Decodes a resource record and returns the result.
      *
-     * @param type
-     *            the type of resource record
-     * @param response
-     *            the DNS response that contains the resource record being
-     *            decoded
-     * @param resource
-     *            the resource record being decoded
+     * @param type     the type of resource record
+     * @param response the DNS response that contains the resource record being
+     *                 decoded
+     * @param resource the resource record being decoded
      * @return the decoded resource record
      */
     @SuppressWarnings("unchecked")

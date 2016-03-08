@@ -26,39 +26,38 @@ import io.vertx.codegen.annotations.VertxGen;
 @VertxGen
 public interface SrvRecord {
 
-  /**
-   * Returns the priority for this service record.
-   */
-  int priority();
+    /**
+     * Returns the priority for this service record.
+     */
+    int priority();
 
-  /**
-   * Returns the weight of this service record.
-   */
-  int weight();
+    /**
+     * Returns the weight of this service record.
+     */
+    int weight();
 
-  /**
-   * Returns the port the service is running on.
-   */
-  int port();
+    /**
+     * Returns the port the service is running on.
+     */
+    int port();
 
-  /**
-   * Returns the name for the server being queried.
-   */
-  String name();
+    /**
+     * Returns the name for the server being queried.
+     */
+    String name();
 
-  /**
-   * Returns the protocol for the service being queried (i.e. "_tcp").
-   */
-  String protocol();
+    /**
+     * Returns the protocol for the service being queried (i.e. "_tcp").
+     */
+    String protocol();
 
-  /**
-   * Returns the service's name (i.e. "_http").
-   */
-  String service();
+    /**
+     * Returns the service's name (i.e. "_http").
+     */
+    String service();
 
-  /**
-   * Returns the name of the host for the service.
-   */
-  @Nullable
-  String target();
+    /**
+     * Returns the name of the host for the service.
+     */
+    @Nullable String target();
 }

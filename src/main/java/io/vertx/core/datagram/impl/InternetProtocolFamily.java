@@ -20,13 +20,13 @@ package io.vertx.core.datagram.impl;
  */
 public enum InternetProtocolFamily {
 
-  /**
-   * Using IPv4
-   */
-  IPv4,
+    /**
+     * Using IPv4
+     */
+    IPv4,
 
-  /**
-   * Using IPv6
-   */
-  IPv6
+    /**
+     * Using IPv6
+     */
+    IPv6
 }

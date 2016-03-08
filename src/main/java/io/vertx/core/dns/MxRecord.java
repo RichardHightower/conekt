@@ -25,13 +25,13 @@ import io.vertx.codegen.annotations.VertxGen;
 @VertxGen
 public interface MxRecord {
 
-  /**
-   * The priority of the MX record.
-   */
-  int priority();
+    /**
+     * The priority of the MX record.
+     */
+    int priority();
 
-  /**
-   * The name of the MX record
-   */
-  String name();
+    /**
+     * The name of the MX record
+     */
+    String name();
 }

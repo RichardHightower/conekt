@@ -23,12 +23,12 @@ package io.vertx.core;
  */
 public abstract class VoidHandler implements Handler<Void> {
 
-  public final void handle(Void event) {
-    handle();
-  }
+    public final void handle(Void event) {
+        handle();
+    }
 
-  /**
-   * Handle the event. It should be overridden by the user.
-   */
-  protected abstract void handle();
+    /**
+     * Handle the event. It should be overridden by the user.
+     */
+    protected abstract void handle();
 }

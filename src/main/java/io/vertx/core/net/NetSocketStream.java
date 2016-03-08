@@ -29,18 +29,18 @@ import io.vertx.core.streams.ReadStream;
 @VertxGen
 public interface NetSocketStream extends ReadStream<NetSocket> {
 
-  @Override
-  NetSocketStream exceptionHandler(Handler<Throwable> handler);
+    @Override
+    NetSocketStream exceptionHandler(Handler<Throwable> handler);
 
-  @Override
-  NetSocketStream handler(Handler<NetSocket> handler);
+    @Override
+    NetSocketStream handler(Handler<NetSocket> handler);
 
-  @Override
-  NetSocketStream pause();
+    @Override
+    NetSocketStream pause();
 
-  @Override
-  NetSocketStream resume();
+    @Override
+    NetSocketStream resume();
 
-  @Override
-  NetSocketStream endHandler(Handler<Void> endHandler);
+    @Override
+    NetSocketStream endHandler(Handler<Void> endHandler);
 }

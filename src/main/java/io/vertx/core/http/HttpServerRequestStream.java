@@ -29,18 +29,18 @@ import io.vertx.core.streams.ReadStream;
 @VertxGen
 public interface HttpServerRequestStream extends ReadStream<HttpServerRequest> {
 
-  @Override
-  HttpServerRequestStream exceptionHandler(Handler<Throwable> handler);
+    @Override
+    HttpServerRequestStream exceptionHandler(Handler<Throwable> handler);
 
-  @Override
-  HttpServerRequestStream handler(Handler<HttpServerRequest> handler);
+    @Override
+    HttpServerRequestStream handler(Handler<HttpServerRequest> handler);
 
-  @Override
-  HttpServerRequestStream pause();
+    @Override
+    HttpServerRequestStream pause();
 
-  @Override
-  HttpServerRequestStream resume();
+    @Override
+    HttpServerRequestStream resume();
 
-  @Override
-  HttpServerRequestStream endHandler(Handler<Void> endHandler);
+    @Override
+    HttpServerRequestStream endHandler(Handler<Void> endHandler);
 }

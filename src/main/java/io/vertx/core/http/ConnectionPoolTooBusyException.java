@@ -30,13 +30,13 @@ import io.vertx.core.VertxException;
  */
 public class ConnectionPoolTooBusyException extends VertxException {
 
-  /**
-   * Create a ConnectionPoolTooBusyException
-   *
-   * @param message the failure message
-   */
-  public ConnectionPoolTooBusyException(String message) {
-    super(message);
-  }
+    /**
+     * Create a ConnectionPoolTooBusyException
+     *
+     * @param message the failure message
+     */
+    public ConnectionPoolTooBusyException(String message) {
+        super(message);
+    }
 
 }

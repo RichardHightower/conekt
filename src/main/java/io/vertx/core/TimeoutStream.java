@@ -32,25 +32,25 @@ import io.vertx.core.streams.ReadStream;
 @VertxGen
 public interface TimeoutStream extends ReadStream<Long> {
 
-  @Override
-  TimeoutStream exceptionHandler(Handler<Throwable> handler);
+    @Override
+    TimeoutStream exceptionHandler(Handler<Throwable> handler);
 
-  @Override
-  TimeoutStream handler(Handler<Long> handler);
+    @Override
+    TimeoutStream handler(Handler<Long> handler);
 
-  @Override
-  TimeoutStream pause();
+    @Override
+    TimeoutStream pause();
 
-  @Override
-  TimeoutStream resume();
+    @Override
+    TimeoutStream resume();
 
-  @Override
-  TimeoutStream endHandler(Handler<Void> endHandler);
+    @Override
+    TimeoutStream endHandler(Handler<Void> endHandler);
 
-  /**
-   * Cancels the timeout. Note this has the same effect as calling {@link #handler(Handler)} with a null
-   * argument.
-   */
-  void cancel();
+    /**
+     * Cancels the timeout. Note this has the same effect as calling {@link #handler(Handler)} with a null
+     * argument.
+     */
+    void cancel();
 
 }

@@ -23,7 +23,7 @@ import io.vertx.core.buffer.Buffer;
  */
 public interface ClusterSerializable {
 
-  void writeToBuffer(Buffer buffer);
+    void writeToBuffer(Buffer buffer);
 
-  int readFromBuffer(int pos, Buffer buffer);
+    int readFromBuffer(int pos, Buffer buffer);
 }

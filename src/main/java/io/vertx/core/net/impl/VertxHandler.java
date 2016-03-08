@@ -31,107 +31,107 @@ import io.vertx.core.impl.ContextImpl;
  */
 public abstract class VertxHandler<C extends ConnectionBase> extends ChannelDuplexHandler {
 
-  protected abstract C getConnection(Channel ch);
-
-  protected abstract C removeConnection(Channel ch);
-
-  protected ContextImpl getContext(C connection) {
-    return connection.getContext();
-  }
-
-  protected static ByteBuf safeBuffer(ByteBuf buf, ByteBufAllocator allocator) {
-    if (buf == Unpooled.EMPTY_BUFFER) {
-      return buf;
+    protected static ByteBuf safeBuffer(ByteBuf buf, ByteBufAllocator allocator) {
+        if (buf == Unpooled.EMPTY_BUFFER) {
+            return buf;
+        }
+        if (buf.isDirect() || buf instanceof CompositeByteBuf) {
+            try {
+                if (buf.isReadable()) {
+                    ByteBuf buffer = allocator.heapBuffer(buf.readableBytes());
+                    buffer.writeBytes(buf);
+                    return buffer;
+                } else {
+                    return Unpooled.EMPTY_BUFFER;
+                }
+            } finally {
+                buf.release();
+            }
+        }
+        return buf;
     }
-    if (buf.isDirect() || buf instanceof CompositeByteBuf) {
-      try {
-        if (buf.isReadable()) {
-          ByteBuf buffer =  allocator.heapBuffer(buf.readableBytes());
-          buffer.writeBytes(buf);
-          return buffer;
+
+    protected abstract C getConnection(Channel ch);
+
+    protected abstract C removeConnection(Channel ch);
+
+    protected ContextImpl getContext(C connection) {
+        return connection.getContext();
+    }
+
+    @Override
+    public void channelWritabilityChanged(ChannelHandlerContext ctx) throws Exception {
+        Channel ch = ctx.channel();
+        C conn = getConnection(ch);
+        if (conn != null) {
+            ContextImpl context = getContext(conn);
+            context.executeFromIO(conn::handleInterestedOpsChanged);
+        }
+    }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext chctx, final Throwable t) throws Exception {
+        Channel ch = chctx.channel();
+        // Don't remove the connection at this point, or the handleClosed won't be called when channelInactive is called!
+        C connection = getConnection(ch);
+        if (connection != null) {
+            ContextImpl context = getContext(connection);
+            context.executeFromIO(() -> {
+                try {
+                    if (ch.isOpen()) {
+                        ch.close();
+                    }
+                } catch (Throwable ignore) {
+                }
+                connection.handleException(t);
+            });
         } else {
-          return Unpooled.EMPTY_BUFFER;
-        }
-      } finally {
-        buf.release();
-      }
-    }
-    return buf;
-  }
-
-  @Override
-  public void channelWritabilityChanged(ChannelHandlerContext ctx) throws Exception {
-    Channel ch = ctx.channel();
-    C conn = getConnection(ch);
-    if (conn != null) {
-      ContextImpl context = getContext(conn);
-      context.executeFromIO(conn::handleInterestedOpsChanged);
-    }
-  }
-
-  @Override
-  public void exceptionCaught(ChannelHandlerContext chctx, final Throwable t) throws Exception {
-    Channel ch = chctx.channel();
-    // Don't remove the connection at this point, or the handleClosed won't be called when channelInactive is called!
-    C connection = getConnection(ch);
-    if (connection != null) {
-      ContextImpl context = getContext(connection);
-      context.executeFromIO(() -> {
-        try {
-          if (ch.isOpen()) {
             ch.close();
-          }
-        } catch (Throwable ignore) {
         }
-        connection.handleException(t);
-      });
-    } else {
-      ch.close();
     }
-  }
 
-  @Override
-  public void channelInactive(ChannelHandlerContext chctx) throws Exception {
-    Channel ch = chctx.channel();
-    C connection = removeConnection(ch);
-    if (connection != null) {
-      ContextImpl context = getContext(connection);
-      context.executeFromIO(connection::handleClosed);
+    @Override
+    public void channelInactive(ChannelHandlerContext chctx) throws Exception {
+        Channel ch = chctx.channel();
+        C connection = removeConnection(ch);
+        if (connection != null) {
+            ContextImpl context = getContext(connection);
+            context.executeFromIO(connection::handleClosed);
+        }
     }
-  }
 
-  @Override
-  public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
-    C conn = getConnection(ctx.channel());
-    if (conn != null) {
-      ContextImpl context = getContext(conn);
-      context.executeFromIO(conn::endReadAndFlush);
+    @Override
+    public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
+        C conn = getConnection(ctx.channel());
+        if (conn != null) {
+            ContextImpl context = getContext(conn);
+            context.executeFromIO(conn::endReadAndFlush);
+        }
     }
-  }
 
-  @Override
-  public void channelRead(ChannelHandlerContext chctx, Object msg) throws Exception {
-    Object message = safeObject(msg, chctx.alloc());
-    C connection = getConnection(chctx.channel());
+    @Override
+    public void channelRead(ChannelHandlerContext chctx, Object msg) throws Exception {
+        Object message = safeObject(msg, chctx.alloc());
+        C connection = getConnection(chctx.channel());
 
-    ContextImpl context;
-    if (connection != null) {
-      context = getContext(connection);
-      context.executeFromIO(connection::startRead);
-    } else {
-      context = null;
+        ContextImpl context;
+        if (connection != null) {
+            context = getContext(connection);
+            context.executeFromIO(connection::startRead);
+        } else {
+            context = null;
+        }
+        channelRead(connection, context, chctx, message);
     }
-    channelRead(connection, context, chctx, message);
-  }
 
-  @Override
-  public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
-    if (evt instanceof IdleStateEvent && ((IdleStateEvent) evt).state() == IdleState.ALL_IDLE) {
-      ctx.close();
+    @Override
+    public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
+        if (evt instanceof IdleStateEvent && ((IdleStateEvent) evt).state() == IdleState.ALL_IDLE) {
+            ctx.close();
+        }
     }
-  }
 
-  protected abstract void channelRead(C connection, ContextImpl context, ChannelHandlerContext chctx, Object msg) throws Exception;
+    protected abstract void channelRead(C connection, ContextImpl context, ChannelHandlerContext chctx, Object msg) throws Exception;
 
-  protected abstract Object safeObject(Object msg, ByteBufAllocator allocator) throws Exception;
+    protected abstract Object safeObject(Object msg, ByteBufAllocator allocator) throws Exception;
 }

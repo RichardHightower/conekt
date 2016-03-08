@@ -28,11 +28,9 @@ public class MailExchangerRecord {
     /**
      * Constructs an MX (mail exchanger) record.
      *
-     * @param priority
-     *            the priority of the mail exchanger, lower is more preferred
-     * @param name
-     *            the e-mail address in the format admin.example.com, which
-     *            represents admin@example.com
+     * @param priority the priority of the mail exchanger, lower is more preferred
+     * @param name     the e-mail address in the format admin.example.com, which
+     *                 represents admin@example.com
      */
     public MailExchangerRecord(int priority, String name) {
         this.priority = priority;

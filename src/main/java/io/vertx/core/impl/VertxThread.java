@@ -23,37 +23,37 @@ import io.netty.util.concurrent.FastThreadLocalThread;
  */
 final class VertxThread extends FastThreadLocalThread {
 
-  private final boolean worker;
-  private long execStart;
-  private ContextImpl context;
+    private final boolean worker;
+    private long execStart;
+    private ContextImpl context;
 
-  public VertxThread(Runnable target, String name, boolean worker) {
-    super(target, name);
-    this.worker = worker;
-  }
+    public VertxThread(Runnable target, String name, boolean worker) {
+        super(target, name);
+        this.worker = worker;
+    }
 
-  ContextImpl getContext() {
-    return context;
-  }
+    ContextImpl getContext() {
+        return context;
+    }
 
-  void setContext(ContextImpl context) {
-    this.context = context;
-  }
+    void setContext(ContextImpl context) {
+        this.context = context;
+    }
 
-  public final void executeStart() {
-    execStart = System.nanoTime();
-  }
+    public final void executeStart() {
+        execStart = System.nanoTime();
+    }
 
-  public final void executeEnd() {
-    execStart = 0;
-  }
+    public final void executeEnd() {
+        execStart = 0;
+    }
 
-  public long startTime() {
-    return execStart;
-  }
+    public long startTime() {
+        return execStart;
+    }
 
-  public boolean isWorker() {
-    return worker;
-  }
+    public boolean isWorker() {
+        return worker;
+    }
 
 }

@@ -23,8 +23,8 @@ import io.netty.bootstrap.ChannelFactory;
  */
 public class VertxNioSocketChannelFactory implements ChannelFactory<VertxNioSocketChannel> {
 
-  @Override
-  public VertxNioSocketChannel newChannel() {
-    return new VertxNioSocketChannel<>();
-  }
+    @Override
+    public VertxNioSocketChannel newChannel() {
+        return new VertxNioSocketChannel<>();
+    }
 }

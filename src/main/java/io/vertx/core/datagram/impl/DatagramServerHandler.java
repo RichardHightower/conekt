@@ -29,39 +29,39 @@ import io.vertx.core.net.impl.VertxHandler;
  */
 final class DatagramServerHandler extends VertxHandler<DatagramSocketImpl> {
 
-  private final DatagramSocketImpl socket;
+    private final DatagramSocketImpl socket;
 
-  DatagramServerHandler(DatagramSocketImpl socket) {
-    this.socket = socket;
-  }
-
-  @Override
-  protected DatagramSocketImpl getConnection(Channel channel) {
-    return socket;
-  }
-
-  @Override
-  protected DatagramSocketImpl removeConnection(Channel channel) {
-    return socket;
-  }
-
-
-  @SuppressWarnings("unchecked")
-  @Override
-  protected void channelRead(final DatagramSocketImpl server, final ContextImpl context, ChannelHandlerContext chctx, final Object msg) throws Exception {
-    context.executeFromIO(() -> server.handlePacket((io.vertx.core.datagram.DatagramPacket) msg));
-  }
-
-  @Override
-  protected Object safeObject(Object msg, ByteBufAllocator allocator) throws Exception {
-    if (msg instanceof DatagramPacket) {
-      DatagramPacket packet = (DatagramPacket) msg;
-      ByteBuf content = packet.content();
-      if (content.isDirect())  {
-        content = safeBuffer(content, allocator);
-      }
-      return new DatagramPacketImpl(packet.sender(), Buffer.buffer(content));
+    DatagramServerHandler(DatagramSocketImpl socket) {
+        this.socket = socket;
     }
-    return msg;
-  }
+
+    @Override
+    protected DatagramSocketImpl getConnection(Channel channel) {
+        return socket;
+    }
+
+    @Override
+    protected DatagramSocketImpl removeConnection(Channel channel) {
+        return socket;
+    }
+
+
+    @SuppressWarnings("unchecked")
+    @Override
+    protected void channelRead(final DatagramSocketImpl server, final ContextImpl context, ChannelHandlerContext chctx, final Object msg) throws Exception {
+        context.executeFromIO(() -> server.handlePacket((io.vertx.core.datagram.DatagramPacket) msg));
+    }
+
+    @Override
+    protected Object safeObject(Object msg, ByteBufAllocator allocator) throws Exception {
+        if (msg instanceof DatagramPacket) {
+            DatagramPacket packet = (DatagramPacket) msg;
+            ByteBuf content = packet.content();
+            if (content.isDirect()) {
+                content = safeBuffer(content, allocator);
+            }
+            return new DatagramPacketImpl(packet.sender(), Buffer.buffer(content));
+        }
+        return msg;
+    }
 }

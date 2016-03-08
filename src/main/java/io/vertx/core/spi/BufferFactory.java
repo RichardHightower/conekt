@@ -24,15 +24,15 @@ import io.vertx.core.buffer.Buffer;
  */
 public interface BufferFactory {
 
-  Buffer buffer(int initialSizeHint);
+    Buffer buffer(int initialSizeHint);
 
-  Buffer buffer();
+    Buffer buffer();
 
-  Buffer buffer(String str);
+    Buffer buffer(String str);
 
-  Buffer buffer(String str, String enc);
+    Buffer buffer(String str, String enc);
 
-  Buffer buffer(byte[] bytes);
+    Buffer buffer(byte[] bytes);
 
-  Buffer buffer(ByteBuf byteBuffer);
+    Buffer buffer(ByteBuf byteBuffer);
 }

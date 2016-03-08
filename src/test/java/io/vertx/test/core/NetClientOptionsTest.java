@@ -1,9 +1,9 @@
 package io.vertx.test.core;
-import static org.junit.Assert.assertEquals;
-import io.vertx.core.json.JsonObject;
-import io.vertx.core.net.NetClientOptions;
 
+import io.vertx.core.net.NetClientOptions;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * test that the default object of NetClientOptions equals to when creating
@@ -14,21 +14,20 @@ import org.junit.Test;
 
 /**
  * @author <a href="http://oss.lehmann.cx/">Alexander Lehmann</a>
- *
  */
 public class NetClientOptionsTest {
 
-  @Test
-  public final void testEquals() {
-    NetClientOptions options1 = new NetClientOptions();
-    NetClientOptions options2 = new NetClientOptions(new JsonObject("{}"));
-    assertEquals(options1, options2);
-  }
+    @Test
+    public final void testEquals() {
+        NetClientOptions options1 = new NetClientOptions();
+        NetClientOptions options2 = new NetClientOptions();
+        assertEquals(options1, options2);
+    }
 
-  @Test
-  public final void testAdd() {
-    NetClientOptions options = new NetClientOptions(new JsonObject("{}"));
-    options.addEnabledCipherSuite("XXX");
-  }
+    @Test
+    public final void testAdd() {
+        NetClientOptions options = new NetClientOptions();
+        options.addEnabledCipherSuite("XXX");
+    }
 
 }

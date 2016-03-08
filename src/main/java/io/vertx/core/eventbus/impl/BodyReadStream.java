@@ -28,43 +28,43 @@ import io.vertx.core.streams.ReadStream;
  */
 public class BodyReadStream<T> implements ReadStream<T> {
 
-  private ReadStream<Message<T>> delegate;
+    private ReadStream<Message<T>> delegate;
 
-  public BodyReadStream(ReadStream<Message<T>> delegate) {
-    this.delegate = delegate;
-  }
-
-  @Override
-  public ReadStream<T> exceptionHandler(Handler<Throwable> handler) {
-    delegate.exceptionHandler(handler);
-    return null;
-  }
-
-  @Override
-  public ReadStream<T> handler(Handler<T> handler) {
-    if (handler != null) {
-      delegate.handler(message -> handler.handle(message.body()));
-    } else {
-      delegate.handler(null);
+    public BodyReadStream(ReadStream<Message<T>> delegate) {
+        this.delegate = delegate;
     }
-    return this;
-  }
 
-  @Override
-  public ReadStream<T> pause() {
-    delegate.pause();
-    return this;
-  }
+    @Override
+    public ReadStream<T> exceptionHandler(Handler<Throwable> handler) {
+        delegate.exceptionHandler(handler);
+        return null;
+    }
 
-  @Override
-  public ReadStream<T> resume() {
-    delegate.resume();
-    return this;
-  }
+    @Override
+    public ReadStream<T> handler(Handler<T> handler) {
+        if (handler != null) {
+            delegate.handler(message -> handler.handle(message.body()));
+        } else {
+            delegate.handler(null);
+        }
+        return this;
+    }
 
-  @Override
-  public ReadStream<T> endHandler(Handler<Void> endHandler) {
-    delegate.endHandler(endHandler);
-    return this;
-  }
+    @Override
+    public ReadStream<T> pause() {
+        delegate.pause();
+        return this;
+    }
+
+    @Override
+    public ReadStream<T> resume() {
+        delegate.resume();
+        return this;
+    }
+
+    @Override
+    public ReadStream<T> endHandler(Handler<Void> endHandler) {
+        delegate.endHandler(endHandler);
+        return this;
+    }
 }

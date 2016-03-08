@@ -22,18 +22,18 @@ import io.vertx.core.http.ServerWebSocket;
 
 /**
  * The http server metrics SPI that Vert.x will use to call when each http server event occurs.<p/>
- *
+ * <p>
  * The thread model for the http server metrics depends on the actual context thats started the server.<p/>
- *
+ * <p>
  * <h3>Event loop context</h3>
- *
+ * <p>
  * Unless specified otherwise, all the methods on this object including the methods inherited from the super interfaces are invoked
  * with the thread of the http server and therefore are the same than the
  * {@link io.vertx.core.spi.metrics.VertxMetrics} {@code createMetrics} method that created and returned
  * this metrics object.
- *
+ * <p>
  * <h3>Worker context</h3>
- *
+ * <p>
  * Unless specified otherwise, all the methods on this object including the methods inherited from the super interfaces are invoked
  * with a worker thread.
  *
@@ -41,45 +41,45 @@ import io.vertx.core.http.ServerWebSocket;
  */
 public interface HttpServerMetrics<R, W, S> extends TCPMetrics<S> {
 
-  /**
-   * Called when an http server request begins
-   *
-   * @param socketMetric the socket metric
-   * @param request the {@link io.vertx.core.http.HttpServerRequest}
-   * @return the request metric
-   */
-  R requestBegin(S socketMetric, HttpServerRequest request);
+    /**
+     * Called when an http server request begins
+     *
+     * @param socketMetric the socket metric
+     * @param request      the {@link io.vertx.core.http.HttpServerRequest}
+     * @return the request metric
+     */
+    R requestBegin(S socketMetric, HttpServerRequest request);
 
-  /**
-   * Called when an http server response has ended.
-   *
-   * @param requestMetric the request metric
-   * @param response the {@link io.vertx.core.http.HttpServerResponse}
-   */
-  void responseEnd(R requestMetric, HttpServerResponse response);
+    /**
+     * Called when an http server response has ended.
+     *
+     * @param requestMetric the request metric
+     * @param response      the {@link io.vertx.core.http.HttpServerResponse}
+     */
+    void responseEnd(R requestMetric, HttpServerResponse response);
 
-  /**
-   * Called when an http server request is upgrade to a websocket.
-   *
-   * @param requestMetric the request metric
-   * @param serverWebSocket the server web socket
-   * @return the server web socket metric
-   */
-  W upgrade(R requestMetric, ServerWebSocket serverWebSocket);
+    /**
+     * Called when an http server request is upgrade to a websocket.
+     *
+     * @param requestMetric   the request metric
+     * @param serverWebSocket the server web socket
+     * @return the server web socket metric
+     */
+    W upgrade(R requestMetric, ServerWebSocket serverWebSocket);
 
-  /**
-   * Called when a server web socket connects.
-   *
-   * @param socketMetric the socket metric
-   * @param serverWebSocket the server web socket
-   * @return the server web socket metric
-   */
-  W connected(S socketMetric, ServerWebSocket serverWebSocket);
+    /**
+     * Called when a server web socket connects.
+     *
+     * @param socketMetric    the socket metric
+     * @param serverWebSocket the server web socket
+     * @return the server web socket metric
+     */
+    W connected(S socketMetric, ServerWebSocket serverWebSocket);
 
-  /**
-   * Called when the server web socket has disconnected.
-   *
-   * @param serverWebSocketMetric the server web socket metric
-   */
-  void disconnected(W serverWebSocketMetric);
+    /**
+     * Called when the server web socket has disconnected.
+     *
+     * @param serverWebSocketMetric the server web socket metric
+     */
+    void disconnected(W serverWebSocketMetric);
 }

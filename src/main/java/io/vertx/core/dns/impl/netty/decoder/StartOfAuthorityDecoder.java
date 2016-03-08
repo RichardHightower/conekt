@@ -30,11 +30,9 @@ public class StartOfAuthorityDecoder implements RecordDecoder<StartOfAuthorityRe
      * Returns a decoded SOA (start of authority) resource record, stored as an
      * instance of {@link StartOfAuthorityRecord}.
      *
-     * @param response
-     *            the DNS response that contains the resource record being
-     *            decoded
-     * @param resource
-     *            the resource record being decoded
+     * @param response the DNS response that contains the resource record being
+     *                 decoded
+     * @param resource the resource record being decoded
      */
     @Override
     public StartOfAuthorityRecord decode(DnsResponse response, DnsResource resource) {

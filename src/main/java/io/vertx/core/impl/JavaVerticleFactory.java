@@ -25,23 +25,23 @@ import io.vertx.core.spi.VerticleFactory;
  */
 public class JavaVerticleFactory implements VerticleFactory {
 
-  @Override
-  public String prefix() {
-    return "java";
-  }
-
-  @Override
-  public Verticle createVerticle(String verticleName, ClassLoader classLoader) throws Exception {
-    verticleName = VerticleFactory.removePrefix(verticleName);
-    Class clazz;
-    if (verticleName.endsWith(".java")) {
-      CompilingClassLoader compilingLoader = new CompilingClassLoader(classLoader, verticleName);
-      String className = compilingLoader.resolveMainClassName();
-      clazz = compilingLoader.loadClass(className);
-    } else {
-      clazz = classLoader.loadClass(verticleName);
+    @Override
+    public String prefix() {
+        return "java";
     }
-    return (Verticle) clazz.newInstance();
-  }
+
+    @Override
+    public Verticle createVerticle(String verticleName, ClassLoader classLoader) throws Exception {
+        verticleName = VerticleFactory.removePrefix(verticleName);
+        Class clazz;
+        if (verticleName.endsWith(".java")) {
+            CompilingClassLoader compilingLoader = new CompilingClassLoader(classLoader, verticleName);
+            String className = compilingLoader.resolveMainClassName();
+            clazz = compilingLoader.loadClass(className);
+        } else {
+            clazz = classLoader.loadClass(verticleName);
+        }
+        return (Verticle) clazz.newInstance();
+    }
 
 }

@@ -22,8 +22,6 @@ import io.vertx.codegen.annotations.VertxGen;
 import io.vertx.core.impl.ContextImpl;
 import io.vertx.core.json.JsonObject;
 
-import java.util.List;
-
 /**
  * The execution context of a {@link io.vertx.core.Handler} execution.
  * <p>
@@ -61,166 +59,163 @@ import java.util.List;
 @VertxGen
 public interface Context {
 
-  /**
-   * Is the current thread a worker thread?
-   * <p>
-   * NOTE! This is not always the same as calling {@link Context#isWorkerContext}. If you are running blocking code
-   * from an event loop context, then this will return true but {@link Context#isWorkerContext} will return false.
-   *
-   * @return true if current thread is a worker thread, false otherwise
-   */
-  static boolean isOnWorkerThread() {
-    return ContextImpl.isOnWorkerThread();
-  }
+    /**
+     * Is the current thread a worker thread?
+     * <p>
+     * NOTE! This is not always the same as calling {@link Context#isWorkerContext}. If you are running blocking code
+     * from an event loop context, then this will return true but {@link Context#isWorkerContext} will return false.
+     *
+     * @return true if current thread is a worker thread, false otherwise
+     */
+    static boolean isOnWorkerThread() {
+        return ContextImpl.isOnWorkerThread();
+    }
 
-  /**
-   * Is the current thread an event thread?
-   * <p>
-   * NOTE! This is not always the same as calling {@link Context#isEventLoopContext}. If you are running blocking code
-   * from an event loop context, then this will return false but {@link Context#isEventLoopContext} will return true.
-   *
-   * @return true if current thread is a worker thread, false otherwise
-   */
-  static boolean isOnEventLoopThread() {
-    return ContextImpl.isOnEventLoopThread();
-  }
+    /**
+     * Is the current thread an event thread?
+     * <p>
+     * NOTE! This is not always the same as calling {@link Context#isEventLoopContext}. If you are running blocking code
+     * from an event loop context, then this will return false but {@link Context#isEventLoopContext} will return true.
+     *
+     * @return true if current thread is a worker thread, false otherwise
+     */
+    static boolean isOnEventLoopThread() {
+        return ContextImpl.isOnEventLoopThread();
+    }
 
-  /**
-   * Is the current thread a Vert.x thread? That's either a worker thread or an event loop thread
-   *
-   * @return true if current thread is a Vert.x thread, false otherwise
-   */
-  static boolean isOnVertxThread() {
-    return ContextImpl.isOnVertxThread();
-  }
+    /**
+     * Is the current thread a Vert.x thread? That's either a worker thread or an event loop thread
+     *
+     * @return true if current thread is a Vert.x thread, false otherwise
+     */
+    static boolean isOnVertxThread() {
+        return ContextImpl.isOnVertxThread();
+    }
 
-  /**
-   * Run the specified action asynchronously on the same context, some time after the current execution has completed.
-   *
-   * @param action  the action to run
-   */
-  void runOnContext(Handler<Void> action);
+    /**
+     * Run the specified action asynchronously on the same context, some time after the current execution has completed.
+     *
+     * @param action the action to run
+     */
+    void runOnContext(Handler<Void> action);
 
-  /**
-   * Safely execute some blocking code.
-   * <p>
-   * Executes the blocking code in the handler {@code blockingCodeHandler} using a thread from the worker pool.
-   * <p>
-   * When the code is complete the handler {@code resultHandler} will be called with the result on the original context
-   * (e.g. on the original event loop of the caller).
-   * <p>
-   * A {@code Future} instance is passed into {@code blockingCodeHandler}. When the blocking code successfully completes,
-   * the handler should call the {@link Future#complete} or {@link Future#complete(Object)} method, or the {@link Future#fail}
-   * method if it failed.
-   *
-   * @param blockingCodeHandler  handler representing the blocking code to run
-   * @param resultHandler  handler that will be called when the blocking code is complete
-   * @param ordered  if true then if executeBlocking is called several times on the same context, the executions
-   *                 for that context will be executed serially, not in parallel. if false then they will be no ordering
-   *                 guarantees
-   * @param <T> the type of the result
-   */
-  <T> void executeBlocking(Handler<Future<T>> blockingCodeHandler, boolean ordered, Handler<AsyncResult<T>> resultHandler);
+    /**
+     * Safely execute some blocking code.
+     * <p>
+     * Executes the blocking code in the handler {@code blockingCodeHandler} using a thread from the worker pool.
+     * <p>
+     * When the code is complete the handler {@code resultHandler} will be called with the result on the original context
+     * (e.g. on the original event loop of the caller).
+     * <p>
+     * A {@code Future} instance is passed into {@code blockingCodeHandler}. When the blocking code successfully completes,
+     * the handler should call the {@link Future#complete} or {@link Future#complete(Object)} method, or the {@link Future#fail}
+     * method if it failed.
+     *
+     * @param blockingCodeHandler handler representing the blocking code to run
+     * @param resultHandler       handler that will be called when the blocking code is complete
+     * @param ordered             if true then if executeBlocking is called several times on the same context, the executions
+     *                            for that context will be executed serially, not in parallel. if false then they will be no ordering
+     *                            guarantees
+     * @param <T>                 the type of the result
+     */
+    <T> void executeBlocking(Handler<Future<T>> blockingCodeHandler, boolean ordered, Handler<AsyncResult<T>> resultHandler);
 
-  /**
-   * Invoke {@link #executeBlocking(Handler, boolean, Handler)} with order = true.
-   * @param blockingCodeHandler  handler representing the blocking code to run
-   * @param resultHandler  handler that will be called when the blocking code is complete
-   * @param <T> the type of the result
-   */
-  <T> void executeBlocking(Handler<Future<T>> blockingCodeHandler, Handler<AsyncResult<T>> resultHandler);
+    /**
+     * Invoke {@link #executeBlocking(Handler, boolean, Handler)} with order = true.
+     *
+     * @param blockingCodeHandler handler representing the blocking code to run
+     * @param resultHandler       handler that will be called when the blocking code is complete
+     * @param <T>                 the type of the result
+     */
+    <T> void executeBlocking(Handler<Future<T>> blockingCodeHandler, Handler<AsyncResult<T>> resultHandler);
 
-  /**
-   * If the context is associated with a Verticle deployment, this returns the deployment ID of that deployment.
-   *
-   * @return the deployment ID of the deployment or null if not a Verticle deployment
-   */
-  String deploymentID();
+    /**
+     * If the context is associated with a Verticle deployment, this returns the deployment ID of that deployment.
+     *
+     * @return the deployment ID of the deployment or null if not a Verticle deployment
+     */
+    String deploymentID();
 
-  /**
-   * If the context is associated with a Verticle deployment, this returns the configuration that was specified when
-   * the verticle was deployed.
-   *
-   * @return the configuration of the deployment or null if not a Verticle deployment
-   */
-  @Nullable JsonObject config();
+    /**
+     * If the context is associated with a Verticle deployment, this returns the configuration that was specified when
+     * the verticle was deployed.
+     *
+     * @return the configuration of the deployment or null if not a Verticle deployment
+     */
+    @Nullable JsonObject config();
 
-  /**
-   * The process args
-   */
-  List<String> processArgs();
 
-  /**
-   * Is the current context an event loop context?
-   * <p>
-   * NOTE! when running blocking code using {@link io.vertx.core.Vertx#executeBlocking(Handler, Handler)} from a
-   * standard (not worker) verticle, the context will still an event loop context and this {@link this#isEventLoopContext()}
-   * will return true.
-   *
-   * @return true if  false otherwise
-   */
-  boolean isEventLoopContext();
+    /**
+     * Is the current context an event loop context?
+     * <p>
+     * NOTE! when running blocking code using {@link io.vertx.core.Vertx#executeBlocking(Handler, Handler)} from a
+     * standard (not worker) verticle, the context will still an event loop context and this {@link this#isEventLoopContext()}
+     * will return true.
+     *
+     * @return true if  false otherwise
+     */
+    boolean isEventLoopContext();
 
-  /**
-   * Is the current context a worker context?
-   * <p>
-   * NOTE! when running blocking code using {@link io.vertx.core.Vertx#executeBlocking(Handler, Handler)} from a
-   * standard (not worker) verticle, the context will still an event loop context and this {@link this#isWorkerContext()}
-   * will return false.
-   *
-   * @return true if the current context is a worker context, false otherwise
-   */
-  boolean isWorkerContext();
+    /**
+     * Is the current context a worker context?
+     * <p>
+     * NOTE! when running blocking code using {@link io.vertx.core.Vertx#executeBlocking(Handler, Handler)} from a
+     * standard (not worker) verticle, the context will still an event loop context and this {@link this#isWorkerContext()}
+     * will return false.
+     *
+     * @return true if the current context is a worker context, false otherwise
+     */
+    boolean isWorkerContext();
 
-  /**
-   * Is the current context a multi-threaded worker context?
-   *
-   * @return true if the current context is a multi-threaded worker context, false otherwise
-   */
-  boolean isMultiThreadedWorkerContext();
+    /**
+     * Is the current context a multi-threaded worker context?
+     *
+     * @return true if the current context is a multi-threaded worker context, false otherwise
+     */
+    boolean isMultiThreadedWorkerContext();
 
-  /**
-   * Get some data from the context.
-   *
-   * @param key  the key of the data
-   * @param <T>  the type of the data
-   * @return the data
-   */
-  <T> T get(String key);
+    /**
+     * Get some data from the context.
+     *
+     * @param key the key of the data
+     * @param <T> the type of the data
+     * @return the data
+     */
+    <T> T get(String key);
 
-  /**
-   * Put some data in the context.
-   * <p>
-   * This can be used to share data between different handlers that share a context
-   *
-   * @param key  the key of the data
-   * @param value  the data
-   */
-  void put(String key, Object value);
+    /**
+     * Put some data in the context.
+     * <p>
+     * This can be used to share data between different handlers that share a context
+     *
+     * @param key   the key of the data
+     * @param value the data
+     */
+    void put(String key, Object value);
 
-  /**
-   * Remove some data from the context.
-   *
-   * @param key  the key to remove
-   * @return true if removed successfully, false otherwise
-   */
-  boolean remove(String key);
+    /**
+     * Remove some data from the context.
+     *
+     * @param key the key to remove
+     * @return true if removed successfully, false otherwise
+     */
+    boolean remove(String key);
 
-  /**
-   * @return The Vertx instance that created the context
-   */
-  Vertx owner();
+    /**
+     * @return The Vertx instance that created the context
+     */
+    Vertx owner();
 
-  /**
-   * @return  the number of instances of the verticle that were deployed in the deployment (if any) related
-   * to this context
-   */
-  int getInstanceCount();
+    /**
+     * @return the number of instances of the verticle that were deployed in the deployment (if any) related
+     * to this context
+     */
+    int getInstanceCount();
 
-  @GenIgnore
-  void addCloseHook(Closeable hook);
+    @GenIgnore
+    void addCloseHook(Closeable hook);
 
-  @GenIgnore
-  void removeCloseHook(Closeable hook);
+    @GenIgnore
+    void removeCloseHook(Closeable hook);
 
 }

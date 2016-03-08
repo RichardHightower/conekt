@@ -22,9 +22,9 @@ package io.vertx.core.net;
  */
 public interface TrustOptions {
 
-  /**
-   * @return a copy of these options
-   */
-  TrustOptions clone();
+    /**
+     * @return a copy of these options
+     */
+    TrustOptions clone();
 
 }

@@ -23,5 +23,5 @@ import io.vertx.core.json.JsonObject;
  */
 public interface FailoverCompleteHandler {
 
-  void handle(String nodeID, JsonObject haInfo, boolean failed);
+    void handle(String nodeID, JsonObject haInfo, boolean failed);
 }

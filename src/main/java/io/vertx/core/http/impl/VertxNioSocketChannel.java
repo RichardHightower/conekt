@@ -23,7 +23,7 @@ import java.nio.channels.SocketChannel;
 
 /**
  * We provide this class so we can store a reference to the connection on it.
- *
+ * <p>
  * This means we don't have to do a lookup in the connectionMap for every message received which improves
  * performance.
  *
@@ -31,12 +31,12 @@ import java.nio.channels.SocketChannel;
  */
 public class VertxNioSocketChannel<C> extends NioSocketChannel {
 
-  public C conn;
+    public C conn;
 
-  public VertxNioSocketChannel(Channel parent, SocketChannel socket) {
-    super(parent, socket);
-  }
+    public VertxNioSocketChannel(Channel parent, SocketChannel socket) {
+        super(parent, socket);
+    }
 
-  public VertxNioSocketChannel() {
-  }
+    public VertxNioSocketChannel() {
+    }
 }

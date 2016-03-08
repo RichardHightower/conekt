@@ -28,35 +28,35 @@ import java.util.concurrent.Executor;
  */
 public class EventLoopContext extends ContextImpl {
 
-  private static final Logger log = LoggerFactory.getLogger(EventLoopContext.class);
+    private static final Logger log = LoggerFactory.getLogger(EventLoopContext.class);
 
-  public EventLoopContext(VertxInternal vertx, Executor internalBlockingExec, Executor workerExec, String deploymentID, JsonObject config,
-                          ClassLoader tccl) {
-    super(vertx, internalBlockingExec, workerExec, deploymentID, config, tccl);
-  }
-
-  public void executeAsync(Handler<Void> task) {
-    nettyEventLoop().execute(wrapTask(null, task, true));
-  }
-
-  @Override
-  public boolean isEventLoopContext() {
-    return true;
-  }
-
-  @Override
-  public boolean isMultiThreadedWorkerContext() {
-    return false;
-  }
-
-  @Override
-  protected void checkCorrectThread() {
-    Thread current = Thread.currentThread();
-    if (!(current instanceof VertxThread)) {
-      throw new IllegalStateException("Expected to be on Vert.x thread, but actually on: " + current);
-    } else if (contextThread != null && current != contextThread) {
-      throw new IllegalStateException("Event delivered on unexpected thread " + current + " expected: " + contextThread);
+    public EventLoopContext(VertxInternal vertx, Executor internalBlockingExec, Executor workerExec, String deploymentID, JsonObject config,
+                            ClassLoader tccl) {
+        super(vertx, internalBlockingExec, workerExec, deploymentID, config, tccl);
     }
-  }
-  
+
+    public void executeAsync(Handler<Void> task) {
+        nettyEventLoop().execute(wrapTask(null, task, true));
+    }
+
+    @Override
+    public boolean isEventLoopContext() {
+        return true;
+    }
+
+    @Override
+    public boolean isMultiThreadedWorkerContext() {
+        return false;
+    }
+
+    @Override
+    protected void checkCorrectThread() {
+        Thread current = Thread.currentThread();
+        if (!(current instanceof VertxThread)) {
+            throw new IllegalStateException("Expected to be on Vert.x thread, but actually on: " + current);
+        } else if (contextThread != null && current != contextThread) {
+            throw new IllegalStateException("Event delivered on unexpected thread " + current + " expected: " + contextThread);
+        }
+    }
+
 }

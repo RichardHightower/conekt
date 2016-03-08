@@ -15,8 +15,8 @@
  */
 package io.vertx.core.datagram;
 
-import io.vertx.core.buffer.Buffer;
 import io.vertx.codegen.annotations.VertxGen;
+import io.vertx.core.buffer.Buffer;
 import io.vertx.core.net.SocketAddress;
 
 /**
@@ -27,18 +27,18 @@ import io.vertx.core.net.SocketAddress;
 @VertxGen
 public interface DatagramPacket {
 
-  /**
-   * Returns the {@link io.vertx.core.net.SocketAddress} of the sender that sent
-   * this {@link io.vertx.core.datagram.DatagramPacket}.
-   *
-   * @return the address of the sender
-   */
-  SocketAddress sender();
+    /**
+     * Returns the {@link io.vertx.core.net.SocketAddress} of the sender that sent
+     * this {@link io.vertx.core.datagram.DatagramPacket}.
+     *
+     * @return the address of the sender
+     */
+    SocketAddress sender();
 
-  /**
-   * Returns the data of the {@link io.vertx.core.datagram.DatagramPacket}
-   *
-   * @return the data
-   */
-  Buffer data();
+    /**
+     * Returns the data of the {@link io.vertx.core.datagram.DatagramPacket}
+     *
+     * @return the data
+     */
+    Buffer data();
 }

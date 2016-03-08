@@ -17,14 +17,7 @@ package io.vertx.test.core;
 
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.impl.VertxInternal;
-import io.vertx.core.json.JsonArray;
-import io.vertx.core.json.JsonObject;
-import io.vertx.core.net.PemTrustOptions;
-import io.vertx.core.net.JksOptions;
-import io.vertx.core.net.PemKeyCertOptions;
-import io.vertx.core.net.KeyCertOptions;
-import io.vertx.core.net.PfxOptions;
-import io.vertx.core.net.TrustOptions;
+import io.vertx.core.net.*;
 import io.vertx.core.net.impl.KeyStoreHelper;
 import org.junit.Test;
 
@@ -42,333 +35,193 @@ import static io.vertx.test.core.TestUtils.assertNullPointerException;
  */
 public class KeyStoreTest extends VertxTestBase {
 
-  @Test
-  public void testJKSOptions() throws Exception {
-    JksOptions options = new JksOptions();
+    @Test
+    public void testJKSOptions() throws Exception {
+        JksOptions options = new JksOptions();
 
-    assertNull(options.getPath());
-    String randString = TestUtils.randomAlphaString(100);
-    assertEquals(options, options.setPath(randString));
-    assertEquals(randString, options.getPath());
+        assertNull(options.getPath());
+        String randString = TestUtils.randomAlphaString(100);
+        assertEquals(options, options.setPath(randString));
+        assertEquals(randString, options.getPath());
 
-    assertNull(options.getPassword());
-    randString = TestUtils.randomAlphaString(100);
-    assertEquals(options, options.setPassword(randString));
-    assertEquals(randString, options.getPassword());
-  }
+        assertNull(options.getPassword());
+        randString = TestUtils.randomAlphaString(100);
+        assertEquals(options, options.setPassword(randString));
+        assertEquals(randString, options.getPassword());
+    }
 
-  @Test
-  public void testDefaultJKSOptionsJson() {
-    JksOptions def = new JksOptions();
-    JksOptions json = new JksOptions(new JsonObject());
-    assertEquals(def.getPassword(), json.getPassword());
-    assertEquals(def.getPath(), json.getPath());
-    assertEquals(def.getValue(), json.getValue());
-  }
 
-  @Test
-  public void testJKSOptionsJson() throws Exception {
-    JksOptions options = new JksOptions(new JsonObject());
-    assertEquals(null, options.getPassword());
-    assertEquals(null, options.getPath());
-    assertEquals(null, options.getValue());
+    @Test
+    public void testCopyJKSOptions() throws Exception {
+        JksOptions options = new JksOptions();
+        String password = TestUtils.randomAlphaString(100);
+        String path = TestUtils.randomAlphaString(100);
+        Buffer value = Buffer.buffer(TestUtils.randomAlphaString(100));
+        options.setPassword(password);
+        options.setPath(path);
+        options.setValue(value);
+        options = new JksOptions(options);
+        assertEquals(password, options.getPassword());
+        assertEquals(path, options.getPath());
+        assertEquals(value, options.getValue());
+    }
 
-    String password = TestUtils.randomAlphaString(100);
-    String path = TestUtils.randomAlphaString(100);
-    String value = TestUtils.randomAlphaString(100);
-    options = new JksOptions(new JsonObject().
-        put("password", password).
-        put("path", path).
-        put("value", value.getBytes()));
-    assertEquals(password, options.getPassword());
-    assertEquals(path, options.getPath());
-    assertEquals(Buffer.buffer(value), options.getValue());
-  }
+    @Test
+    public void testPKCS12Options() throws Exception {
+        PfxOptions options = new PfxOptions();
 
-  @Test
-  public void testCopyJKSOptions() throws Exception {
-    JksOptions options = new JksOptions();
-    String password = TestUtils.randomAlphaString(100);
-    String path = TestUtils.randomAlphaString(100);
-    Buffer value = Buffer.buffer(TestUtils.randomAlphaString(100));
-    options.setPassword(password);
-    options.setPath(path);
-    options.setValue(value);
-    options = new JksOptions(options);
-    assertEquals(password, options.getPassword());
-    assertEquals(path, options.getPath());
-    assertEquals(value, options.getValue());
-  }
+        assertNull(options.getPath());
+        String randString = TestUtils.randomAlphaString(100);
+        assertEquals(options, options.setPath(randString));
+        assertEquals(randString, options.getPath());
 
-  @Test
-  public void testPKCS12Options() throws Exception {
-    PfxOptions options = new PfxOptions();
+        assertNull(options.getPassword());
+        randString = TestUtils.randomAlphaString(100);
+        assertEquals(options, options.setPassword(randString));
+        assertEquals(randString, options.getPassword());
+    }
 
-    assertNull(options.getPath());
-    String randString = TestUtils.randomAlphaString(100);
-    assertEquals(options, options.setPath(randString));
-    assertEquals(randString, options.getPath());
 
-    assertNull(options.getPassword());
-    randString = TestUtils.randomAlphaString(100);
-    assertEquals(options, options.setPassword(randString));
-    assertEquals(randString, options.getPassword());
-  }
+    @Test
+    public void testCopyPKCS12Options() throws Exception {
+        PfxOptions options = new PfxOptions();
+        String password = TestUtils.randomAlphaString(100);
+        String path = TestUtils.randomAlphaString(100);
+        Buffer value = Buffer.buffer(TestUtils.randomAlphaString(100));
+        options.setPassword(password);
+        options.setPath(path);
+        options.setValue(value);
+        options = new PfxOptions(options);
+        assertEquals(password, options.getPassword());
+        assertEquals(path, options.getPath());
+        assertEquals(value, options.getValue());
+    }
 
-  @Test
-  public void testDefaultPKCS12OptionsJson() {
-    PfxOptions def = new PfxOptions();
-    PfxOptions json = new PfxOptions(new JsonObject());
-    assertEquals(def.getPassword(), json.getPassword());
-    assertEquals(def.getPath(), json.getPath());
-    assertEquals(def.getValue(), json.getValue());
-  }
+    @Test
+    public void testKeyCertOptions() throws Exception {
+        PemKeyCertOptions options = new PemKeyCertOptions();
 
-  @Test
-  public void testPKCS12OptionsJson() throws Exception {
-    PfxOptions options = new PfxOptions(new JsonObject());
-    assertEquals(null, options.getPassword());
-    assertEquals(null, options.getPath());
-    assertEquals(null, options.getValue());
+        assertNull(options.getKeyPath());
+        String randString = TestUtils.randomAlphaString(100);
+        assertEquals(options, options.setKeyPath(randString));
+        assertEquals(randString, options.getKeyPath());
 
-    String password = TestUtils.randomAlphaString(100);
-    String path = TestUtils.randomAlphaString(100);
-    String value = TestUtils.randomAlphaString(100);
-    options = new PfxOptions(new JsonObject().
-        put("password", password).
-        put("path", path).
-        put("value", value.getBytes()));
-    assertEquals(password, options.getPassword());
-    assertEquals(path, options.getPath());
-    assertEquals(Buffer.buffer(value), options.getValue());
-  }
+        assertNull(options.getCertPath());
+        randString = TestUtils.randomAlphaString(100);
+        assertEquals(options, options.setCertPath(randString));
+        assertEquals(randString, options.getCertPath());
+    }
 
-  @Test
-  public void testCopyPKCS12Options() throws Exception {
-    PfxOptions options = new PfxOptions();
-    String password = TestUtils.randomAlphaString(100);
-    String path = TestUtils.randomAlphaString(100);
-    Buffer value = Buffer.buffer(TestUtils.randomAlphaString(100));
-    options.setPassword(password);
-    options.setPath(path);
-    options.setValue(value);
-    options = new PfxOptions(options);
-    assertEquals(password, options.getPassword());
-    assertEquals(path, options.getPath());
-    assertEquals(value, options.getValue());
-  }
 
-  @Test
-  public void testKeyCertOptions() throws Exception {
-    PemKeyCertOptions options = new PemKeyCertOptions();
+    @Test
+    public void testTrustOptions() throws Exception {
+        PemTrustOptions options = new PemTrustOptions();
 
-    assertNull(options.getKeyPath());
-    String randString = TestUtils.randomAlphaString(100);
-    assertEquals(options, options.setKeyPath(randString));
-    assertEquals(randString, options.getKeyPath());
+        assertEquals(Collections.emptyList(), options.getCertPaths());
+        assertNullPointerException(() -> options.addCertPath(null));
+        assertIllegalArgumentException(() -> options.addCertPath(""));
+        String randString = TestUtils.randomAlphaString(100);
+        options.addCertPath(randString);
+        assertEquals(Collections.singletonList(randString), options.getCertPaths());
 
-    assertNull(options.getCertPath());
-    randString = TestUtils.randomAlphaString(100);
-    assertEquals(options, options.setCertPath(randString));
-    assertEquals(randString, options.getCertPath());
-  }
+        assertEquals(Collections.emptyList(), options.getCertValues());
+        assertNullPointerException(() -> options.addCertValue(null));
+        randString = TestUtils.randomAlphaString(100);
+        options.addCertValue(Buffer.buffer(randString));
+        assertEquals(Collections.singletonList(Buffer.buffer(randString)), options.getCertValues());
+    }
 
-  @Test
-  public void testDefaultKeyCertOptionsJson() throws Exception {
-    PemKeyCertOptions def = new PemKeyCertOptions();
-    PemKeyCertOptions json = new PemKeyCertOptions(new JsonObject());
-    assertEquals(def.getKeyPath(), json.getKeyPath());
-    assertEquals(def.getCertPath(), json.getCertPath());
-    assertEquals(def.getKeyValue(), json.getKeyValue());
-    assertEquals(def.getCertValue(), json.getCertValue());
-  }
 
-  @Test
-  public void testKeyCertOptionsJson() throws Exception {
-    PemKeyCertOptions options = new PemKeyCertOptions(new JsonObject());
-    assertEquals(null, options.getKeyPath());
-    assertEquals(null, options.getKeyValue());
-    assertEquals(null, options.getCertPath());
-    assertEquals(null, options.getCertValue());
+    @Test
+    public void testJKSPath() throws Exception {
+        testKeyStore(getServerCertOptions(KeyCert.JKS));
+    }
 
-    String keyPath = TestUtils.randomAlphaString(100);
-    String keyValue = TestUtils.randomAlphaString(100);
-    String certPath = TestUtils.randomAlphaString(100);
-    String certValue = TestUtils.randomAlphaString(100);
-    options = new PemKeyCertOptions(new JsonObject().
-        put("keyPath", keyPath).
-        put("keyValue", keyValue.getBytes()).
-        put("certPath", certPath).
-        put("certValue", certValue.getBytes()));
-    assertEquals(keyPath, options.getKeyPath());
-    assertEquals(Buffer.buffer(keyValue), options.getKeyValue());
-    assertEquals(certPath, options.getCertPath());
-    assertEquals(Buffer.buffer(certValue), options.getCertValue());
-  }
+    @Test
+    public void testJKSValue() throws Exception {
+        JksOptions options = (JksOptions) getServerCertOptions(KeyCert.JKS);
+        Buffer store = vertx.fileSystem().readFileBlocking(options.getPath());
+        options.setPath(null).setValue(store);
+        testKeyStore(options);
+    }
 
-  @Test
-  public void testCopyKeyCertOptions() throws Exception {
-    PemKeyCertOptions options = new PemKeyCertOptions(new JsonObject());
-    String keyPath = TestUtils.randomAlphaString(100);
-    Buffer keyValue = Buffer.buffer(TestUtils.randomAlphaString(100));
-    String certPath = TestUtils.randomAlphaString(100);
-    Buffer certValue = Buffer.buffer(TestUtils.randomAlphaString(100));
-    options.setKeyPath(keyPath);
-    options.setKeyValue(keyValue);
-    options.setCertPath(certPath);
-    options.setCertValue(certValue);
-    options = new PemKeyCertOptions(options);
-    assertEquals(keyPath, options.getKeyPath());
-    assertEquals(keyValue, options.getKeyValue());
-    assertEquals(certPath, options.getCertPath());
-    assertEquals(certValue, options.getCertValue());
-  }
+    @Test
+    public void testPKCS12Path() throws Exception {
+        testKeyStore(getServerCertOptions(KeyCert.PKCS12));
+    }
 
-  @Test
-  public void testTrustOptions() throws Exception {
-    PemTrustOptions options = new PemTrustOptions();
+    @Test
+    public void testPKCS12Value() throws Exception {
+        PfxOptions options = (PfxOptions) getServerCertOptions(KeyCert.PKCS12);
+        Buffer store = vertx.fileSystem().readFileBlocking(options.getPath());
+        options.setPath(null).setValue(store);
+        testKeyStore(options);
+    }
 
-    assertEquals(Collections.emptyList(), options.getCertPaths());
-    assertNullPointerException(() -> options.addCertPath(null));
-    assertIllegalArgumentException(() -> options.addCertPath(""));
-    String randString = TestUtils.randomAlphaString(100);
-    options.addCertPath(randString);
-    assertEquals(Collections.singletonList(randString), options.getCertPaths());
+    @Test
+    public void testKeyCertPath() throws Exception {
+        testKeyStore(getServerCertOptions(KeyCert.PEM));
+    }
 
-    assertEquals(Collections.emptyList(), options.getCertValues());
-    assertNullPointerException(() -> options.addCertValue(null));
-    randString = TestUtils.randomAlphaString(100);
-    options.addCertValue(Buffer.buffer(randString));
-    assertEquals(Collections.singletonList(Buffer.buffer(randString)), options.getCertValues());
-  }
+    @Test
+    public void testKeyCertValue() throws Exception {
+        PemKeyCertOptions options = (PemKeyCertOptions) getServerCertOptions(KeyCert.PEM);
+        Buffer key = vertx.fileSystem().readFileBlocking(options.getKeyPath());
+        options.setKeyValue(null).setKeyValue(key);
+        Buffer cert = vertx.fileSystem().readFileBlocking(options.getCertPath());
+        options.setCertValue(null).setCertValue(cert);
+        testKeyStore(options);
+    }
 
-  @Test
-  public void testTrustOptionsJson() throws Exception {
-    PemTrustOptions options = new PemTrustOptions(new JsonObject());
+    @Test
+    public void testCaPath() throws Exception {
+        testTrustStore(getServerTrustOptions(Trust.PEM));
+    }
 
-    assertEquals(Collections.emptyList(), options.getCertPaths());
-    assertEquals(Collections.emptyList(), options.getCertValues());
+    @Test
+    public void testCaPathValue() throws Exception {
+        PemTrustOptions options = (PemTrustOptions) getServerTrustOptions(Trust.PEM);
+        options.getCertPaths().
+                stream().
+                map(vertx.fileSystem()::readFileBlocking).
+                forEach(options::addCertValue);
+        options.getCertPaths().clear();
+        testTrustStore(options);
+    }
 
-    String certPath = TestUtils.randomAlphaString(100);
-    String certValue = TestUtils.randomAlphaString(100);
-    JsonObject json = new JsonObject().
-        put("certPaths", new JsonArray().add(certPath)).
-        put("certValues", new JsonArray().add(certValue.getBytes()));
-    options = new PemTrustOptions(json);
-    assertEquals(Collections.singletonList(certPath), options.getCertPaths());
-    assertEquals(Collections.singletonList(Buffer.buffer(certValue)), options.getCertValues());
-  }
+    @Test
+    public void testKeyOptionsEquality() {
+        JksOptions jksOptions = (JksOptions) getServerCertOptions(KeyCert.JKS);
+        JksOptions jksOptionsCopy = new JksOptions(jksOptions);
 
-  @Test
-  public void testDefaultTrustOptionsJson() {
-    PemTrustOptions def = new PemTrustOptions();
-    PemTrustOptions json = new PemTrustOptions(new JsonObject());
-    assertEquals(def.getCertPaths(), json.getCertPaths());
-    assertEquals(def.getCertValues(), json.getCertValues());
-  }
+        PfxOptions pfxOptions = (PfxOptions) getServerCertOptions(KeyCert.PKCS12);
+        PfxOptions pfxOptionsCopy = new PfxOptions(pfxOptions);
 
-  @Test
-  public void testCopyTrustOptions() throws Exception {
-    PemTrustOptions options = new PemTrustOptions(new JsonObject());
-    String certPath = TestUtils.randomAlphaString(100);
-    Buffer certValue = Buffer.buffer(TestUtils.randomAlphaString(100));
-    options.addCertPath(certPath);
-    options.addCertValue(certValue);
-    options = new PemTrustOptions(options);
-    assertEquals(Collections.singletonList(certPath), options.getCertPaths());
-    assertEquals(Collections.singletonList(certValue), options.getCertValues());
-  }
+        PemKeyCertOptions pemKeyCertOptions = (PemKeyCertOptions) getServerCertOptions(KeyCert.PEM);
+        PemKeyCertOptions pemKeyCertOptionsCopy = new PemKeyCertOptions(pemKeyCertOptions);
 
-  @Test
-  public void testJKSPath() throws Exception {
-    testKeyStore(getServerCertOptions(KeyCert.JKS));
-  }
+        assertEquals(jksOptions, jksOptionsCopy);
+        assertEquals(jksOptions.hashCode(), jksOptionsCopy.hashCode());
 
-  @Test
-  public void testJKSValue() throws Exception {
-    JksOptions options = (JksOptions) getServerCertOptions(KeyCert.JKS);
-    Buffer store = vertx.fileSystem().readFileBlocking(options.getPath());
-    options.setPath(null).setValue(store);
-    testKeyStore(options);
-  }
+        assertEquals(pfxOptions, pfxOptionsCopy);
+        assertEquals(pfxOptions.hashCode(), pfxOptionsCopy.hashCode());
 
-  @Test
-  public void testPKCS12Path() throws Exception {
-    testKeyStore(getServerCertOptions(KeyCert.PKCS12));
-  }
+        assertEquals(pemKeyCertOptions, pemKeyCertOptionsCopy);
+        assertEquals(pemKeyCertOptions.hashCode(), pemKeyCertOptionsCopy.hashCode());
+    }
 
-  @Test
-  public void testPKCS12Value() throws Exception {
-    PfxOptions options = (PfxOptions) getServerCertOptions(KeyCert.PKCS12);
-    Buffer store = vertx.fileSystem().readFileBlocking(options.getPath());
-    options.setPath(null).setValue(store);
-    testKeyStore(options);
-  }
+    private void testKeyStore(KeyCertOptions options) throws Exception {
+        KeyStoreHelper helper = KeyStoreHelper.create((VertxInternal) vertx, options);
+        KeyStore keyStore = helper.loadStore((VertxInternal) vertx);
+        Enumeration<String> aliases = keyStore.aliases();
+        assertTrue(aliases.hasMoreElements());
+        KeyManager[] keyManagers = helper.getKeyMgrs((VertxInternal) vertx);
+        assertTrue(keyManagers.length > 0);
+    }
 
-  @Test
-  public void testKeyCertPath() throws Exception {
-    testKeyStore(getServerCertOptions(KeyCert.PEM));
-  }
-
-  @Test
-  public void testKeyCertValue() throws Exception {
-    PemKeyCertOptions options = (PemKeyCertOptions) getServerCertOptions(KeyCert.PEM);
-    Buffer key = vertx.fileSystem().readFileBlocking(options.getKeyPath());
-    options.setKeyValue(null).setKeyValue(key);
-    Buffer cert = vertx.fileSystem().readFileBlocking(options.getCertPath());
-    options.setCertValue(null).setCertValue(cert);
-    testKeyStore(options);
-  }
-
-  @Test
-  public void testCaPath() throws Exception {
-    testTrustStore(getServerTrustOptions(Trust.PEM));
-  }
-
-  @Test
-  public void testCaPathValue() throws Exception {
-    PemTrustOptions options = (PemTrustOptions) getServerTrustOptions(Trust.PEM);
-    options.getCertPaths().
-        stream().
-        map(vertx.fileSystem()::readFileBlocking).
-        forEach(options::addCertValue);
-    options.getCertPaths().clear();
-    testTrustStore(options);
-  }
-
-  @Test
-  public void testKeyOptionsEquality() {
-    JksOptions jksOptions = (JksOptions) getServerCertOptions(KeyCert.JKS);
-    JksOptions jksOptionsCopy = new JksOptions(jksOptions);
-
-    PfxOptions pfxOptions = (PfxOptions) getServerCertOptions(KeyCert.PKCS12);
-    PfxOptions pfxOptionsCopy = new PfxOptions(pfxOptions);
-
-    PemKeyCertOptions pemKeyCertOptions = (PemKeyCertOptions) getServerCertOptions(KeyCert.PEM);
-    PemKeyCertOptions pemKeyCertOptionsCopy = new PemKeyCertOptions(pemKeyCertOptions);
-
-    assertEquals(jksOptions, jksOptionsCopy);
-    assertEquals(jksOptions.hashCode(), jksOptionsCopy.hashCode());
-
-    assertEquals(pfxOptions, pfxOptionsCopy);
-    assertEquals(pfxOptions.hashCode(), pfxOptionsCopy.hashCode());
-
-    assertEquals(pemKeyCertOptions, pemKeyCertOptionsCopy);
-    assertEquals(pemKeyCertOptions.hashCode(), pemKeyCertOptionsCopy.hashCode());
-  }
-
-  private void testKeyStore(KeyCertOptions options) throws Exception {
-    KeyStoreHelper helper = KeyStoreHelper.create((VertxInternal) vertx, options);
-    KeyStore keyStore = helper.loadStore((VertxInternal) vertx);
-    Enumeration<String> aliases = keyStore.aliases();
-    assertTrue(aliases.hasMoreElements());
-    KeyManager[] keyManagers = helper.getKeyMgrs((VertxInternal) vertx);
-    assertTrue(keyManagers.length > 0);
-  }
-
-  private void testTrustStore(TrustOptions options) throws Exception {
-    KeyStoreHelper helper = KeyStoreHelper.create((VertxInternal) vertx, options);
-    TrustManager[] keyManagers = helper.getTrustMgrs((VertxInternal) vertx);
-    assertTrue(keyManagers.length > 0);
-  }
+    private void testTrustStore(TrustOptions options) throws Exception {
+        KeyStoreHelper helper = KeyStoreHelper.create((VertxInternal) vertx, options);
+        TrustManager[] keyManagers = helper.getTrustMgrs((VertxInternal) vertx);
+        assertTrue(keyManagers.length > 0);
+    }
 }

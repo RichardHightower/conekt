@@ -29,18 +29,18 @@ import io.vertx.core.streams.ReadStream;
 @VertxGen
 public interface ServerWebSocketStream extends ReadStream<ServerWebSocket> {
 
-  @Override
-  ServerWebSocketStream exceptionHandler(Handler<Throwable> handler);
+    @Override
+    ServerWebSocketStream exceptionHandler(Handler<Throwable> handler);
 
-  @Override
-  ServerWebSocketStream handler(Handler<ServerWebSocket> handler);
+    @Override
+    ServerWebSocketStream handler(Handler<ServerWebSocket> handler);
 
-  @Override
-  ServerWebSocketStream pause();
+    @Override
+    ServerWebSocketStream pause();
 
-  @Override
-  ServerWebSocketStream resume();
+    @Override
+    ServerWebSocketStream resume();
 
-  @Override
-  ServerWebSocketStream endHandler(Handler<Void> endHandler);
+    @Override
+    ServerWebSocketStream endHandler(Handler<Void> endHandler);
 }

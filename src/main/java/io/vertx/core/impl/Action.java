@@ -17,8 +17,8 @@
 package io.vertx.core.impl;
 
 /**
- *  @author <a href="http://tfox.org">Tim Fox</a>
+ * @author <a href="http://tfox.org">Tim Fox</a>
  */
 public interface Action<T> {
-  T perform();
+    T perform();
 }

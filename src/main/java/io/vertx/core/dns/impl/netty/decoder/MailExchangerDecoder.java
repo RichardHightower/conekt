@@ -30,11 +30,9 @@ public class MailExchangerDecoder implements RecordDecoder<MailExchangerRecord> 
      * Returns a decoded MX (mail exchanger) resource record, stored as an
      * instance of {@link MailExchangerRecord}.
      *
-     * @param response
-     *            the {@link io.vertx.core.dns.impl.netty.DnsResponse} received that contained the resource
-     *            record being decoded
-     * @param resource
-     *            the {@link DnsResource} being decoded
+     * @param response the {@link io.vertx.core.dns.impl.netty.DnsResponse} received that contained the resource
+     *                 record being decoded
+     * @param resource the {@link DnsResource} being decoded
      */
     @Override
     public MailExchangerRecord decode(DnsResponse response, DnsResource resource) {

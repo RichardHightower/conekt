@@ -20,7 +20,6 @@ import io.vertx.codegen.annotations.VertxGen;
 /**
  * Represents the possible response codes a server may send after receiving a
  * query. A response code of 0 indicates no error.
- *
  */
 @VertxGen
 public enum DnsResponseCode {
@@ -103,12 +102,16 @@ public enum DnsResponseCode {
     private final int errorCode;
     private final String message;
 
+    private DnsResponseCode(int errorCode, String message) {
+        this.errorCode = errorCode;
+        this.message = message;
+    }
+
     /**
      * Returns the {@link io.vertx.core.dns.DnsResponseCode} that corresponds with the given
      * {@code responseCode}.
      *
-     * @param responseCode
-     *            the error code's id
+     * @param responseCode the error code's id
      * @return corresponding {@link io.vertx.core.dns.DnsResponseCode}
      */
     public static DnsResponseCode valueOf(int responseCode) {
@@ -119,11 +122,6 @@ public enum DnsResponseCode {
             }
         }
         return null;
-    }
-
-    private DnsResponseCode(int errorCode, String message) {
-        this.errorCode = errorCode;
-        this.message = message;
     }
 
     /**

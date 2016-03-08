@@ -24,17 +24,17 @@ package io.vertx.core.spi.metrics;
  */
 public interface Metrics {
 
-  /**
-   * Whether the metrics are enabled.
-   *
-   * @return true if the metrics are enabled.
-   */
-  boolean isEnabled();
+    /**
+     * Whether the metrics are enabled.
+     *
+     * @return true if the metrics are enabled.
+     */
+    boolean isEnabled();
 
-  /**
-   * Used to close out the metrics, for example when an http server/client has been closed.<p/>
-   *
-   * No specific thread and context can be expected when this method is called.
-   */
-  void close();
+    /**
+     * Used to close out the metrics, for example when an http server/client has been closed.<p/>
+     * <p>
+     * No specific thread and context can be expected when this method is called.
+     */
+    void close();
 }

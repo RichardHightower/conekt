@@ -28,27 +28,27 @@ import java.util.List;
  */
 public class VertxNioServerSocketChannel extends NioServerSocketChannel {
 
-  private static final Logger log = LoggerFactory.getLogger(VertxNioServerSocketChannel.class);
+    private static final Logger log = LoggerFactory.getLogger(VertxNioServerSocketChannel.class);
 
-  @Override
-  protected int doReadMessages(List<Object> buf) throws Exception {
-    SocketChannel ch = javaChannel().accept();
+    @Override
+    protected int doReadMessages(List<Object> buf) throws Exception {
+        SocketChannel ch = javaChannel().accept();
 
-    try {
-      if (ch != null) {
-        buf.add(new VertxNioSocketChannel(this, ch));
-        return 1;
-      }
-    } catch (Throwable t) {
-      log.warn("Failed to create a new channel from an accepted socket.", t);
+        try {
+            if (ch != null) {
+                buf.add(new VertxNioSocketChannel(this, ch));
+                return 1;
+            }
+        } catch (Throwable t) {
+            log.warn("Failed to create a new channel from an accepted socket.", t);
 
-      try {
-        ch.close();
-      } catch (Throwable t2) {
-        log.warn("Failed to close a socket.", t2);
-      }
+            try {
+                ch.close();
+            } catch (Throwable t2) {
+                log.warn("Failed to close a socket.", t2);
+            }
+        }
+
+        return 0;
     }
-
-    return 0;
-  }
 }

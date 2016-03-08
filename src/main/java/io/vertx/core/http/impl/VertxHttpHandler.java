@@ -39,129 +39,129 @@ import java.util.Map;
  */
 public abstract class VertxHttpHandler<C extends ConnectionBase> extends VertxHandler<C> {
 
-  private static ByteBuf safeBuffer(ByteBufHolder holder, ByteBufAllocator allocator) {
-    return safeBuffer(holder.content(), allocator);
-  }
+    protected Map<Channel, C> connectionMap;
 
-  protected Map<Channel, C> connectionMap;
-
-  protected VertxHttpHandler(Map<Channel, C> connectionMap) {
-    this.connectionMap = connectionMap;
-  }
-
-  @Override
-  protected C getConnection(Channel channel) {
-    @SuppressWarnings("unchecked")
-    VertxNioSocketChannel<C> vch = (VertxNioSocketChannel<C>)channel;
-    // As an optimisation we store the connection on the channel - this prevents a lookup every time
-    // an event from Netty arrives
-    if (vch.conn != null) {
-      return vch.conn;
-    } else {
-      C conn = connectionMap.get(channel);
-      if (conn != null) {
-        vch.conn = conn;
-      }
-      return conn;
+    protected VertxHttpHandler(Map<Channel, C> connectionMap) {
+        this.connectionMap = connectionMap;
     }
-  }
 
-  @Override
-  protected C removeConnection(Channel channel) {
-    @SuppressWarnings("unchecked")
-    VertxNioSocketChannel<C> vch = (VertxNioSocketChannel<C>)channel;
-    vch.conn = null;
-    return connectionMap.remove(channel);
-  }
-
-  @Override
-  protected void channelRead(final C connection, final ContextImpl context, final ChannelHandlerContext chctx, final Object msg) throws Exception {
-    if (connection != null) {
-      context.executeFromIO(() -> doMessageReceived(connection, chctx, msg));
-    } else {
-      // We execute this directly as we don't have a context yet, the context will have to be set manually
-      // inside doMessageReceived();
-      try {
-        doMessageReceived(null, chctx, msg);
-      } catch (Throwable t) {
-        chctx.pipeline().fireExceptionCaught(t);
-      }
+    private static ByteBuf safeBuffer(ByteBufHolder holder, ByteBufAllocator allocator) {
+        return safeBuffer(holder.content(), allocator);
     }
-  }
 
-  @Override
-  protected Object safeObject(Object msg, ByteBufAllocator allocator) throws Exception {
-    if (msg instanceof HttpContent) {
-      HttpContent content = (HttpContent) msg;
-      ByteBuf buf = content.content();
-      if (buf != Unpooled.EMPTY_BUFFER && buf.isDirect()) {
-        ByteBuf newBuf = safeBuffer(content, allocator);
-        if (msg instanceof LastHttpContent) {
-          LastHttpContent last = (LastHttpContent) msg;
-          return new AssembledLastHttpContent(newBuf, last.trailingHeaders(), last.getDecoderResult());
+    @Override
+    protected C getConnection(Channel channel) {
+        @SuppressWarnings("unchecked")
+        VertxNioSocketChannel<C> vch = (VertxNioSocketChannel<C>) channel;
+        // As an optimisation we store the connection on the channel - this prevents a lookup every time
+        // an event from Netty arrives
+        if (vch.conn != null) {
+            return vch.conn;
         } else {
-          return new DefaultHttpContent(newBuf);
+            C conn = connectionMap.get(channel);
+            if (conn != null) {
+                vch.conn = conn;
+            }
+            return conn;
         }
-      }
-    } else if (msg instanceof WebSocketFrame) {
-      ByteBuf payload = safeBuffer((WebSocketFrame) msg, allocator);
-      boolean isFinal = ((WebSocketFrame) msg).isFinalFragment();
-        FrameType frameType;
-      if (msg instanceof BinaryWebSocketFrame) {
-        frameType = FrameType.BINARY;
-      } else if (msg instanceof CloseWebSocketFrame) {
-        frameType = FrameType.CLOSE;
-      } else if (msg instanceof PingWebSocketFrame) {
-        frameType = FrameType.PING;
-      } else if (msg instanceof PongWebSocketFrame) {
-        frameType = FrameType.PONG;
-      } else if (msg instanceof TextWebSocketFrame) {
-        frameType = FrameType.TEXT;
-      } else if (msg instanceof ContinuationWebSocketFrame) {
-        frameType = FrameType.CONTINUATION;
-      } else {
-        throw new IllegalStateException("Unsupported websocket msg " + msg);
-      }
-      return new WebSocketFrameImpl(frameType, payload, isFinal);
     }
-    return msg;
-  }
 
-
-  @Override
-  public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
-    if (msg instanceof WebSocketFrameInternal) {
-      WebSocketFrameInternal frame = (WebSocketFrameInternal) msg;
-      ByteBuf buf = frame.getBinaryData();
-      if (buf != Unpooled.EMPTY_BUFFER) {
-         buf = safeBuffer(buf, ctx.alloc());
-      }
-      switch (frame.type()) {
-        case BINARY:
-          msg = new BinaryWebSocketFrame(frame.isFinal(), 0, buf);
-          break;
-        case TEXT:
-          msg = new TextWebSocketFrame(frame.isFinal(), 0, buf);
-          break;
-        case CLOSE:
-          msg = new CloseWebSocketFrame(true, 0, buf);
-          break;
-        case CONTINUATION:
-          msg = new ContinuationWebSocketFrame(frame.isFinal(), 0, buf);
-          break;
-        case PONG:
-          msg = new PongWebSocketFrame(buf);
-          break;
-        case PING:
-          msg = new PingWebSocketFrame(buf);
-          break;
-        default:
-          throw new IllegalStateException("Unsupported websocket msg " + msg);
-      }
+    @Override
+    protected C removeConnection(Channel channel) {
+        @SuppressWarnings("unchecked")
+        VertxNioSocketChannel<C> vch = (VertxNioSocketChannel<C>) channel;
+        vch.conn = null;
+        return connectionMap.remove(channel);
     }
-    ctx.write(msg, promise);
-  }
 
-  protected abstract void doMessageReceived(C connection, ChannelHandlerContext ctx, Object msg) throws Exception;
+    @Override
+    protected void channelRead(final C connection, final ContextImpl context, final ChannelHandlerContext chctx, final Object msg) throws Exception {
+        if (connection != null) {
+            context.executeFromIO(() -> doMessageReceived(connection, chctx, msg));
+        } else {
+            // We execute this directly as we don't have a context yet, the context will have to be set manually
+            // inside doMessageReceived();
+            try {
+                doMessageReceived(null, chctx, msg);
+            } catch (Throwable t) {
+                chctx.pipeline().fireExceptionCaught(t);
+            }
+        }
+    }
+
+    @Override
+    protected Object safeObject(Object msg, ByteBufAllocator allocator) throws Exception {
+        if (msg instanceof HttpContent) {
+            HttpContent content = (HttpContent) msg;
+            ByteBuf buf = content.content();
+            if (buf != Unpooled.EMPTY_BUFFER && buf.isDirect()) {
+                ByteBuf newBuf = safeBuffer(content, allocator);
+                if (msg instanceof LastHttpContent) {
+                    LastHttpContent last = (LastHttpContent) msg;
+                    return new AssembledLastHttpContent(newBuf, last.trailingHeaders(), last.getDecoderResult());
+                } else {
+                    return new DefaultHttpContent(newBuf);
+                }
+            }
+        } else if (msg instanceof WebSocketFrame) {
+            ByteBuf payload = safeBuffer((WebSocketFrame) msg, allocator);
+            boolean isFinal = ((WebSocketFrame) msg).isFinalFragment();
+            FrameType frameType;
+            if (msg instanceof BinaryWebSocketFrame) {
+                frameType = FrameType.BINARY;
+            } else if (msg instanceof CloseWebSocketFrame) {
+                frameType = FrameType.CLOSE;
+            } else if (msg instanceof PingWebSocketFrame) {
+                frameType = FrameType.PING;
+            } else if (msg instanceof PongWebSocketFrame) {
+                frameType = FrameType.PONG;
+            } else if (msg instanceof TextWebSocketFrame) {
+                frameType = FrameType.TEXT;
+            } else if (msg instanceof ContinuationWebSocketFrame) {
+                frameType = FrameType.CONTINUATION;
+            } else {
+                throw new IllegalStateException("Unsupported websocket msg " + msg);
+            }
+            return new WebSocketFrameImpl(frameType, payload, isFinal);
+        }
+        return msg;
+    }
+
+
+    @Override
+    public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
+        if (msg instanceof WebSocketFrameInternal) {
+            WebSocketFrameInternal frame = (WebSocketFrameInternal) msg;
+            ByteBuf buf = frame.getBinaryData();
+            if (buf != Unpooled.EMPTY_BUFFER) {
+                buf = safeBuffer(buf, ctx.alloc());
+            }
+            switch (frame.type()) {
+                case BINARY:
+                    msg = new BinaryWebSocketFrame(frame.isFinal(), 0, buf);
+                    break;
+                case TEXT:
+                    msg = new TextWebSocketFrame(frame.isFinal(), 0, buf);
+                    break;
+                case CLOSE:
+                    msg = new CloseWebSocketFrame(true, 0, buf);
+                    break;
+                case CONTINUATION:
+                    msg = new ContinuationWebSocketFrame(frame.isFinal(), 0, buf);
+                    break;
+                case PONG:
+                    msg = new PongWebSocketFrame(buf);
+                    break;
+                case PING:
+                    msg = new PingWebSocketFrame(buf);
+                    break;
+                default:
+                    throw new IllegalStateException("Unsupported websocket msg " + msg);
+            }
+        }
+        ctx.write(msg, promise);
+    }
+
+    protected abstract void doMessageReceived(C connection, ChannelHandlerContext ctx, Object msg) throws Exception;
 
 }

@@ -32,132 +32,132 @@ import java.util.Map;
  */
 public class MessageImpl<U, V> implements Message<V> {
 
-  private static final Logger log = LoggerFactory.getLogger(MessageImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(MessageImpl.class);
 
-  protected MessageCodec<U, V> messageCodec;
-  protected EventBusImpl bus;
-  protected String address;
-  protected String replyAddress;
-  protected MultiMap headers;
-  protected U sentBody;
-  protected V receivedBody;
-  protected boolean send;
+    protected MessageCodec<U, V> messageCodec;
+    protected EventBusImpl bus;
+    protected String address;
+    protected String replyAddress;
+    protected MultiMap headers;
+    protected U sentBody;
+    protected V receivedBody;
+    protected boolean send;
 
-  public MessageImpl() {
-  }
-
-  public MessageImpl(String address, String replyAddress, MultiMap headers, U sentBody,
-                     MessageCodec<U, V> messageCodec,
-                     boolean send, EventBusImpl bus) {
-    this.messageCodec = messageCodec;
-    this.address = address;
-    this.replyAddress = replyAddress;
-    this.headers = headers;
-    this.sentBody = sentBody;
-    this.send = send;
-    this.bus = bus;
-  }
-
-  protected MessageImpl(MessageImpl<U, V> other) {
-    this.bus = other.bus;
-    this.address = other.address;
-    this.replyAddress = other.replyAddress;
-    this.messageCodec = other.messageCodec;
-    if (other.headers != null) {
-      List<Map.Entry<String, String>> entries = other.headers.entries();
-      this.headers = new CaseInsensitiveHeaders();
-      for (Map.Entry<String, String> entry: entries) {
-        this.headers.add(entry.getKey(), entry.getValue());
-      }
+    public MessageImpl() {
     }
-    if (other.sentBody != null) {
-      this.sentBody = other.sentBody;
-      this.receivedBody = messageCodec.transform(other.sentBody);
+
+    public MessageImpl(String address, String replyAddress, MultiMap headers, U sentBody,
+                       MessageCodec<U, V> messageCodec,
+                       boolean send, EventBusImpl bus) {
+        this.messageCodec = messageCodec;
+        this.address = address;
+        this.replyAddress = replyAddress;
+        this.headers = headers;
+        this.sentBody = sentBody;
+        this.send = send;
+        this.bus = bus;
     }
-    this.send = other.send;
-  }
 
-  public MessageImpl<U, V> copyBeforeReceive() {
-    return new MessageImpl<>(this);
-  }
-
-  @Override
-  public String address() {
-    return address;
-  }
-
-  @Override
-  public MultiMap headers() {
-    // Lazily decode headers
-    if (headers == null) {
-      headers = new CaseInsensitiveHeaders();
+    protected MessageImpl(MessageImpl<U, V> other) {
+        this.bus = other.bus;
+        this.address = other.address;
+        this.replyAddress = other.replyAddress;
+        this.messageCodec = other.messageCodec;
+        if (other.headers != null) {
+            List<Map.Entry<String, String>> entries = other.headers.entries();
+            this.headers = new CaseInsensitiveHeaders();
+            for (Map.Entry<String, String> entry : entries) {
+                this.headers.add(entry.getKey(), entry.getValue());
+            }
+        }
+        if (other.sentBody != null) {
+            this.sentBody = other.sentBody;
+            this.receivedBody = messageCodec.transform(other.sentBody);
+        }
+        this.send = other.send;
     }
-    return headers;
-  }
 
-  @Override
-  public V body() {
-    if (receivedBody == null && sentBody != null) {
-      receivedBody = messageCodec.transform(sentBody);
+    public MessageImpl<U, V> copyBeforeReceive() {
+        return new MessageImpl<>(this);
     }
-    return receivedBody;
-  }
 
-  @Override
-  public String replyAddress() {
-    return replyAddress;
-  }
-
-  @Override
-  public void fail(int failureCode, String message) {
-    if (replyAddress != null) {
-      sendReply(bus.createMessage(true, replyAddress, null,
-        new ReplyException(ReplyFailure.RECIPIENT_FAILURE, failureCode, message), null), null, null);
+    @Override
+    public String address() {
+        return address;
     }
-  }
 
-  @Override
-  public void reply(Object message) {
-    reply(message, new DeliveryOptions(), null);
-  }
-
-  @Override
-  public <R> void reply(Object message, Handler<AsyncResult<Message<R>>> replyHandler) {
-    reply(message, new DeliveryOptions(), replyHandler);
-  }
-
-  @Override
-  public void reply(Object message, DeliveryOptions options) {
-    reply(message, options, null);
-  }
-
-  @Override
-  public <R> void reply(Object message, DeliveryOptions options, Handler<AsyncResult<Message<R>>> replyHandler) {
-    if (replyAddress != null) {
-      sendReply(bus.createMessage(true, replyAddress, options.getHeaders(), message, options.getCodecName()), options, replyHandler);
+    @Override
+    public MultiMap headers() {
+        // Lazily decode headers
+        if (headers == null) {
+            headers = new CaseInsensitiveHeaders();
+        }
+        return headers;
     }
-  }
 
-  public void setReplyAddress(String replyAddress) {
-    this.replyAddress = replyAddress;
-  }
-
-  public boolean send() {
-    return send;
-  }
-
-  public MessageCodec<U, V> codec() {
-    return messageCodec;
-  }
-
-  public void setBus(EventBusImpl bus) {
-    this.bus = bus;
-  }
-
-  protected <R> void sendReply(MessageImpl msg, DeliveryOptions options, Handler<AsyncResult<Message<R>>> replyHandler) {
-    if (bus != null) {
-      bus.sendReply(msg, this, options, replyHandler);
+    @Override
+    public V body() {
+        if (receivedBody == null && sentBody != null) {
+            receivedBody = messageCodec.transform(sentBody);
+        }
+        return receivedBody;
     }
-  }
+
+    @Override
+    public String replyAddress() {
+        return replyAddress;
+    }
+
+    @Override
+    public void fail(int failureCode, String message) {
+        if (replyAddress != null) {
+            sendReply(bus.createMessage(true, replyAddress, null,
+                    new ReplyException(ReplyFailure.RECIPIENT_FAILURE, failureCode, message), null), null, null);
+        }
+    }
+
+    @Override
+    public void reply(Object message) {
+        reply(message, new DeliveryOptions(), null);
+    }
+
+    @Override
+    public <R> void reply(Object message, Handler<AsyncResult<Message<R>>> replyHandler) {
+        reply(message, new DeliveryOptions(), replyHandler);
+    }
+
+    @Override
+    public void reply(Object message, DeliveryOptions options) {
+        reply(message, options, null);
+    }
+
+    @Override
+    public <R> void reply(Object message, DeliveryOptions options, Handler<AsyncResult<Message<R>>> replyHandler) {
+        if (replyAddress != null) {
+            sendReply(bus.createMessage(true, replyAddress, options.getHeaders(), message, options.getCodecName()), options, replyHandler);
+        }
+    }
+
+    public void setReplyAddress(String replyAddress) {
+        this.replyAddress = replyAddress;
+    }
+
+    public boolean send() {
+        return send;
+    }
+
+    public MessageCodec<U, V> codec() {
+        return messageCodec;
+    }
+
+    public void setBus(EventBusImpl bus) {
+        this.bus = bus;
+    }
+
+    protected <R> void sendReply(MessageImpl msg, DeliveryOptions options, Handler<AsyncResult<Message<R>>> replyHandler) {
+        if (bus != null) {
+            bus.sendReply(msg, this, options, replyHandler);
+        }
+    }
 
 }

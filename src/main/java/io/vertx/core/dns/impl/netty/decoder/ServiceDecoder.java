@@ -30,11 +30,9 @@ public class ServiceDecoder implements RecordDecoder<ServiceRecord> {
      * Returns a decoded SRV (service) resource record, stored as an instance of
      * {@link ServiceRecord}.
      *
-     * @param response
-     *            the DNS response that contains the resource record being
-     *            decoded
-     * @param resource
-     *            the resource record being decoded
+     * @param response the DNS response that contains the resource record being
+     *                 decoded
+     * @param resource the resource record being decoded
      */
     @Override
     public ServiceRecord decode(DnsResponse response, DnsResource resource) {

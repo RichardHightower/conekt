@@ -31,84 +31,81 @@ import java.util.concurrent.Executor;
  * @version <tt>$Revision$</tt>
  */
 public class OrderedExecutorFactory {
-  private static final Logger log = LoggerFactory.getLogger(OrderedExecutorFactory.class);
-
-  private final Executor parent;
-
-  /**
-   * Construct a new instance delegating to the given parent executor.
-   *
-   * @param parent the parent executor
-   */
-  public OrderedExecutorFactory(Executor parent) {
-    this.parent = parent;
-  }
-
-  /**
-   * Get an executor that always executes tasks in order.
-   *
-   * @return an ordered executor
-   */
-  public Executor getExecutor() {
-    return new OrderedExecutor(parent);
-  }
-
-  /**
-   * An executor that always runs all tasks in order, using a delegate executor to run the tasks.
-   * <p/>
-   * More specifically, any call B to the {@link #execute(Runnable)} method that happens-after another call A to the
-   * same method, will result in B's task running after A's.
-   */
-  private static final class OrderedExecutor implements Executor {
-    // @protectedby tasks
-    private final LinkedList<Runnable> tasks = new LinkedList<>();
-
-    // @protectedby tasks
-    private boolean running;
+    private static final Logger log = LoggerFactory.getLogger(OrderedExecutorFactory.class);
 
     private final Executor parent;
 
-    private final Runnable runner;
-
     /**
-     * Construct a new instance.
+     * Construct a new instance delegating to the given parent executor.
      *
      * @param parent the parent executor
      */
-    public OrderedExecutor(Executor parent) {
-      this.parent = parent;
-      runner = () -> {
-        for (; ; ) {
-          final Runnable task;
-          synchronized (tasks) {
-            task = tasks.poll();
-            if (task == null) {
-              running = false;
-              return;
-            }
-          }
-          try {
-            task.run();
-          } catch (Throwable t) {
-            log.error("Caught unexpected Throwable", t);
-          }
-        }
-      };
+    public OrderedExecutorFactory(Executor parent) {
+        this.parent = parent;
     }
 
     /**
-     * Run a task.
+     * Get an executor that always executes tasks in order.
      *
-     * @param command the task to run.
+     * @return an ordered executor
      */
-    public void execute(Runnable command) {
-      synchronized (tasks) {
-        tasks.add(command);
-        if (!running) {
-          running = true;
-          parent.execute(runner);
-        }
-      }
+    public Executor getExecutor() {
+        return new OrderedExecutor(parent);
     }
-  }
+
+    /**
+     * An executor that always runs all tasks in order, using a delegate executor to run the tasks.
+     * <p>
+     * More specifically, any call B to the {@link #execute(Runnable)} method that happens-after another call A to the
+     * same method, will result in B's task running after A's.
+     */
+    private static final class OrderedExecutor implements Executor {
+        // @protectedby tasks
+        private final LinkedList<Runnable> tasks = new LinkedList<>();
+        private final Executor parent;
+        private final Runnable runner;
+        // @protectedby tasks
+        private boolean running;
+
+        /**
+         * Construct a new instance.
+         *
+         * @param parent the parent executor
+         */
+        public OrderedExecutor(Executor parent) {
+            this.parent = parent;
+            runner = () -> {
+                for (; ; ) {
+                    final Runnable task;
+                    synchronized (tasks) {
+                        task = tasks.poll();
+                        if (task == null) {
+                            running = false;
+                            return;
+                        }
+                    }
+                    try {
+                        task.run();
+                    } catch (Throwable t) {
+                        log.error("Caught unexpected Throwable", t);
+                    }
+                }
+            };
+        }
+
+        /**
+         * Run a task.
+         *
+         * @param command the task to run.
+         */
+        public void execute(Runnable command) {
+            synchronized (tasks) {
+                tasks.add(command);
+                if (!running) {
+                    running = true;
+                    parent.execute(runner);
+                }
+            }
+        }
+    }
 }

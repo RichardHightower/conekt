@@ -33,22 +33,17 @@ public class ServiceRecord {
     /**
      * Constructs an SRV (service) record.
      *
-     * @param fullPath
-     *            the name first read in the SRV record which contains the
-     *            service, the protocol, and the name of the server being
-     *            queried. The format is {@code _service._protocol.hostname}, or
-     *            for example {@code _http._tcp.example.com}
-     * @param priority
-     *            relative priority of this service, range 0-65535 (lower is
-     *            higher priority)
-     * @param weight
-     *            determines how often multiple services will be used in the
-     *            event they have the same priority (greater weight means
-     *            service is used more often)
-     * @param port
-     *            the port for the service
-     * @param target
-     *            the name of the host for the service
+     * @param fullPath the name first read in the SRV record which contains the
+     *                 service, the protocol, and the name of the server being
+     *                 queried. The format is {@code _service._protocol.hostname}, or
+     *                 for example {@code _http._tcp.example.com}
+     * @param priority relative priority of this service, range 0-65535 (lower is
+     *                 higher priority)
+     * @param weight   determines how often multiple services will be used in the
+     *                 event they have the same priority (greater weight means
+     *                 service is used more often)
+     * @param port     the port for the service
+     * @param target   the name of the host for the service
      */
     public ServiceRecord(String fullPath, int priority, int weight, int port, String target) {
         String[] parts = fullPath.split("\\.", 3);

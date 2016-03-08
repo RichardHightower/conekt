@@ -24,11 +24,11 @@ import io.vertx.codegen.annotations.VertxGen;
 @VertxGen(concrete = false)
 public interface Measured {
 
-  /**
-   * Whether the metrics are enabled for this measured object
-   *
-   * @return true if the metrics are enabled
-   */
-  boolean isMetricsEnabled();
+    /**
+     * Whether the metrics are enabled for this measured object
+     *
+     * @return true if the metrics are enabled
+     */
+    boolean isMetricsEnabled();
 
 }

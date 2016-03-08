@@ -25,5 +25,5 @@ import io.vertx.core.spi.cluster.ClusterManager;
  */
 public interface ExtendedClusterManager extends ClusterManager {
 
-  void beforeLeave();
+    void beforeLeave();
 }

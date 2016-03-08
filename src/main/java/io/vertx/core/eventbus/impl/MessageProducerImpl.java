@@ -30,138 +30,138 @@ import java.util.UUID;
  */
 public class MessageProducerImpl<T> implements MessageProducer<T> {
 
-  public static final String CREDIT_ADDRESS_HEADER_NAME = "__vertx.credit";
+    public static final String CREDIT_ADDRESS_HEADER_NAME = "__vertx.credit";
 
-  private final Vertx vertx;
-  private final EventBus bus;
-  private final boolean send;
-  private final String address;
-  private final Queue<T> pending = new ArrayDeque<>();
-  private final MessageConsumer<Integer> creditConsumer;
-  private DeliveryOptions options;
-  private int credits = DEFAULT_WRITE_QUEUE_MAX_SIZE;
-  private Handler<Void> drainHandler;
+    private final Vertx vertx;
+    private final EventBus bus;
+    private final boolean send;
+    private final String address;
+    private final Queue<T> pending = new ArrayDeque<>();
+    private final MessageConsumer<Integer> creditConsumer;
+    private DeliveryOptions options;
+    private int credits = DEFAULT_WRITE_QUEUE_MAX_SIZE;
+    private Handler<Void> drainHandler;
 
-  public MessageProducerImpl(Vertx vertx, String address, boolean send, DeliveryOptions options) {
-    this.vertx = vertx;
-    this.bus = vertx.eventBus();
-    this.address = address;
-    this.send = send;
-    this.options = options;
-    if (send) {
-      String creditAddress = UUID.randomUUID().toString() + "-credit";
-      creditConsumer = bus.consumer(creditAddress, msg -> {
-        doReceiveCredit(msg.body());
-      });
-      options.addHeader(CREDIT_ADDRESS_HEADER_NAME, creditAddress);
-    } else {
-      creditConsumer = null;
+    public MessageProducerImpl(Vertx vertx, String address, boolean send, DeliveryOptions options) {
+        this.vertx = vertx;
+        this.bus = vertx.eventBus();
+        this.address = address;
+        this.send = send;
+        this.options = options;
+        if (send) {
+            String creditAddress = UUID.randomUUID().toString() + "-credit";
+            creditConsumer = bus.consumer(creditAddress, msg -> {
+                doReceiveCredit(msg.body());
+            });
+            options.addHeader(CREDIT_ADDRESS_HEADER_NAME, creditAddress);
+        } else {
+            creditConsumer = null;
+        }
     }
-  }
 
-  @Override
-  public synchronized MessageProducer<T> deliveryOptions(DeliveryOptions options) {
-    this.options = options;
-    return this;
-  }
-
-  @Override
-  public MessageProducer<T> send(T message) {
-    doSend(message, null);
-    return this;
-  }
-
-  @Override
-  public <R> MessageProducer<T> send(T message, Handler<AsyncResult<Message<R>>> replyHandler) {
-    doSend(message, replyHandler);
-    return this;
-  }
-
-  @Override
-  public MessageProducer<T> exceptionHandler(Handler<Throwable> handler) {
-    return this;
-  }
-
-  @Override
-  public synchronized MessageProducer<T> setWriteQueueMaxSize(int maxSize) {
-    this.credits = maxSize;
-    return this;
-  }
-
-  @Override
-  public synchronized MessageProducer<T> write(T data) {
-    if (send) {
-      doSend(data, null);
-    } else {
-      bus.publish(address, data, options);
+    @Override
+    public synchronized MessageProducer<T> deliveryOptions(DeliveryOptions options) {
+        this.options = options;
+        return this;
     }
-    return this;
-  }
 
-  @Override
-  public boolean writeQueueFull() {
-    return pending.size() >= 0;
-  }
-
-  @Override
-  public synchronized MessageProducer<T> drainHandler(Handler<Void> handler) {
-    this.drainHandler = handler;
-    return this;
-  }
-
-  @Override
-  public String address() {
-    return address;
-  }
-
-  @Override
-  public void end() {
-    close();
-  }
-
-  @Override
-  public void close() {
-    if (creditConsumer != null) {
-      creditConsumer.unregister();
+    @Override
+    public MessageProducer<T> send(T message) {
+        doSend(message, null);
+        return this;
     }
-  }
 
-  // Just in case user forget to call close()
-  @Override
-  protected void finalize() throws Throwable {
-    close();
-    super.finalize();
-  }
+    @Override
+    public <R> MessageProducer<T> send(T message, Handler<AsyncResult<Message<R>>> replyHandler) {
+        doSend(message, replyHandler);
+        return this;
+    }
 
-  private synchronized <R> void doSend(T data, Handler<AsyncResult<Message<R>>> replyHandler) {
-    if (credits > 0) {
-      credits--;
-      if (replyHandler == null) {
-        bus.send(address, data, options);
-      } else {
-        bus.send(address, data, options, replyHandler);
-      }
-    } else {
-      pending.add(data);
+    @Override
+    public MessageProducer<T> exceptionHandler(Handler<Throwable> handler) {
+        return this;
     }
-  }
 
-  private synchronized void doReceiveCredit(int credit) {
-    credits += credit;
-    while (credits > 0) {
-      T data = pending.poll();
-      if (data == null) {
-        break;
-      } else {
-        credits--;
-        bus.send(address, data, options);
-      }
+    @Override
+    public synchronized MessageProducer<T> setWriteQueueMaxSize(int maxSize) {
+        this.credits = maxSize;
+        return this;
     }
-    final Handler<Void> theDrainHandler = drainHandler;
-    if (theDrainHandler != null && pending.isEmpty()) {
-      this.drainHandler = null;
-      vertx.runOnContext(v -> theDrainHandler.handle(null));
+
+    @Override
+    public synchronized MessageProducer<T> write(T data) {
+        if (send) {
+            doSend(data, null);
+        } else {
+            bus.publish(address, data, options);
+        }
+        return this;
     }
-  }
+
+    @Override
+    public boolean writeQueueFull() {
+        return pending.size() >= 0;
+    }
+
+    @Override
+    public synchronized MessageProducer<T> drainHandler(Handler<Void> handler) {
+        this.drainHandler = handler;
+        return this;
+    }
+
+    @Override
+    public String address() {
+        return address;
+    }
+
+    @Override
+    public void end() {
+        close();
+    }
+
+    @Override
+    public void close() {
+        if (creditConsumer != null) {
+            creditConsumer.unregister();
+        }
+    }
+
+    // Just in case user forget to call close()
+    @Override
+    protected void finalize() throws Throwable {
+        close();
+        super.finalize();
+    }
+
+    private synchronized <R> void doSend(T data, Handler<AsyncResult<Message<R>>> replyHandler) {
+        if (credits > 0) {
+            credits--;
+            if (replyHandler == null) {
+                bus.send(address, data, options);
+            } else {
+                bus.send(address, data, options, replyHandler);
+            }
+        } else {
+            pending.add(data);
+        }
+    }
+
+    private synchronized void doReceiveCredit(int credit) {
+        credits += credit;
+        while (credits > 0) {
+            T data = pending.poll();
+            if (data == null) {
+                break;
+            } else {
+                credits--;
+                bus.send(address, data, options);
+            }
+        }
+        final Handler<Void> theDrainHandler = drainHandler;
+        if (theDrainHandler != null && pending.isEmpty()) {
+            this.drainHandler = null;
+            vertx.runOnContext(v -> theDrainHandler.handle(null));
+        }
+    }
 
 }

@@ -41,53 +41,54 @@ import java.util.concurrent.ExecutorService;
  */
 public interface VertxInternal extends Vertx {
 
-  @Override
-  ContextImpl getOrCreateContext();
+    @Override
+    ContextImpl getOrCreateContext();
 
-  EventLoopGroup getEventLoopGroup();
+    EventLoopGroup getEventLoopGroup();
 
-  EventLoopGroup getAcceptorEventLoopGroup();
+    EventLoopGroup getAcceptorEventLoopGroup();
 
-  ExecutorService getWorkerPool();
+    ExecutorService getWorkerPool();
 
-  Map<ServerID, HttpServerImpl> sharedHttpServers();
+    Map<ServerID, HttpServerImpl> sharedHttpServers();
 
-  Map<ServerID, NetServerImpl> sharedNetServers();
+    Map<ServerID, NetServerImpl> sharedNetServers();
 
-  VertxMetrics metricsSPI();
+    VertxMetrics metricsSPI();
 
-	/**
-	 * Get the current context
-	 * @return the context
-	 */
-	ContextImpl getContext();
+    /**
+     * Get the current context
+     *
+     * @return the context
+     */
+    ContextImpl getContext();
 
-  /**
-   * @return event loop context
-   */
-  EventLoopContext createEventLoopContext(String deploymentID, JsonObject config, ClassLoader tccl);
+    /**
+     * @return event loop context
+     */
+    EventLoopContext createEventLoopContext(String deploymentID, JsonObject config, ClassLoader tccl);
 
-  /**
-   * @return worker loop context
-   */
-  ContextImpl createWorkerContext(boolean multiThreaded, String deploymentID, JsonObject config, ClassLoader tccl);
+    /**
+     * @return worker loop context
+     */
+    ContextImpl createWorkerContext(boolean multiThreaded, String deploymentID, JsonObject config, ClassLoader tccl);
 
-  void simulateKill();
+    void simulateKill();
 
-  Deployment getDeployment(String deploymentID);
+    Deployment getDeployment(String deploymentID);
 
-  void failoverCompleteHandler(FailoverCompleteHandler failoverCompleteHandler);
+    void failoverCompleteHandler(FailoverCompleteHandler failoverCompleteHandler);
 
-  boolean isKilled();
+    boolean isKilled();
 
-  void failDuringFailover(boolean fail);
+    void failDuringFailover(boolean fail);
 
-  String getNodeID();
+    String getNodeID();
 
-  File resolveFile(String fileName);
+    File resolveFile(String fileName);
 
-  <T> void executeBlockingInternal(Action<T> action, Handler<AsyncResult<T>> resultHandler);
+    <T> void executeBlockingInternal(Action<T> action, Handler<AsyncResult<T>> resultHandler);
 
-  ClusterManager getClusterManager();
+    ClusterManager getClusterManager();
 
 }

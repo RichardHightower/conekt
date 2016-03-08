@@ -17,12 +17,7 @@ package io.vertx.core.http.impl;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.DecoderResult;
-import io.netty.handler.codec.http.DefaultHttpContent;
-import io.netty.handler.codec.http.HttpContent;
-import io.netty.handler.codec.http.HttpHeaders;
-import io.netty.handler.codec.http.HttpResponse;
-import io.netty.handler.codec.http.HttpResponseStatus;
-import io.netty.handler.codec.http.HttpVersion;
+import io.netty.handler.codec.http.*;
 
 
 /**
@@ -33,94 +28,94 @@ import io.netty.handler.codec.http.HttpVersion;
  */
 class AssembledHttpResponse implements HttpResponse, HttpContent {
 
-  private final HttpResponse response;
-  protected final HttpContent content;
+    protected final HttpContent content;
+    private final HttpResponse response;
 
-  AssembledHttpResponse(HttpResponse response, HttpContent content) {
-    this.response = response;
-    this.content = content;
-  }
+    AssembledHttpResponse(HttpResponse response, HttpContent content) {
+        this.response = response;
+        this.content = content;
+    }
 
-  AssembledHttpResponse(HttpResponse response, ByteBuf buf) {
-    this(response, new DefaultHttpContent(buf));
-  }
+    AssembledHttpResponse(HttpResponse response, ByteBuf buf) {
+        this(response, new DefaultHttpContent(buf));
+    }
 
-  @Override
-  public HttpContent copy() {
-    throw new UnsupportedOperationException();
-  }
+    @Override
+    public HttpContent copy() {
+        throw new UnsupportedOperationException();
+    }
 
-  @Override
-  public HttpContent duplicate() {
-    throw new UnsupportedOperationException();
-  }
+    @Override
+    public HttpContent duplicate() {
+        throw new UnsupportedOperationException();
+    }
 
-  @Override
-  public AssembledHttpResponse retain() {
-    content.retain();
-    return this;
-  }
+    @Override
+    public AssembledHttpResponse retain() {
+        content.retain();
+        return this;
+    }
 
-  @Override
-  public AssembledHttpResponse retain(int increment) {
-    content.retain(increment);
-    return this;
-  }
+    @Override
+    public AssembledHttpResponse retain(int increment) {
+        content.retain(increment);
+        return this;
+    }
 
-  @Override
-  public HttpResponseStatus getStatus() {
-    return response.getStatus();
-  }
+    @Override
+    public HttpResponseStatus getStatus() {
+        return response.getStatus();
+    }
 
-  @Override
-  public AssembledHttpResponse setStatus(HttpResponseStatus status) {
-    response.setStatus(status);
-    return this;
-  }
+    @Override
+    public AssembledHttpResponse setStatus(HttpResponseStatus status) {
+        response.setStatus(status);
+        return this;
+    }
 
-  @Override
-  public AssembledHttpResponse setProtocolVersion(HttpVersion version) {
-    response.setProtocolVersion(version);
-    return this;
-  }
+    @Override
+    public HttpVersion getProtocolVersion() {
+        return response.getProtocolVersion();
+    }
 
-  @Override
-  public HttpVersion getProtocolVersion() {
-    return response.getProtocolVersion();
-  }
+    @Override
+    public AssembledHttpResponse setProtocolVersion(HttpVersion version) {
+        response.setProtocolVersion(version);
+        return this;
+    }
 
-  @Override
-  public HttpHeaders headers() {
-    return response.headers();
-  }
+    @Override
+    public HttpHeaders headers() {
+        return response.headers();
+    }
 
-  @Override
-  public DecoderResult getDecoderResult() {
-    return response.getDecoderResult();
-  }
+    @Override
+    public DecoderResult getDecoderResult() {
+        return response.getDecoderResult();
+    }
 
-  @Override
-  public void setDecoderResult(DecoderResult result) {
-    response.setDecoderResult(result);
-  }
+    @Override
+    public void setDecoderResult(DecoderResult result) {
+        response.setDecoderResult(result);
+    }
 
-  @Override
-  public ByteBuf content() {
-    return content.content();
-  }
+    @Override
+    public ByteBuf content() {
+        return content.content();
+    }
 
-  @Override
-  public int refCnt() {
-    return content.refCnt();
-  }
+    @Override
+    public int refCnt() {
+        return content.refCnt();
+    }
 
-  @Override
-  public boolean release() {
-    return content.release();
-  }
+    @Override
+    public boolean release() {
+        return content.release();
+    }
 
-  @Override
-  public boolean release(int decrement) {
-    return content.release(decrement);
-  }
+    @Override
+    public boolean release(int decrement) {
+        return content.release(decrement);
+    }
 }

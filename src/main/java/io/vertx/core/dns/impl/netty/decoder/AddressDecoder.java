@@ -36,9 +36,8 @@ public class AddressDecoder implements RecordDecoder<InetAddress> {
      * Constructs an {@code AddressDecoder}, which decodes A and AAAA resource
      * records.
      *
-     * @param octets
-     *            the number of octets an address has. 4 for type A records and
-     *            16 for type AAAA records
+     * @param octets the number of octets an address has. 4 for type A records and
+     *               16 for type AAAA records
      */
     public AddressDecoder(int octets) {
         this.octets = octets;
@@ -48,11 +47,9 @@ public class AddressDecoder implements RecordDecoder<InetAddress> {
      * Returns an {@link java.net.InetAddress} containing a decoded address from either an A
      * or AAAA resource record.
      *
-     * @param response
-     *            the {@link io.vertx.core.dns.impl.netty.DnsResponse} received that contained the resource
-     *            record being decoded
-     * @param resource
-     *            the {@link DnsResource} being decoded
+     * @param response the {@link io.vertx.core.dns.impl.netty.DnsResponse} received that contained the resource
+     *                 record being decoded
+     * @param resource the {@link DnsResource} being decoded
      */
     @Override
     public InetAddress decode(DnsResponse response, DnsResource resource) {

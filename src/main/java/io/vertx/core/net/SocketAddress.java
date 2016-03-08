@@ -26,7 +26,7 @@ import io.vertx.codegen.annotations.VertxGen;
 @VertxGen
 public interface SocketAddress {
 
-  String host();
+    String host();
 
-  int port();
+    int port();
 }

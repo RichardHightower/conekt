@@ -31,19 +31,19 @@ import java.util.logging.LogManager;
  */
 public class JULLogDelegateFactory implements LogDelegateFactory {
 
-  static {
-    // Try and load vert.x JUL default logging config from classpath
-    if (System.getProperty("java.util.logging.config.file") == null) {
-      try (InputStream is = JULLogDelegateFactory.class.getClassLoader().getResourceAsStream("vertx-default-jul-logging.properties")) {
-        if (is != null) {
-          LogManager.getLogManager().readConfiguration(is);
+    static {
+        // Try and load vert.x JUL default logging config from classpath
+        if (System.getProperty("java.util.logging.config.file") == null) {
+            try (InputStream is = JULLogDelegateFactory.class.getClassLoader().getResourceAsStream("vertx-default-jul-logging.properties")) {
+                if (is != null) {
+                    LogManager.getLogManager().readConfiguration(is);
+                }
+            } catch (IOException ignore) {
+            }
         }
-      } catch (IOException ignore) {
-      }
     }
-  }
 
-  public LogDelegate createDelegate(final String name) {
-    return new JULLogDelegate(name);
-  }
+    public LogDelegate createDelegate(final String name) {
+        return new JULLogDelegate(name);
+    }
 }

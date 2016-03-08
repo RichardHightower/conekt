@@ -17,12 +17,7 @@ package io.vertx.core.http.impl;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.DecoderResult;
-import io.netty.handler.codec.http.DefaultHttpContent;
-import io.netty.handler.codec.http.HttpContent;
-import io.netty.handler.codec.http.HttpHeaders;
-import io.netty.handler.codec.http.HttpMethod;
-import io.netty.handler.codec.http.HttpRequest;
-import io.netty.handler.codec.http.HttpVersion;
+import io.netty.handler.codec.http.*;
 
 
 /**
@@ -32,102 +27,102 @@ import io.netty.handler.codec.http.HttpVersion;
  * @author <a href="mailto:nmaurer@redhat.com">Norman Maurer</a>
  */
 class AssembledHttpRequest implements HttpContent, HttpRequest {
-  private final HttpRequest request;
-  protected final HttpContent content;
+    protected final HttpContent content;
+    private final HttpRequest request;
 
-  AssembledHttpRequest(HttpRequest request, ByteBuf buf) {
-    this(request, new DefaultHttpContent(buf));
-  }
+    AssembledHttpRequest(HttpRequest request, ByteBuf buf) {
+        this(request, new DefaultHttpContent(buf));
+    }
 
-  AssembledHttpRequest(HttpRequest request, HttpContent content) {
-    this.request = request;
-    this.content = content;
-  }
+    AssembledHttpRequest(HttpRequest request, HttpContent content) {
+        this.request = request;
+        this.content = content;
+    }
 
-  @Override
-  public AssembledHttpRequest copy() {
-    throw new UnsupportedOperationException();
-  }
+    @Override
+    public AssembledHttpRequest copy() {
+        throw new UnsupportedOperationException();
+    }
 
-  @Override
-  public AssembledHttpRequest duplicate() {
-    throw new UnsupportedOperationException();
-  }
+    @Override
+    public AssembledHttpRequest duplicate() {
+        throw new UnsupportedOperationException();
+    }
 
-  @Override
-  public AssembledHttpRequest retain() {
-    content.retain();
-    return this;
-  }
+    @Override
+    public AssembledHttpRequest retain() {
+        content.retain();
+        return this;
+    }
 
-  @Override
-  public AssembledHttpRequest retain(int increment) {
-    content.retain(increment);
-    return this;
-  }
+    @Override
+    public AssembledHttpRequest retain(int increment) {
+        content.retain(increment);
+        return this;
+    }
 
-  @Override
-  public HttpMethod getMethod() {
-    return request.getMethod();
-  }
+    @Override
+    public HttpMethod getMethod() {
+        return request.getMethod();
+    }
 
-  @Override
-  public String getUri() {
-    return request.getUri();
-  }
+    @Override
+    public String getUri() {
+        return request.getUri();
+    }
 
-  @Override
-  public HttpHeaders headers() {
-    return request.headers();
-  }
+    @Override
+    public HttpHeaders headers() {
+        return request.headers();
+    }
 
-  @Override
-  public HttpRequest setMethod(HttpMethod method) {
-    return request.setMethod(method);
-  }
+    @Override
+    public HttpRequest setMethod(HttpMethod method) {
+        return request.setMethod(method);
+    }
 
-  @Override
-  public HttpVersion getProtocolVersion() {
-    return request.getProtocolVersion();
-  }
+    @Override
+    public HttpVersion getProtocolVersion() {
+        return request.getProtocolVersion();
+    }
 
-  @Override
-  public HttpRequest setUri(String uri) {
-    return request.setUri(uri);
-  }
+    @Override
+    public HttpRequest setUri(String uri) {
+        return request.setUri(uri);
+    }
 
-  @Override
-  public HttpRequest setProtocolVersion(HttpVersion version) {
-    return request.setProtocolVersion(version);
-  }
+    @Override
+    public HttpRequest setProtocolVersion(HttpVersion version) {
+        return request.setProtocolVersion(version);
+    }
 
-  @Override
-  public DecoderResult getDecoderResult() {
-    return request.getDecoderResult();
-  }
+    @Override
+    public DecoderResult getDecoderResult() {
+        return request.getDecoderResult();
+    }
 
-  @Override
-  public void setDecoderResult(DecoderResult result) {
-    request.setDecoderResult(result);
-  }
+    @Override
+    public void setDecoderResult(DecoderResult result) {
+        request.setDecoderResult(result);
+    }
 
-  @Override
-  public ByteBuf content() {
-    return content.content();
-  }
+    @Override
+    public ByteBuf content() {
+        return content.content();
+    }
 
-  @Override
-  public int refCnt() {
-    return content.refCnt();
-  }
+    @Override
+    public int refCnt() {
+        return content.refCnt();
+    }
 
-  @Override
-  public boolean release() {
-    return content.release();
-  }
+    @Override
+    public boolean release() {
+        return content.release();
+    }
 
-  @Override
-  public boolean release(int decrement) {
-    return content.release(decrement);
-  }
+    @Override
+    public boolean release(int decrement) {
+        return content.release(decrement);
+    }
 }

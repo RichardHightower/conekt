@@ -25,17 +25,17 @@ import java.util.Objects;
  */
 public final class DnsException extends Exception {
 
-  private DnsResponseCode code;
+    private DnsResponseCode code;
 
-  public DnsException(DnsResponseCode code) {
-    Objects.requireNonNull(code, "code");
-    this.code = code;
-  }
+    public DnsException(DnsResponseCode code) {
+        Objects.requireNonNull(code, "code");
+        this.code = code;
+    }
 
-  /**
-   * The {@link DnsResponseCode} which caused this {@link io.vertx.core.dns.DnsException} to be created.
-   */
-  public DnsResponseCode code() {
-    return code;
-  }
+    /**
+     * The {@link DnsResponseCode} which caused this {@link io.vertx.core.dns.DnsException} to be created.
+     */
+    public DnsResponseCode code() {
+        return code;
+    }
 }

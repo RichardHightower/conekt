@@ -22,50 +22,50 @@ import io.vertx.core.dns.impl.netty.decoder.record.ServiceRecord;
 /**
  * @author <a href="mailto:nmaurer@redhat.com">Norman Maurer</a>
  */
-final class SrcRecordImpl implements SrvRecord, Comparable<SrvRecord>{
-  private final ServiceRecord record;
+final class SrcRecordImpl implements SrvRecord, Comparable<SrvRecord> {
+    private final ServiceRecord record;
 
-  SrcRecordImpl(ServiceRecord record) {
-    this.record = record;
-  }
+    SrcRecordImpl(ServiceRecord record) {
+        this.record = record;
+    }
 
-  @Override
-  public int priority() {
-    return record.priority();
-  }
+    @Override
+    public int priority() {
+        return record.priority();
+    }
 
-  @Override
-  public int weight() {
-    return record.weight();
-  }
+    @Override
+    public int weight() {
+        return record.weight();
+    }
 
-  @Override
-  public int port() {
-    return record.port();
-  }
+    @Override
+    public int port() {
+        return record.port();
+    }
 
-  @Override
-  public String name() {
-    return record.name();
-  }
+    @Override
+    public String name() {
+        return record.name();
+    }
 
-  @Override
-  public String protocol() {
-    return record.protocol();
-  }
+    @Override
+    public String protocol() {
+        return record.protocol();
+    }
 
-  @Override
-  public String service() {
-    return record.service();
-  }
+    @Override
+    public String service() {
+        return record.service();
+    }
 
-  @Override
-  public String target() {
-    return record.target();
-  }
+    @Override
+    public String target() {
+        return record.target();
+    }
 
-  @Override
-  public int compareTo(SrvRecord o) {
-    return Integer.valueOf(priority()).compareTo(o.priority());
-  }
+    @Override
+    public int compareTo(SrvRecord o) {
+        return Integer.valueOf(priority()).compareTo(o.priority());
+    }
 }

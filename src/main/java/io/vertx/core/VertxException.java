@@ -26,31 +26,31 @@ package io.vertx.core;
  */
 public class VertxException extends RuntimeException {
 
-  /**
-   * Create an instance given a message
-   *
-   * @param message  the message
-   */
-  public VertxException(String message) {
-    super(message);
-  }
+    /**
+     * Create an instance given a message
+     *
+     * @param message the message
+     */
+    public VertxException(String message) {
+        super(message);
+    }
 
-  /**
-   * Create an instance given a message and a cause
-   *
-   * @param message  the message
-   * @param cause  the cause
-   */
-  public VertxException(String message, Throwable cause) {
-    super(message, cause);
-  }
+    /**
+     * Create an instance given a message and a cause
+     *
+     * @param message the message
+     * @param cause   the cause
+     */
+    public VertxException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
-  /**
-   * Create an instance given a cause
-   *
-   * @param cause  the cause
-   */
-  public VertxException(Throwable cause) {
-    super(cause);
-  }
+    /**
+     * Create an instance given a cause
+     *
+     * @param cause the cause
+     */
+    public VertxException(Throwable cause) {
+        super(cause);
+    }
 }

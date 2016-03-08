@@ -29,48 +29,49 @@ import io.netty.handler.codec.http.LastHttpContent;
  * @author <a href="mailto:nmaurer@redhat.com">Norman Maurer</a>
  */
 class AssembledLastHttpContent extends DefaultByteBufHolder implements LastHttpContent {
-  private final HttpHeaders trailingHeaders;
-  private DecoderResult result;
-  public AssembledLastHttpContent(ByteBuf buf, HttpHeaders trailingHeaders, DecoderResult result) {
-    super(buf);
-    this.trailingHeaders = trailingHeaders;
-    this.result = result;
-  }
+    private final HttpHeaders trailingHeaders;
+    private DecoderResult result;
 
-  @Override
-  public HttpHeaders trailingHeaders() {
-    return trailingHeaders;
-  }
+    public AssembledLastHttpContent(ByteBuf buf, HttpHeaders trailingHeaders, DecoderResult result) {
+        super(buf);
+        this.trailingHeaders = trailingHeaders;
+        this.result = result;
+    }
 
-  @Override
-  public LastHttpContent copy() {
-    throw new UnsupportedOperationException();
-  }
+    @Override
+    public HttpHeaders trailingHeaders() {
+        return trailingHeaders;
+    }
 
-  @Override
-  public LastHttpContent retain(int increment) {
-    super.retain(increment);
-    return this;
-  }
+    @Override
+    public LastHttpContent copy() {
+        throw new UnsupportedOperationException();
+    }
 
-  @Override
-  public LastHttpContent retain() {
-    super.retain();
-    return this;
-  }
+    @Override
+    public LastHttpContent retain(int increment) {
+        super.retain(increment);
+        return this;
+    }
 
-  @Override
-  public HttpContent duplicate() {
-    throw new UnsupportedOperationException();
-  }
+    @Override
+    public LastHttpContent retain() {
+        super.retain();
+        return this;
+    }
 
-  @Override
-  public DecoderResult getDecoderResult() {
-    return result;
-  }
+    @Override
+    public HttpContent duplicate() {
+        throw new UnsupportedOperationException();
+    }
 
-  @Override
-  public void setDecoderResult(DecoderResult result) {
-    this.result = result;
-  }
+    @Override
+    public DecoderResult getDecoderResult() {
+        return result;
+    }
+
+    @Override
+    public void setDecoderResult(DecoderResult result) {
+        this.result = result;
+    }
 }

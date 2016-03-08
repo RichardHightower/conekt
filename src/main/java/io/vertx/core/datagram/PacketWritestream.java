@@ -30,15 +30,15 @@ import io.vertx.core.streams.WriteStream;
 @VertxGen
 public interface PacketWritestream extends WriteStream<Buffer> {
 
-  @Override
-  PacketWritestream exceptionHandler(Handler<Throwable> handler);
+    @Override
+    PacketWritestream exceptionHandler(Handler<Throwable> handler);
 
-  @Override
-  PacketWritestream write(Buffer data);
+    @Override
+    PacketWritestream write(Buffer data);
 
-  @Override
-  PacketWritestream setWriteQueueMaxSize(int maxSize);
+    @Override
+    PacketWritestream setWriteQueueMaxSize(int maxSize);
 
-  @Override
-  PacketWritestream drainHandler(Handler<Void> handler);
+    @Override
+    PacketWritestream drainHandler(Handler<Void> handler);
 }

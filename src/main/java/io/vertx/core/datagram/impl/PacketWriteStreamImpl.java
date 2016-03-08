@@ -21,61 +21,60 @@ import io.vertx.core.Handler;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.datagram.DatagramSocket;
 import io.vertx.core.datagram.PacketWritestream;
-import io.vertx.core.streams.WriteStream;
 
 /**
  * A write stream for packets.
  *
-* @author <a href="mailto:julien@julienviet.com">Julien Viet</a>
-*/
+ * @author <a href="mailto:julien@julienviet.com">Julien Viet</a>
+ */
 class PacketWriteStreamImpl implements PacketWritestream, Handler<AsyncResult<DatagramSocket>> {
 
-  private DatagramSocketImpl datagramSocket;
-  private Handler<Throwable> exceptionHandler;
-  private final int port;
-  private final String host;
+    private final int port;
+    private final String host;
+    private DatagramSocketImpl datagramSocket;
+    private Handler<Throwable> exceptionHandler;
 
-  PacketWriteStreamImpl(DatagramSocketImpl datagramSocket, int port, String host) {
-    this.datagramSocket = datagramSocket;
-    this.port = port;
-    this.host = host;
-  }
-
-  @Override
-  public void handle(AsyncResult<DatagramSocket> event) {
-    if (event.failed() && exceptionHandler != null) {
-      exceptionHandler.handle(event.cause());
+    PacketWriteStreamImpl(DatagramSocketImpl datagramSocket, int port, String host) {
+        this.datagramSocket = datagramSocket;
+        this.port = port;
+        this.host = host;
     }
-  }
 
-  @Override
-  public PacketWritestream exceptionHandler(Handler<Throwable> handler) {
-    exceptionHandler = handler;
-    return this;
-  }
+    @Override
+    public void handle(AsyncResult<DatagramSocket> event) {
+        if (event.failed() && exceptionHandler != null) {
+            exceptionHandler.handle(event.cause());
+        }
+    }
 
-  @Override
-  public PacketWritestream write(Buffer data) {
-    datagramSocket.send(data, port, host, this);
-    return this;
-  }
+    @Override
+    public PacketWritestream exceptionHandler(Handler<Throwable> handler) {
+        exceptionHandler = handler;
+        return this;
+    }
 
-  @Override
-  public PacketWritestream setWriteQueueMaxSize(int maxSize) {
-    return this;
-  }
+    @Override
+    public PacketWritestream write(Buffer data) {
+        datagramSocket.send(data, port, host, this);
+        return this;
+    }
 
-  @Override
-  public boolean writeQueueFull() {
-    return false;
-  }
+    @Override
+    public PacketWritestream setWriteQueueMaxSize(int maxSize) {
+        return this;
+    }
 
-  @Override
-  public PacketWritestream drainHandler(Handler<Void> handler) {
-    return this;
-  }
+    @Override
+    public boolean writeQueueFull() {
+        return false;
+    }
 
-  @Override
-  public void end() {
-  }
+    @Override
+    public PacketWritestream drainHandler(Handler<Void> handler) {
+        return this;
+    }
+
+    @Override
+    public void end() {
+    }
 }

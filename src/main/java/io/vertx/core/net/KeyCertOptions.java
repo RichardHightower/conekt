@@ -22,9 +22,9 @@ package io.vertx.core.net;
  */
 public interface KeyCertOptions {
 
-  /**
-   * @return a copy of these options
-   */
-  KeyCertOptions clone();
+    /**
+     * @return a copy of these options
+     */
+    KeyCertOptions clone();
 
 }

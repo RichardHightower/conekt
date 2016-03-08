@@ -22,8 +22,7 @@ import io.vertx.core.dns.impl.netty.DnsResponse;
 /**
  * Used for decoding resource records.
  *
- * @param <T>
- *            the type of data to return after decoding a resource record (for
+ * @param <T> the type of data to return after decoding a resource record (for
  *            example, an {@link AddressDecoder} will return a {@link io.netty.buffer.ByteBuf})
  */
 public interface RecordDecoder<T> {
@@ -33,11 +32,9 @@ public interface RecordDecoder<T> {
      * {@link io.vertx.core.dns.impl.netty.decoder.RecordDecoder} after decoding a resource record when given a DNS
      * response packet.
      *
-     * @param response
-     *            the DNS response that contains the resource record being
-     *            decoded
-     * @param resource
-     *            the resource record being decoded
+     * @param response the DNS response that contains the resource record being
+     *                 decoded
+     * @param resource the resource record being decoded
      */
     T decode(DnsResponse response, DnsResource resource) throws DecoderException;
 

@@ -26,38 +26,36 @@ import io.vertx.docgen.Source;
 @Source
 public class Examples {
 
-  public void example0_1() {
-    String jsonString = "{\"foo\":\"bar\"}";
-    JsonObject object = new JsonObject(jsonString);
-  }
+    public void example0_1() {
+        String jsonString = "{\"foo\":\"bar\"}";
+        JsonObject object = new JsonObject(jsonString);
+    }
 
-  public void example0_2() {
-    String jsonString = "[\"foo\",\"bar\"]";
-    JsonArray array = new JsonArray(jsonString);
-  }
+    public void example0_2() {
+        String jsonString = "[\"foo\",\"bar\"]";
+        JsonArray array = new JsonArray(jsonString);
+    }
 
-  public void example1() {
-    JsonObject object = new JsonObject();
-    object.put("foo", "bar").put("num", 123).put("mybool", true);
-  }
+    public void example1() {
+        JsonObject object = new JsonObject();
+        object.put("foo", "bar").put("num", 123).put("mybool", true);
+    }
 
-  public void example2(JsonObject jsonObject) {
-    String val = jsonObject.getString("some-key");
-    int intVal = jsonObject.getInteger("some-other-key");
-  }
+    public void example2(JsonObject jsonObject) {
+        String val = jsonObject.getString("some-key");
+        int intVal = jsonObject.getInteger("some-other-key");
+    }
 
-  public void example3() {
-    JsonArray array = new JsonArray();
-    array.add("foo").add(123).add(false);
-  }
+    public void example3() {
+        JsonArray array = new JsonArray();
+        array.add("foo").add(123).add(false);
+    }
 
-  public void example4(JsonArray array) {
-    String val = array.getString(0);
-    Integer intVal = array.getInteger(1);
-    Boolean boolVal = array.getBoolean(2);
-  }
-
-
+    public void example4(JsonArray array) {
+        String val = array.getString(0);
+        Integer intVal = array.getInteger(1);
+        Boolean boolVal = array.getBoolean(2);
+    }
 
 
 }

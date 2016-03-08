@@ -24,9 +24,9 @@ import io.vertx.core.http.WebSocketFrame;
  */
 public interface WebSocketFrameFactory {
 
-  WebSocketFrame binaryFrame(Buffer data, boolean isFinal);
+    WebSocketFrame binaryFrame(Buffer data, boolean isFinal);
 
-  WebSocketFrame textFrame(String str, boolean isFinal);
+    WebSocketFrame textFrame(String str, boolean isFinal);
 
-  WebSocketFrame continuationFrame(Buffer data, boolean isFinal);
+    WebSocketFrame continuationFrame(Buffer data, boolean isFinal);
 }

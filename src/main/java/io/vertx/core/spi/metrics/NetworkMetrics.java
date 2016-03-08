@@ -26,30 +26,30 @@ import io.vertx.core.net.SocketAddress;
  */
 public interface NetworkMetrics<S> extends Metrics {
 
-  /**
-   * Called when bytes have been read
-   *
-   * @param socketMetric the socket metric, null for UDP
-   * @param remoteAddress the remote address which this socket received bytes from
-   * @param numberOfBytes the number of bytes read
-   */
-  void bytesRead(S socketMetric, SocketAddress remoteAddress, long numberOfBytes);
+    /**
+     * Called when bytes have been read
+     *
+     * @param socketMetric  the socket metric, null for UDP
+     * @param remoteAddress the remote address which this socket received bytes from
+     * @param numberOfBytes the number of bytes read
+     */
+    void bytesRead(S socketMetric, SocketAddress remoteAddress, long numberOfBytes);
 
-  /**
-   * Called when bytes have been written
-   *
-   * @param socketMetric the socket metric, null for UDP
-   * @param remoteAddress the remote address which bytes are being written to
-   * @param numberOfBytes the number of bytes written
-   */
-  void bytesWritten(S socketMetric, SocketAddress remoteAddress, long numberOfBytes);
+    /**
+     * Called when bytes have been written
+     *
+     * @param socketMetric  the socket metric, null for UDP
+     * @param remoteAddress the remote address which bytes are being written to
+     * @param numberOfBytes the number of bytes written
+     */
+    void bytesWritten(S socketMetric, SocketAddress remoteAddress, long numberOfBytes);
 
-  /**
-   * Called when exceptions occur for a specific connection.
-   *
-   * @param socketMetric the socket metric, null for UDP
-   * @param remoteAddress the remote address of the connection or null if it's datagram/udp
-   * @param t the exception that occurred
-   */
-  void exceptionOccurred(S socketMetric, SocketAddress remoteAddress, Throwable t);
+    /**
+     * Called when exceptions occur for a specific connection.
+     *
+     * @param socketMetric  the socket metric, null for UDP
+     * @param remoteAddress the remote address of the connection or null if it's datagram/udp
+     * @param t             the exception that occurred
+     */
+    void exceptionOccurred(S socketMetric, SocketAddress remoteAddress, Throwable t);
 }

@@ -29,21 +29,21 @@ import io.vertx.core.Vertx;
  */
 public interface ContextInternal extends Context {
 
-  /**
-   * Return the Netty EventLoop used by this Context. This can be used to integrate
-   * a Netty Server with a Vert.x runtime, specially the Context part.
-   *
-   * @return the EventLoop
-   */
-  EventLoop nettyEventLoop();
+    /**
+     * Return the Netty EventLoop used by this Context. This can be used to integrate
+     * a Netty Server with a Vert.x runtime, specially the Context part.
+     *
+     * @return the EventLoop
+     */
+    EventLoop nettyEventLoop();
 
-  /**
-   * Execute the context task and switch on this context if necessary, this also associates the
-   * current thread with the current context so {@link Vertx#currentContext()} returns this context.<p/>
-   *
-   * The caller thread should be the the event loop thread of this context.
-   *
-   * @param task the task to execute
-   */
-  void executeFromIO(ContextTask task);
+    /**
+     * Execute the context task and switch on this context if necessary, this also associates the
+     * current thread with the current context so {@link Vertx#currentContext()} returns this context.<p/>
+     * <p>
+     * The caller thread should be the the event loop thread of this context.
+     *
+     * @param task the task to execute
+     */
+    void executeFromIO(ContextTask task);
 }

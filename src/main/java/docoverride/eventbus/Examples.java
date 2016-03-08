@@ -27,30 +27,30 @@ import io.vertx.docgen.Source;
 @Source
 public class Examples {
 
-  public void example10(EventBus eventBus, MessageCodec myCodec) {
+    public void example10(EventBus eventBus, MessageCodec myCodec) {
 
-    eventBus.registerCodec(myCodec);
+        eventBus.registerCodec(myCodec);
 
-    DeliveryOptions options = new DeliveryOptions().setCodecName(myCodec.name());
+        DeliveryOptions options = new DeliveryOptions().setCodecName(myCodec.name());
 
-    eventBus.send("orders", new MyPOJO(), options);
-  }
+        eventBus.send("orders", new MyPOJO(), options);
+    }
 
-  public void example11(EventBus eventBus, MessageCodec myCodec) {
+    public void example11(EventBus eventBus, MessageCodec myCodec) {
 
-    eventBus.registerDefaultCodec(MyPOJO.class, myCodec);
+        eventBus.registerDefaultCodec(MyPOJO.class, myCodec);
 
-    eventBus.send("orders", new MyPOJO());
-  }
+        eventBus.send("orders", new MyPOJO());
+    }
 
-  public void headers(EventBus eventBus) {
-    DeliveryOptions options = new DeliveryOptions();
-    options.addHeader("some-header", "some-value");
-    eventBus.send("news.uk.sport", "Yay! Someone kicked a ball", options);
-  }
+    public void headers(EventBus eventBus) {
+        DeliveryOptions options = new DeliveryOptions();
+        options.addHeader("some-header", "some-value");
+        eventBus.send("news.uk.sport", "Yay! Someone kicked a ball", options);
+    }
 
-  class MyPOJO {
+    class MyPOJO {
 
-  }
+    }
 
 }

@@ -23,29 +23,29 @@ import io.vertx.core.dns.impl.netty.decoder.record.MailExchangerRecord;
  * @author <a href="mailto:nmaurer@redhat.com">Norman Maurer</a>
  */
 final class MxRecordImpl implements MxRecord, Comparable<MxRecord> {
-  private final MailExchangerRecord record;
+    private final MailExchangerRecord record;
 
-  MxRecordImpl(MailExchangerRecord record) {
-    this.record = record;
-  }
+    MxRecordImpl(MailExchangerRecord record) {
+        this.record = record;
+    }
 
-  @Override
-  public int priority() {
-    return record.priority();
-  }
+    @Override
+    public int priority() {
+        return record.priority();
+    }
 
-  @Override
-  public String name() {
-    return record.name();
-  }
+    @Override
+    public String name() {
+        return record.name();
+    }
 
-  @Override
-  public String toString() {
-    return priority() + " " + name();
-  }
+    @Override
+    public String toString() {
+        return priority() + " " + name();
+    }
 
-  @Override
-  public int compareTo(MxRecord o) {
-    return Integer.valueOf(priority()).compareTo(o.priority());
-  }
+    @Override
+    public int compareTo(MxRecord o) {
+        return Integer.valueOf(priority()).compareTo(o.priority());
+    }
 }

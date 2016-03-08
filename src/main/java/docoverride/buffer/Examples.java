@@ -25,8 +25,8 @@ import io.vertx.docgen.Source;
 @Source
 public class Examples {
 
-  public void example4() {
-    byte[] bytes = new byte[] {1, 3, 5};
-    Buffer buff = Buffer.buffer(bytes);
-  }
+    public void example4() {
+        byte[] bytes = new byte[]{1, 3, 5};
+        Buffer buff = Buffer.buffer(bytes);
+    }
 }
