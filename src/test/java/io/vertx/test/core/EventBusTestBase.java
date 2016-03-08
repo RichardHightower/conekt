@@ -369,6 +369,7 @@ public abstract class EventBusTestBase extends VertxTestBase {
                 });
             }
         }, new DeploymentOptions().setWorker(true));
+        Thread.sleep(50);
         awaitLatch(latch);
         vertices[0].eventBus().send(ADDRESS1, "whatever", reply -> {
             assertTrue(reply.succeeded());
