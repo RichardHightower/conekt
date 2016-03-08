@@ -25,17 +25,8 @@ import io.vertx.core.http.HttpClient;
 import io.vertx.core.http.HttpClientOptions;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerOptions;
-import io.vertx.core.net.NetClient;
-import io.vertx.core.net.NetClientOptions;
-import io.vertx.core.net.NetServer;
-import io.vertx.core.net.NetServerOptions;
-import io.vertx.core.net.SocketAddress;
-import io.vertx.core.spi.metrics.DatagramSocketMetrics;
-import io.vertx.core.spi.metrics.EventBusMetrics;
-import io.vertx.core.spi.metrics.HttpClientMetrics;
-import io.vertx.core.spi.metrics.HttpServerMetrics;
-import io.vertx.core.spi.metrics.TCPMetrics;
-import io.vertx.core.spi.metrics.VertxMetrics;
+import io.vertx.core.net.*;
+import io.vertx.core.spi.metrics.*;
 
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -44,107 +35,107 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public class FakeVertxMetrics extends FakeMetricsBase implements VertxMetrics {
 
-  public static AtomicReference<EventBus> eventBus = new AtomicReference<>();
+    public static AtomicReference<EventBus> eventBus = new AtomicReference<>();
 
-  public FakeVertxMetrics(Vertx vertx) {
-    super(vertx);
-  }
+    public FakeVertxMetrics(Vertx vertx) {
+        super(vertx);
+    }
 
-  @Override
-  public boolean isMetricsEnabled() {
-    return true;
-  }
+    @Override
+    public boolean isMetricsEnabled() {
+        return true;
+    }
 
-  public void verticleDeployed(Verticle verticle) {
-  }
+    public void verticleDeployed(Verticle verticle) {
+    }
 
-  public void verticleUndeployed(Verticle verticle) {
-  }
+    public void verticleUndeployed(Verticle verticle) {
+    }
 
-  public void timerCreated(long id) {
-  }
+    public void timerCreated(long id) {
+    }
 
-  public void timerEnded(long id, boolean cancelled) {
-  }
+    public void timerEnded(long id, boolean cancelled) {
+    }
 
-  public EventBusMetrics createMetrics(EventBus eventBus) {
-    return new FakeEventBusMetrics(eventBus);
-  }
+    public EventBusMetrics createMetrics(EventBus eventBus) {
+        return new FakeEventBusMetrics(eventBus);
+    }
 
-  public HttpServerMetrics<?, ?, ?> createMetrics(HttpServer server, SocketAddress localAddress, HttpServerOptions options) {
-    return new FakeHttpServerMetrics(server);
-  }
+    public HttpServerMetrics<?, ?, ?> createMetrics(HttpServer server, SocketAddress localAddress, HttpServerOptions options) {
+        return new FakeHttpServerMetrics(server);
+    }
 
-  public HttpClientMetrics<?, ?, ?> createMetrics(HttpClient client, HttpClientOptions options) {
-    return new FakeHttpClientMetrics(client);
-  }
+    public HttpClientMetrics<?, ?, ?> createMetrics(HttpClient client, HttpClientOptions options) {
+        return new FakeHttpClientMetrics(client);
+    }
 
-  public TCPMetrics<?> createMetrics(NetServer server, SocketAddress localAddress, NetServerOptions options) {
-    return new TCPMetrics<Object>() {
+    public TCPMetrics<?> createMetrics(NetServer server, SocketAddress localAddress, NetServerOptions options) {
+        return new TCPMetrics<Object>() {
 
-      public Object connected(SocketAddress remoteAddress, String remoteName) {
-        return null;
-      }
+            public Object connected(SocketAddress remoteAddress, String remoteName) {
+                return null;
+            }
 
-      public void disconnected(Object socketMetric, SocketAddress remoteAddress) {
-      }
+            public void disconnected(Object socketMetric, SocketAddress remoteAddress) {
+            }
 
-      public void bytesRead(Object socketMetric, SocketAddress remoteAddress, long numberOfBytes) {
-      }
+            public void bytesRead(Object socketMetric, SocketAddress remoteAddress, long numberOfBytes) {
+            }
 
-      public void bytesWritten(Object socketMetric, SocketAddress remoteAddress, long numberOfBytes) {
-      }
+            public void bytesWritten(Object socketMetric, SocketAddress remoteAddress, long numberOfBytes) {
+            }
 
-      public void exceptionOccurred(Object socketMetric, SocketAddress remoteAddress, Throwable t) {
-      }
+            public void exceptionOccurred(Object socketMetric, SocketAddress remoteAddress, Throwable t) {
+            }
 
-      public boolean isEnabled() {
-        return false;
-      }
+            public boolean isEnabled() {
+                return false;
+            }
 
-      public void close() {
-      }
-    };
-  }
+            public void close() {
+            }
+        };
+    }
 
-  public TCPMetrics<?> createMetrics(NetClient client, NetClientOptions options) {
-    return new TCPMetrics<Object>() {
+    public TCPMetrics<?> createMetrics(NetClient client, NetClientOptions options) {
+        return new TCPMetrics<Object>() {
 
-      public Object connected(SocketAddress remoteAddress, String remoteName) {
-        return null;
-      }
+            public Object connected(SocketAddress remoteAddress, String remoteName) {
+                return null;
+            }
 
-      public void disconnected(Object socketMetric, SocketAddress remoteAddress) {
-      }
+            public void disconnected(Object socketMetric, SocketAddress remoteAddress) {
+            }
 
-      public void bytesRead(Object socketMetric, SocketAddress remoteAddress, long numberOfBytes) {
-      }
+            public void bytesRead(Object socketMetric, SocketAddress remoteAddress, long numberOfBytes) {
+            }
 
-      public void bytesWritten(Object socketMetric, SocketAddress remoteAddress, long numberOfBytes) {
-      }
+            public void bytesWritten(Object socketMetric, SocketAddress remoteAddress, long numberOfBytes) {
+            }
 
-      public void exceptionOccurred(Object socketMetric, SocketAddress remoteAddress, Throwable t) {
-      }
+            public void exceptionOccurred(Object socketMetric, SocketAddress remoteAddress, Throwable t) {
+            }
 
-      public boolean isEnabled() {
-        return false;
-      }
+            public boolean isEnabled() {
+                return false;
+            }
 
-      public void close() {
-      }
-    };
-  }
+            public void close() {
+            }
+        };
+    }
 
-  public DatagramSocketMetrics createMetrics(DatagramSocket socket, DatagramSocketOptions options) {
-    return new FakeDatagramSocketMetrics(socket);
-  }
+    public DatagramSocketMetrics createMetrics(DatagramSocket socket, DatagramSocketOptions options) {
+        return new FakeDatagramSocketMetrics(socket);
+    }
 
-  public boolean isEnabled() {
-    throw new UnsupportedOperationException();
-  }
+    public boolean isEnabled() {
+        throw new UnsupportedOperationException();
+    }
 
-  @Override
-  public void eventBusInitialized(EventBus bus) {
-    this.eventBus.set(bus);
-  }
+    @Override
+    public void eventBusInitialized(EventBus bus) {
+        this.eventBus.set(bus);
+    }
 }

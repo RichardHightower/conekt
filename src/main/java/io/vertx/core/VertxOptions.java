@@ -18,7 +18,6 @@ package io.vertx.core;
 
 import io.vertx.codegen.annotations.DataObject;
 import io.vertx.core.metrics.MetricsOptions;
-import io.vertx.core.spi.cluster.ClusterManager;
 
 import java.util.Objects;
 
@@ -130,7 +129,6 @@ public class VertxOptions {
     private long blockedThreadCheckInterval = DEFAULT_BLOCKED_THREAD_CHECK_INTERVAL;
     private long maxEventLoopExecuteTime = DEFAULT_MAX_EVENT_LOOP_EXECUTE_TIME;
     private long maxWorkerExecuteTime = DEFAULT_MAX_WORKER_EXECUTE_TIME;
-    private ClusterManager clusterManager;
     private boolean haEnabled = DEFAULT_HA_ENABLED;
     private int quorumSize = DEFAULT_QUORUM_SIZE;
     private String haGroup = DEFAULT_HA_GROUP;
@@ -162,7 +160,6 @@ public class VertxOptions {
         this.maxEventLoopExecuteTime = other.getMaxEventLoopExecuteTime();
         this.maxWorkerExecuteTime = other.getMaxWorkerExecuteTime();
         this.internalBlockingPoolSize = other.getInternalBlockingPoolSize();
-        this.clusterManager = other.getClusterManager();
         this.haEnabled = other.isHAEnabled();
         this.quorumSize = other.getQuorumSize();
         this.haGroup = other.getHAGroup();
@@ -460,34 +457,6 @@ public class VertxOptions {
         return this;
     }
 
-    /**
-     * Get the cluster manager to be used when clustering.
-     * <p>
-     * If the cluster manager has been programmatically set here, then that will be used when clustering.
-     * <p>
-     * Otherwise Vert.x attempts to locate a cluster manager on the classpath.
-     *
-     * @return the cluster manager.
-     */
-    public ClusterManager getClusterManager() {
-        return clusterManager;
-    }
-
-    /**
-     * Programmatically set the cluster manager to be used when clustering.
-     * <p>
-     * Only valid if clustered = true.
-     * <p>
-     * Normally Vert.x will look on the classpath for a cluster manager, but if you want to set one
-     * programmatically you can use this method.
-     *
-     * @param clusterManager the cluster manager
-     * @return a reference to this, so the API can be used fluently
-     */
-    public VertxOptions setClusterManager(ClusterManager clusterManager) {
-        this.clusterManager = clusterManager;
-        return this;
-    }
 
     /**
      * Get the value of internal blocking pool size.
@@ -643,8 +612,6 @@ public class VertxOptions {
         if (clusterHost != null ? !clusterHost.equals(that.clusterHost) : that.clusterHost != null) return false;
         if (clusterPublicHost != null ? !clusterPublicHost.equals(that.clusterPublicHost) : that.clusterPublicHost != null)
             return false;
-        if (clusterManager != null ? !clusterManager.equals(that.clusterManager) : that.clusterManager != null)
-            return false;
         if (haGroup != null ? !haGroup.equals(that.haGroup) : that.haGroup != null) return false;
         return !(metrics != null ? !metrics.equals(that.metrics) : that.metrics != null);
 
@@ -665,7 +632,6 @@ public class VertxOptions {
         result = 31 * result + (int) (blockedThreadCheckInterval ^ (blockedThreadCheckInterval >>> 32));
         result = 31 * result + (int) (maxEventLoopExecuteTime ^ (maxEventLoopExecuteTime >>> 32));
         result = 31 * result + (int) (maxWorkerExecuteTime ^ (maxWorkerExecuteTime >>> 32));
-        result = 31 * result + (clusterManager != null ? clusterManager.hashCode() : 0);
         result = 31 * result + (haEnabled ? 1 : 0);
         result = 31 * result + quorumSize;
         result = 31 * result + (haGroup != null ? haGroup.hashCode() : 0);
@@ -690,7 +656,6 @@ public class VertxOptions {
                 ", blockedThreadCheckInterval=" + blockedThreadCheckInterval +
                 ", maxEventLoopExecuteTime=" + maxEventLoopExecuteTime +
                 ", maxWorkerExecuteTime=" + maxWorkerExecuteTime +
-                ", clusterManager=" + clusterManager +
                 ", haEnabled=" + haEnabled +
                 ", quorumSize=" + quorumSize +
                 ", haGroup='" + haGroup + '\'' +

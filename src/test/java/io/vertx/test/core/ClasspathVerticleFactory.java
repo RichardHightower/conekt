@@ -23,24 +23,24 @@ import io.vertx.core.spi.VerticleFactory;
 /**
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
-public class ClasspathVerticleFactory implements VerticleFactory{
+public class ClasspathVerticleFactory implements VerticleFactory {
 
-  @Override
-  public void init(Vertx vertx) {
-  }
+    @Override
+    public void init(Vertx vertx) {
+    }
 
-  @Override
-  public String prefix() {
-    return "wibble";
-  }
+    @Override
+    public String prefix() {
+        return "wibble";
+    }
 
-  @Override
-  public Verticle createVerticle(String verticleName, ClassLoader classLoader) throws Exception {
-    return null;
-  }
+    @Override
+    public Verticle createVerticle(String verticleName, ClassLoader classLoader) throws Exception {
+        return null;
+    }
 
-  @Override
-  public void close() {
+    @Override
+    public void close() {
 
-  }
+    }
 }

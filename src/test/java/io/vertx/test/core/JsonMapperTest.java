@@ -25,23 +25,23 @@ import org.junit.Test;
  */
 public class JsonMapperTest extends VertxTestBase {
 
-  @Test
-  public void testGetSetMapper() {
-    ObjectMapper mapper = Json.mapper;
-    assertNotNull(mapper);
-    ObjectMapper newMapper = new ObjectMapper();
-    Json.mapper = newMapper;
-    assertSame(newMapper, Json.mapper);
-    Json.mapper = mapper;
-  }
+    @Test
+    public void testGetSetMapper() {
+        ObjectMapper mapper = Json.mapper;
+        assertNotNull(mapper);
+        ObjectMapper newMapper = new ObjectMapper();
+        Json.mapper = newMapper;
+        assertSame(newMapper, Json.mapper);
+        Json.mapper = mapper;
+    }
 
-  @Test
-  public void testGetSetPrettyMapper() {
-    ObjectMapper mapper = Json.prettyMapper;
-    assertNotNull(mapper);
-    ObjectMapper newMapper = new ObjectMapper();
-    Json.prettyMapper = newMapper;
-    assertSame(newMapper, Json.prettyMapper);
-    Json.prettyMapper = mapper;
-  }
+    @Test
+    public void testGetSetPrettyMapper() {
+        ObjectMapper mapper = Json.prettyMapper;
+        assertNotNull(mapper);
+        ObjectMapper newMapper = new ObjectMapper();
+        Json.prettyMapper = newMapper;
+        assertSame(newMapper, Json.prettyMapper);
+        Json.prettyMapper = mapper;
+    }
 }

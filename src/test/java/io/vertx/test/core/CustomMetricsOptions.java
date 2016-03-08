@@ -23,13 +23,13 @@ import io.vertx.core.metrics.MetricsOptions;
  */
 public class CustomMetricsOptions extends MetricsOptions {
 
-  private String value;
+    private String value;
 
-  public String getCustomProperty() {
-    return value;
-  }
+    public String getCustomProperty() {
+        return value;
+    }
 
-  public void setCustomProperty(String value) {
-    this.value = value;
-  }
+    public void setCustomProperty(String value) {
+        this.value = value;
+    }
 }

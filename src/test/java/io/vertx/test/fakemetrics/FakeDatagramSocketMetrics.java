@@ -29,52 +29,52 @@ import java.util.List;
  */
 public class FakeDatagramSocketMetrics extends FakeMetricsBase implements DatagramSocketMetrics {
 
-  private volatile SocketAddress localAddress;
-  private final List<PacketMetric> reads = Collections.synchronizedList(new ArrayList<>());
-  private final List<PacketMetric> writes = Collections.synchronizedList(new ArrayList<>());
+    private final List<PacketMetric> reads = Collections.synchronizedList(new ArrayList<>());
+    private final List<PacketMetric> writes = Collections.synchronizedList(new ArrayList<>());
+    private volatile SocketAddress localAddress;
 
-  public FakeDatagramSocketMetrics(Measured measured) {
-    super(measured);
-  }
+    public FakeDatagramSocketMetrics(Measured measured) {
+        super(measured);
+    }
 
-  public SocketAddress getLocalAddress() {
-    return localAddress;
-  }
+    public SocketAddress getLocalAddress() {
+        return localAddress;
+    }
 
-  public List<PacketMetric> getReads() {
-    return reads;
-  }
+    public List<PacketMetric> getReads() {
+        return reads;
+    }
 
-  public List<PacketMetric> getWrites() {
-    return writes;
-  }
+    public List<PacketMetric> getWrites() {
+        return writes;
+    }
 
-  @Override
-  public void listening(SocketAddress localAddress) {
-    this.localAddress = localAddress;
-  }
+    @Override
+    public void listening(SocketAddress localAddress) {
+        this.localAddress = localAddress;
+    }
 
-  @Override
-  public void bytesRead(Void socketMetric, SocketAddress remoteAddress, long numberOfBytes) {
-    reads.add(new PacketMetric(remoteAddress, numberOfBytes));
-  }
+    @Override
+    public void bytesRead(Void socketMetric, SocketAddress remoteAddress, long numberOfBytes) {
+        reads.add(new PacketMetric(remoteAddress, numberOfBytes));
+    }
 
-  @Override
-  public void bytesWritten(Void socketMetric, SocketAddress remoteAddress,long numberOfBytes) {
-    writes.add(new PacketMetric(remoteAddress, numberOfBytes));
-  }
+    @Override
+    public void bytesWritten(Void socketMetric, SocketAddress remoteAddress, long numberOfBytes) {
+        writes.add(new PacketMetric(remoteAddress, numberOfBytes));
+    }
 
-  @Override
-  public void exceptionOccurred(Void socketMetric, SocketAddress remoteAddress, Throwable t) {
+    @Override
+    public void exceptionOccurred(Void socketMetric, SocketAddress remoteAddress, Throwable t) {
 
-  }
+    }
 
-  @Override
-  public boolean isEnabled() {
-    return true;
-  }
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 
-  @Override
-  public void close() {
-  }
+    @Override
+    public void close() {
+    }
 }

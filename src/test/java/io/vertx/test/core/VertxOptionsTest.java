@@ -18,8 +18,6 @@ package io.vertx.test.core;
 
 import io.vertx.core.VertxOptions;
 import io.vertx.core.metrics.MetricsOptions;
-import io.vertx.core.spi.cluster.ClusterManager;
-import io.vertx.test.fakecluster.FakeClusterManager;
 import org.junit.Test;
 
 import java.util.Random;
@@ -153,13 +151,6 @@ public class VertxOptionsTest extends VertxTestBase {
         } catch (IllegalArgumentException e) {
             // OK
         }
-        ClusterManager mgr = new FakeClusterManager();
-        assertNull(options.getClusterManager());
-        assertEquals(options, options.setClusterManager(mgr));
-        assertSame(mgr, options.getClusterManager());
-        assertFalse(options.isHAEnabled());
-        assertEquals(options, options.setHAEnabled(true));
-        assertTrue(options.isHAEnabled());
         rand = TestUtils.randomPositiveInt();
         assertEquals(1, options.getQuorumSize());
         assertEquals(options, options.setQuorumSize(rand));

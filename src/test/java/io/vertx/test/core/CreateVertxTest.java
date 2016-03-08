@@ -25,67 +25,64 @@ import org.junit.Test;
  */
 public class CreateVertxTest extends AsyncTestBase {
 
-  @Test
-  public void testCreateSimpleVertx() {
-    Vertx vertx = Vertx.vertx();
-    assertNotNull(vertx);
-  }
-
-  @Test
-  public void testCreateVertxWithOptions() {
-    VertxOptions options = new VertxOptions();
-    Vertx vertx = Vertx.vertx(options);
-    assertNotNull(vertx);
-    assertFalse(vertx.isClustered());
-  }
-
-  @Test
-  public void testFailCreateClusteredVertxSynchronously() {
-    VertxOptions options = new VertxOptions();
-    options.setClustered(true);
-    try {
-      Vertx.vertx(options);
-      fail("Should throw exception");
-    } catch (IllegalArgumentException e) {
-      // OK
+    @Test
+    public void testCreateSimpleVertx() {
+        Vertx vertx = Vertx.vertx();
+        assertNotNull(vertx);
     }
-  }
 
-  @Test
-  public void testCreateClusteredVertxAsync() {
-    VertxOptions options = new VertxOptions();
-    options.setClustered(true);
-    Vertx.clusteredVertx(options, ar -> {
-      assertTrue(ar.succeeded());
-      assertNotNull(ar.result());
-      assertTrue(ar.result().isClustered());
-      Vertx v = ar.result();
-      v.close(ar2 -> {
-        assertTrue(ar2.succeeded());
-        testComplete();
-      });
-    });
-    await();
-  }
+    @Test
+    public void testCreateVertxWithOptions() {
+        VertxOptions options = new VertxOptions();
+        Vertx vertx = Vertx.vertx(options);
+        assertNotNull(vertx);
+    }
 
-  /*
-  If the user doesn't explicitly set clustered to true, it should still create a clustered Vert.x
-   */
-  @Test
-  public void testCreateClusteredVertxAsyncDontSetClustered() {
-    VertxOptions options = new VertxOptions();
-    Vertx.clusteredVertx(options, ar -> {
-      assertTrue(ar.succeeded());
-      assertNotNull(ar.result());
-      assertTrue(options.isClustered());
-      assertTrue(ar.result().isClustered());
-      Vertx v = ar.result();
-      v.close(ar2 -> {
-        assertTrue(ar2.succeeded());
-        testComplete();
-      });
-    });
-    await();
-  }
+    @Test
+    public void testFailCreateClusteredVertxSynchronously() {
+        VertxOptions options = new VertxOptions();
+        options.setClustered(true);
+        try {
+            Vertx.vertx(options);
+            fail("Should throw exception");
+        } catch (IllegalArgumentException e) {
+            // OK
+        }
+    }
+
+    @Test
+    public void testCreateClusteredVertxAsync() {
+        VertxOptions options = new VertxOptions();
+        options.setClustered(true);
+        Vertx.clusteredVertx(options, ar -> {
+            assertTrue(ar.succeeded());
+            assertNotNull(ar.result());
+            Vertx v = ar.result();
+            v.close(ar2 -> {
+                assertTrue(ar2.succeeded());
+                testComplete();
+            });
+        });
+        await();
+    }
+
+    /*
+    If the user doesn't explicitly set clustered to true, it should still create a clustered Vert.x
+     */
+    @Test
+    public void testCreateClusteredVertxAsyncDontSetClustered() {
+        VertxOptions options = new VertxOptions();
+        Vertx.clusteredVertx(options, ar -> {
+            assertTrue(ar.succeeded());
+            assertNotNull(ar.result());
+            assertTrue(options.isClustered());
+            Vertx v = ar.result();
+            v.close(ar2 -> {
+                assertTrue(ar2.succeeded());
+                testComplete();
+            });
+        });
+        await();
+    }
 
 }

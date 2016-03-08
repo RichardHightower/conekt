@@ -19,11 +19,11 @@ package io.vertx.test.core;
  * @author <a href="mailto:julien@julienviet.com">Julien Viet</a>
  */
 enum KeyCert {
-  NONE,
-  JKS,       // Self signed
-  PKCS12,    // Self signed
-  PEM,       // Self signed
-  JKS_CA,    // Signed by CA
-  PKCS12_CA, // Signed by CA
-  PEM_CA     // Signed by CA
+    NONE,
+    JKS,       // Self signed
+    PKCS12,    // Self signed
+    PEM,       // Self signed
+    JKS_CA,    // Signed by CA
+    PKCS12_CA, // Signed by CA
+    PEM_CA     // Signed by CA
 }

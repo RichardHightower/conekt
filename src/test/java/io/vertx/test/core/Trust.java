@@ -19,12 +19,12 @@ package io.vertx.test.core;
  * @author <a href="mailto:julien@julienviet.com">Julien Viet</a>
  */
 enum Trust {
-  NONE,
-  JKS,       // Self signed CA
-  PKCS12,    // Self signed CA
-  PEM,       // Self signed CA
-  JKS_CA,    // Signed by CA
-  PKCS12_CA, // Self by CA
-  PEM_CA     // Signed by CA
+    NONE,
+    JKS,       // Self signed CA
+    PKCS12,    // Self signed CA
+    PEM,       // Self signed CA
+    JKS_CA,    // Signed by CA
+    PKCS12_CA, // Self by CA
+    PEM_CA     // Signed by CA
 }
 

@@ -22,12 +22,12 @@ import org.junit.Test;
 /**
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
-public class ClasspathVerticleFactoryTest extends VertxTestBase{
+public class ClasspathVerticleFactoryTest extends VertxTestBase {
 
-  @Test
-  public void testLoadedFromClasspath() {
-    assertEquals(1, vertx.verticleFactories().size());
-    VerticleFactory fact = vertx.verticleFactories().iterator().next();
-    assertTrue(fact instanceof  ClasspathVerticleFactory);
-  }
+    @Test
+    public void testLoadedFromClasspath() {
+        assertEquals(1, vertx.verticleFactories().size());
+        VerticleFactory fact = vertx.verticleFactories().iterator().next();
+        assertTrue(fact instanceof ClasspathVerticleFactory);
+    }
 }

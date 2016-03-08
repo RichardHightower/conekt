@@ -21,11 +21,11 @@ package io.vertx.test.core;
  */
 public class JarFileResolverTest extends FileResolverTestBase {
 
-  @Override
-  public void setUp() throws Exception {
-    super.setUp();
-    // This is inside the jar webroot2.jar
-    webRoot = "webroot2";
-  }
+    @Override
+    public void setUp() throws Exception {
+        super.setUp();
+        // This is inside the jar webroot2.jar
+        webRoot = "webroot2";
+    }
 
 }

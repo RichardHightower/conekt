@@ -16,7 +16,6 @@
 
 package io.vertx.test.fakemetrics;
 
-import io.vertx.core.http.HttpClientRequest;
 import io.vertx.core.http.HttpServerRequest;
 
 /**
@@ -24,11 +23,11 @@ import io.vertx.core.http.HttpServerRequest;
  */
 public class HttpServerMetric {
 
-  public final HttpServerRequest request;
-  public final SocketMetric socket;
+    public final HttpServerRequest request;
+    public final SocketMetric socket;
 
-  public HttpServerMetric(HttpServerRequest request, SocketMetric socket) {
-    this.request = request;
-    this.socket = socket;
-  }
+    public HttpServerMetric(HttpServerRequest request, SocketMetric socket) {
+        this.request = request;
+        this.socket = socket;
+    }
 }

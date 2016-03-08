@@ -24,39 +24,39 @@ import java.net.URL;
  */
 public class NestedJarFileResolverTest extends FileResolverTestBase {
 
-  private ClassLoader prevCL;
+    private ClassLoader prevCL;
 
-  @Override
-  public void setUp() throws Exception {
-    super.setUp();
-    // This is inside the jar webroot3.jar
-    webRoot = "webroot4";
+    @Override
+    public void setUp() throws Exception {
+        super.setUp();
+        // This is inside the jar webroot3.jar
+        webRoot = "webroot4";
 
-    prevCL = Thread.currentThread().getContextClassLoader();
-    URL webroot3URL = prevCL.getResource("webroot4.jar");
-    ClassLoader loader = new ClassLoader(prevCL = Thread.currentThread().getContextClassLoader()) {
-      @Override
-      public URL getResource(String name) {
-        try {
-          if (name.startsWith("lib/")) {
-            return new URL("jar:" + webroot3URL + "!/" + name);
-          } else if (name.startsWith("webroot4")) {
-            return new URL("jar:" + webroot3URL + "!/lib/nested.jar!/" + name.substring(7));
-          }
-        } catch (MalformedURLException e) {
-          throw new AssertionError(e);
-        }
-        return super.getResource(name);
-      }
-    };
-    Thread.currentThread().setContextClassLoader(loader);
-  }
-
-  @Override
-  public void after() throws Exception {
-    if (prevCL != null) {
-      Thread.currentThread().setContextClassLoader(prevCL);
+        prevCL = Thread.currentThread().getContextClassLoader();
+        URL webroot3URL = prevCL.getResource("webroot4.jar");
+        ClassLoader loader = new ClassLoader(prevCL = Thread.currentThread().getContextClassLoader()) {
+            @Override
+            public URL getResource(String name) {
+                try {
+                    if (name.startsWith("lib/")) {
+                        return new URL("jar:" + webroot3URL + "!/" + name);
+                    } else if (name.startsWith("webroot4")) {
+                        return new URL("jar:" + webroot3URL + "!/lib/nested.jar!/" + name.substring(7));
+                    }
+                } catch (MalformedURLException e) {
+                    throw new AssertionError(e);
+                }
+                return super.getResource(name);
+            }
+        };
+        Thread.currentThread().setContextClassLoader(loader);
     }
-    super.after();
-  }
+
+    @Override
+    public void after() throws Exception {
+        if (prevCL != null) {
+            Thread.currentThread().setContextClassLoader(prevCL);
+        }
+        super.after();
+    }
 }

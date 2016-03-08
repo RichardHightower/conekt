@@ -26,16 +26,16 @@ import io.vertx.core.http.HttpServerOptions;
  */
 public class SimpleServer extends AbstractVerticle {
 
-  @Override
-  public void start(Future<Void> startFuture) throws Exception {
-    HttpServer server = vertx.createHttpServer(new HttpServerOptions().setPort(8080));
-    server.requestHandler(req -> req.response().end());
-    server.listen(res -> {
-      if (res.succeeded()) {
-        startFuture.complete();
-      } else {
-        startFuture.fail(res.cause());
-      }
-    });
-  }
+    @Override
+    public void start(Future<Void> startFuture) throws Exception {
+        HttpServer server = vertx.createHttpServer(new HttpServerOptions().setPort(8080));
+        server.requestHandler(req -> req.response().end());
+        server.listen(res -> {
+            if (res.succeeded()) {
+                startFuture.complete();
+            } else {
+                startFuture.fail(res.cause());
+            }
+        });
+    }
 }

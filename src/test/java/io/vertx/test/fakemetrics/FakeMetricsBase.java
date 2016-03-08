@@ -16,7 +16,6 @@
 
 package io.vertx.test.fakemetrics;
 
-import io.vertx.core.Vertx;
 import io.vertx.core.metrics.Measured;
 import io.vertx.core.spi.metrics.Metrics;
 
@@ -27,27 +26,26 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class FakeMetricsBase implements Metrics {
 
-  private static final ConcurrentHashMap<Object, FakeMetricsBase> metricsMap = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<Object, FakeMetricsBase> metricsMap = new ConcurrentHashMap<>();
+    final Measured key;
 
-  public static <M extends FakeMetricsBase> M getMetrics(Measured measured) {
-    // Free cast :-)
-    return (M) metricsMap.get(measured);
-  }
+    public FakeMetricsBase(Measured measured) {
+        metricsMap.put(measured, this);
+        key = measured;
+    }
 
-  final Measured key;
+    public static <M extends FakeMetricsBase> M getMetrics(Measured measured) {
+        // Free cast :-)
+        return (M) metricsMap.get(measured);
+    }
 
-  public FakeMetricsBase(Measured measured) {
-    metricsMap.put(measured, this);
-    key = measured;
-  }
+    @Override
+    public boolean isEnabled() {
+        return false;
+    }
 
-  @Override
-  public boolean isEnabled() {
-    return false;
-  }
-
-  @Override
-  public void close() {
-    metricsMap.remove(key);
-  }
+    @Override
+    public void close() {
+        metricsMap.remove(key);
+    }
 }

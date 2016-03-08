@@ -23,11 +23,11 @@ import io.vertx.core.net.SocketAddress;
  */
 public class PacketMetric {
 
-  public final SocketAddress remoteAddress;
-  public final long numberOfBytes;
+    public final SocketAddress remoteAddress;
+    public final long numberOfBytes;
 
-  public PacketMetric(SocketAddress remoteAddress,  long numberOfBytes) {
-    this.remoteAddress = remoteAddress;
-    this.numberOfBytes = numberOfBytes;
-  }
+    public PacketMetric(SocketAddress remoteAddress, long numberOfBytes) {
+        this.remoteAddress = remoteAddress;
+        this.numberOfBytes = numberOfBytes;
+    }
 }

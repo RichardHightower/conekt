@@ -25,23 +25,23 @@ import java.net.URLClassLoader;
  */
 public class JarFileResolverWithSpacesTest extends FileResolverTestBase {
 
-  private ClassLoader original;
+    private ClassLoader original;
 
-  @Override
-  public void setUp() throws Exception {
-    original = Thread.currentThread().getContextClassLoader();
-    URLClassLoader someClassloader = new URLClassLoader(new URL[] { new File("src/test/resources/dir with " +
-        "spaces/webroot3.jar").toURI().toURL()}, JarFileResolverWithSpacesTest.class.getClassLoader());
-    Thread.currentThread().setContextClassLoader(someClassloader);
-    super.setUp();
-    // This is inside the jar webroot2.jar
-    webRoot = "webroot3";
-  }
+    @Override
+    public void setUp() throws Exception {
+        original = Thread.currentThread().getContextClassLoader();
+        URLClassLoader someClassloader = new URLClassLoader(new URL[]{new File("src/test/resources/dir with " +
+                "spaces/webroot3.jar").toURI().toURL()}, JarFileResolverWithSpacesTest.class.getClassLoader());
+        Thread.currentThread().setContextClassLoader(someClassloader);
+        super.setUp();
+        // This is inside the jar webroot2.jar
+        webRoot = "webroot3";
+    }
 
-  @Override
-  public void tearDown() throws Exception {
-    super.tearDown();
-    Thread.currentThread().setContextClassLoader(original);
-  }
+    @Override
+    public void tearDown() throws Exception {
+        super.tearDown();
+        Thread.currentThread().setContextClassLoader(original);
+    }
 
 }

@@ -24,11 +24,12 @@ import io.vertx.core.Future;
  */
 public class TestVerticle3 extends AbstractVerticle {
 
-  @Override
-  public void start() throws Exception {
-    vertx.eventBus().send("instanceCount", vertx.getOrCreateContext().getInstanceCount());
-  }
+    @Override
+    public void start() throws Exception {
+        vertx.eventBus().send("instanceCount", vertx.getOrCreateContext().getInstanceCount());
+    }
 
-  @Override
-  public void stop(Future<Void> stopFuture) throws Exception { }
+    @Override
+    public void stop(Future<Void> stopFuture) throws Exception {
+    }
 }

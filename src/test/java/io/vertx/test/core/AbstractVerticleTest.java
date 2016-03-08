@@ -26,31 +26,31 @@ import org.junit.Test;
  */
 public class AbstractVerticleTest extends VertxTestBase {
 
-  MyAbstractVerticle verticle = new MyAbstractVerticle();
+    MyAbstractVerticle verticle = new MyAbstractVerticle();
 
-  @Test
-  public void testFieldsSet() {
-    JsonObject config = new JsonObject().put("foo", "bar");
-    vertx.deployVerticle(verticle, new DeploymentOptions().setConfig(config), onSuccess(res -> {
-      assertEquals(res, verticle.getDeploymentID());
-      assertEquals(config, verticle.getConfig());
-      testComplete();
-    }));
-    await();
-  }
-
-  class MyAbstractVerticle extends AbstractVerticle {
-
-    public void start() {
-
+    @Test
+    public void testFieldsSet() {
+        JsonObject config = new JsonObject().put("foo", "bar");
+        vertx.deployVerticle(verticle, new DeploymentOptions().setConfig(config), onSuccess(res -> {
+            assertEquals(res, verticle.getDeploymentID());
+            assertEquals(config, verticle.getConfig());
+            testComplete();
+        }));
+        await();
     }
 
-    public String getDeploymentID() {
-      return deploymentID();
-    }
+    class MyAbstractVerticle extends AbstractVerticle {
 
-    public JsonObject getConfig() {
-      return config();
+        public void start() {
+
+        }
+
+        public String getDeploymentID() {
+            return deploymentID();
+        }
+
+        public JsonObject getConfig() {
+            return config();
+        }
     }
-  }
 }

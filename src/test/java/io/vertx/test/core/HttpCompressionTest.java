@@ -27,25 +27,25 @@ import org.junit.Test;
  */
 public class HttpCompressionTest extends HttpTestBase {
 
-  public void setUp() throws Exception {
-    super.setUp();
-    client = vertx.createHttpClient(new HttpClientOptions().setTryUseCompression(true));
-    server = vertx.createHttpServer(new HttpServerOptions().setPort(DEFAULT_HTTP_PORT).setCompressionSupported(true));
-  }
+    public void setUp() throws Exception {
+        super.setUp();
+        client = vertx.createHttpClient(new HttpClientOptions().setTryUseCompression(true));
+        server = vertx.createHttpServer(new HttpServerOptions().setPort(DEFAULT_HTTP_PORT).setCompressionSupported(true));
+    }
 
-  @Test
-  public void testDefaultRequestHeaders() {
-    server.requestHandler(req -> {
-      assertEquals(2, req.headers().size());
-      assertEquals("localhost:" + DEFAULT_HTTP_PORT, req.headers().get("host"));
-      assertNotNull(req.headers().get("Accept-Encoding"));
-      req.response().end();
-    });
+    @Test
+    public void testDefaultRequestHeaders() {
+        server.requestHandler(req -> {
+            assertEquals(2, req.headers().size());
+            assertEquals("localhost:" + DEFAULT_HTTP_PORT, req.headers().get("host"));
+            assertNotNull(req.headers().get("Accept-Encoding"));
+            req.response().end();
+        });
 
-    server.listen(onSuccess(server -> {
-      client.request(HttpMethod.GET, DEFAULT_HTTP_PORT, DEFAULT_HTTP_HOST, "some-uri", resp -> testComplete()).end();
-    }));
+        server.listen(onSuccess(server -> {
+            client.request(HttpMethod.GET, DEFAULT_HTTP_PORT, DEFAULT_HTTP_HOST, "some-uri", resp -> testComplete()).end();
+        }));
 
-    await();
-  }
+        await();
+    }
 }

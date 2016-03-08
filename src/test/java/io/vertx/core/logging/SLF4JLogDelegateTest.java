@@ -40,142 +40,142 @@ import static junit.framework.TestCase.assertEquals;
 public class SLF4JLogDelegateTest {
 
 
-  @BeforeClass
-  public static void initialize() throws IOException {
-    System.setProperty("vertx.logger-delegate-factory-class-name", SLF4JLogDelegateFactory.class.getName());
-    LoggerFactory.initialise();
-  }
-
-  @AfterClass
-  public static void terminate() {
-    System.clearProperty("vertx.logger-delegate-factory-class-name");
-  }
-
-  @Test
-  public void testInfo() {
-    Logger logger = LoggerFactory.getLogger("my-slf4j-logger");
-
-    String result = record(() -> logger.info("hello"));
-    assertEquals("[main] INFO my-slf4j-logger - hello\n", result);
-
-    result = record(() -> logger.info("exception", new NullPointerException()));
-    assertTrue(result.contains("[main] INFO my-slf4j-logger - exception\n"));
-    assertTrue(result.contains("java.lang.NullPointerException"));
-
-    result = record(() -> logger.info("hello {} and {}", "Paulo", "Julien"));
-    assertEquals("[main] INFO my-slf4j-logger - hello Paulo and Julien\n", result);
-
-    result = record(() -> logger.info("hello {}", "vert.x"));
-    assertEquals("[main] INFO my-slf4j-logger - hello vert.x\n", result);
-
-    result = record(() -> logger.info("hello {} - {}", "vert.x"));
-    assertEquals("[main] INFO my-slf4j-logger - hello vert.x - {}\n", result);
-
-    result = record(() -> logger.info("hello {}", "vert.x", "foo"));
-    assertEquals("[main] INFO my-slf4j-logger - hello vert.x\n", result);
-
-    result = record(() -> logger.info("{}, an exception has been thrown", new IllegalStateException(), "Luke"));
-    assertTrue(result.contains("[main] INFO my-slf4j-logger - Luke, an exception has been thrown\n"));
-    assertTrue(result.contains("java.lang.IllegalStateException"));
-
-    result = record(() -> logger.info("{}, an exception has been thrown", "Luke", new IllegalStateException()));
-    assertTrue(result.contains("[main] INFO my-slf4j-logger - Luke, an exception has been thrown\n"));
-    assertTrue(result.contains("java.lang.IllegalStateException"));
-  }
-
-  @Test
-  public void testError() {
-    Logger logger = LoggerFactory.getLogger("my-slf4j-logger");
-    String result = record(() -> logger.error("hello"));
-    assertEquals("[main] ERROR my-slf4j-logger - hello\n", result);
-
-    result = record(() -> logger.error("exception", new NullPointerException()));
-    assertTrue(result.contains("[main] ERROR my-slf4j-logger - exception\n"));
-    assertTrue(result.contains("java.lang.NullPointerException"));
-
-    result = record(() -> logger.error("hello {} and {}", "Paulo", "Julien"));
-    assertEquals("[main] ERROR my-slf4j-logger - hello Paulo and Julien\n", result);
-
-    result = record(() -> logger.error("hello {}", "vert.x"));
-    assertEquals("[main] ERROR my-slf4j-logger - hello vert.x\n", result);
-
-    result = record(() -> logger.error("hello {} - {}", "vert.x"));
-    assertEquals("[main] ERROR my-slf4j-logger - hello vert.x - {}\n", result);
-
-    result = record(() -> logger.error("hello {}", "vert.x", "foo"));
-    assertEquals("[main] ERROR my-slf4j-logger - hello vert.x\n", result);
-
-    result = record(() -> logger.error("{}, an exception has been thrown", new IllegalStateException(), "Luke"));
-    assertTrue(result.contains("[main] ERROR my-slf4j-logger - Luke, an exception has been thrown\n"));
-    assertTrue(result.contains("java.lang.IllegalStateException"));
-
-    result = record(() -> logger.error("{}, an exception has been thrown", "Luke", new IllegalStateException()));
-    assertTrue(result.contains("[main] ERROR my-slf4j-logger - Luke, an exception has been thrown\n"));
-    assertTrue(result.contains("java.lang.IllegalStateException"));
-  }
-
-  @Test
-  public void testWarning() {
-    Logger logger = LoggerFactory.getLogger("my-slf4j-logger");
-
-    String result = record(() -> logger.warn("hello"));
-    assertEquals("[main] WARN my-slf4j-logger - hello\n", result);
-
-    result = record(() -> logger.warn("exception", new NullPointerException()));
-    assertTrue(result.contains("[main] WARN my-slf4j-logger - exception\n"));
-    assertTrue(result.contains("java.lang.NullPointerException"));
-
-    result = record(() -> logger.warn("hello {} and {}", "Paulo", "Julien"));
-    assertEquals("[main] WARN my-slf4j-logger - hello Paulo and Julien\n", result);
-
-    result = record(() -> logger.warn("hello {}", "vert.x"));
-    assertEquals("[main] WARN my-slf4j-logger - hello vert.x\n", result);
-
-    result = record(() -> logger.warn("hello {} - {}", "vert.x"));
-    assertEquals("[main] WARN my-slf4j-logger - hello vert.x - {}\n", result);
-
-    result = record(() -> logger.warn("hello {}", "vert.x", "foo"));
-    assertEquals("[main] WARN my-slf4j-logger - hello vert.x\n", result);
-
-    result = record(() -> logger.warn("{}, an exception has been thrown", new IllegalStateException(), "Luke"));
-    assertTrue(result.contains("[main] WARN my-slf4j-logger - Luke, an exception has been thrown\n"));
-    assertTrue(result.contains("java.lang.IllegalStateException"));
-
-    result = record(() -> logger.warn("{}, an exception has been thrown", "Luke", new IllegalStateException()));
-    assertTrue(result.contains("[main] WARN my-slf4j-logger - Luke, an exception has been thrown\n"));
-    assertTrue(result.contains("java.lang.IllegalStateException"));
-  }
-
-  private void setStream(PrintStream stream) {
-    try {
-      Field field = SimpleLogger.class.getDeclaredField("TARGET_STREAM");
-      field.setAccessible(true);
-      field.set(null, stream);
-    } catch (Exception e) {
-      throw new IllegalStateException(e);
+    @BeforeClass
+    public static void initialize() throws IOException {
+        System.setProperty("vertx.logger-delegate-factory-class-name", SLF4JLogDelegateFactory.class.getName());
+        LoggerFactory.initialise();
     }
-  }
 
-  private String record(Runnable runnable) {
-    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-    PrintStream written = new PrintStream(stream);
-    setStream(written);
-    runnable.run();
-    written.flush();
-    String result = stream.toString();
-    quiet(() -> {
-      written.close();
-      return null;
-    });
-    return result;
-  }
-
-  private void quiet(Callable<Void> action) {
-    try {
-      action.call();
-    } catch (Exception ignored) {
-      // Ignored.
+    @AfterClass
+    public static void terminate() {
+        System.clearProperty("vertx.logger-delegate-factory-class-name");
     }
-  }
+
+    @Test
+    public void testInfo() {
+        Logger logger = LoggerFactory.getLogger("my-slf4j-logger");
+
+        String result = record(() -> logger.info("hello"));
+        assertEquals("[main] INFO my-slf4j-logger - hello\n", result);
+
+        result = record(() -> logger.info("exception", new NullPointerException()));
+        assertTrue(result.contains("[main] INFO my-slf4j-logger - exception\n"));
+        assertTrue(result.contains("java.lang.NullPointerException"));
+
+        result = record(() -> logger.info("hello {} and {}", "Paulo", "Julien"));
+        assertEquals("[main] INFO my-slf4j-logger - hello Paulo and Julien\n", result);
+
+        result = record(() -> logger.info("hello {}", "vert.x"));
+        assertEquals("[main] INFO my-slf4j-logger - hello vert.x\n", result);
+
+        result = record(() -> logger.info("hello {} - {}", "vert.x"));
+        assertEquals("[main] INFO my-slf4j-logger - hello vert.x - {}\n", result);
+
+        result = record(() -> logger.info("hello {}", "vert.x", "foo"));
+        assertEquals("[main] INFO my-slf4j-logger - hello vert.x\n", result);
+
+        result = record(() -> logger.info("{}, an exception has been thrown", new IllegalStateException(), "Luke"));
+        assertTrue(result.contains("[main] INFO my-slf4j-logger - Luke, an exception has been thrown\n"));
+        assertTrue(result.contains("java.lang.IllegalStateException"));
+
+        result = record(() -> logger.info("{}, an exception has been thrown", "Luke", new IllegalStateException()));
+        assertTrue(result.contains("[main] INFO my-slf4j-logger - Luke, an exception has been thrown\n"));
+        assertTrue(result.contains("java.lang.IllegalStateException"));
+    }
+
+    @Test
+    public void testError() {
+        Logger logger = LoggerFactory.getLogger("my-slf4j-logger");
+        String result = record(() -> logger.error("hello"));
+        assertEquals("[main] ERROR my-slf4j-logger - hello\n", result);
+
+        result = record(() -> logger.error("exception", new NullPointerException()));
+        assertTrue(result.contains("[main] ERROR my-slf4j-logger - exception\n"));
+        assertTrue(result.contains("java.lang.NullPointerException"));
+
+        result = record(() -> logger.error("hello {} and {}", "Paulo", "Julien"));
+        assertEquals("[main] ERROR my-slf4j-logger - hello Paulo and Julien\n", result);
+
+        result = record(() -> logger.error("hello {}", "vert.x"));
+        assertEquals("[main] ERROR my-slf4j-logger - hello vert.x\n", result);
+
+        result = record(() -> logger.error("hello {} - {}", "vert.x"));
+        assertEquals("[main] ERROR my-slf4j-logger - hello vert.x - {}\n", result);
+
+        result = record(() -> logger.error("hello {}", "vert.x", "foo"));
+        assertEquals("[main] ERROR my-slf4j-logger - hello vert.x\n", result);
+
+        result = record(() -> logger.error("{}, an exception has been thrown", new IllegalStateException(), "Luke"));
+        assertTrue(result.contains("[main] ERROR my-slf4j-logger - Luke, an exception has been thrown\n"));
+        assertTrue(result.contains("java.lang.IllegalStateException"));
+
+        result = record(() -> logger.error("{}, an exception has been thrown", "Luke", new IllegalStateException()));
+        assertTrue(result.contains("[main] ERROR my-slf4j-logger - Luke, an exception has been thrown\n"));
+        assertTrue(result.contains("java.lang.IllegalStateException"));
+    }
+
+    @Test
+    public void testWarning() {
+        Logger logger = LoggerFactory.getLogger("my-slf4j-logger");
+
+        String result = record(() -> logger.warn("hello"));
+        assertEquals("[main] WARN my-slf4j-logger - hello\n", result);
+
+        result = record(() -> logger.warn("exception", new NullPointerException()));
+        assertTrue(result.contains("[main] WARN my-slf4j-logger - exception\n"));
+        assertTrue(result.contains("java.lang.NullPointerException"));
+
+        result = record(() -> logger.warn("hello {} and {}", "Paulo", "Julien"));
+        assertEquals("[main] WARN my-slf4j-logger - hello Paulo and Julien\n", result);
+
+        result = record(() -> logger.warn("hello {}", "vert.x"));
+        assertEquals("[main] WARN my-slf4j-logger - hello vert.x\n", result);
+
+        result = record(() -> logger.warn("hello {} - {}", "vert.x"));
+        assertEquals("[main] WARN my-slf4j-logger - hello vert.x - {}\n", result);
+
+        result = record(() -> logger.warn("hello {}", "vert.x", "foo"));
+        assertEquals("[main] WARN my-slf4j-logger - hello vert.x\n", result);
+
+        result = record(() -> logger.warn("{}, an exception has been thrown", new IllegalStateException(), "Luke"));
+        assertTrue(result.contains("[main] WARN my-slf4j-logger - Luke, an exception has been thrown\n"));
+        assertTrue(result.contains("java.lang.IllegalStateException"));
+
+        result = record(() -> logger.warn("{}, an exception has been thrown", "Luke", new IllegalStateException()));
+        assertTrue(result.contains("[main] WARN my-slf4j-logger - Luke, an exception has been thrown\n"));
+        assertTrue(result.contains("java.lang.IllegalStateException"));
+    }
+
+    private void setStream(PrintStream stream) {
+        try {
+            Field field = SimpleLogger.class.getDeclaredField("TARGET_STREAM");
+            field.setAccessible(true);
+            field.set(null, stream);
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    private String record(Runnable runnable) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        PrintStream written = new PrintStream(stream);
+        setStream(written);
+        runnable.run();
+        written.flush();
+        String result = stream.toString();
+        quiet(() -> {
+            written.close();
+            return null;
+        });
+        return result;
+    }
+
+    private void quiet(Callable<Void> action) {
+        try {
+            action.call();
+        } catch (Exception ignored) {
+            // Ignored.
+        }
+    }
 
 }

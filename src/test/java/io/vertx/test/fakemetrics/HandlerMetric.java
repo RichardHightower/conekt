@@ -23,21 +23,21 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class HandlerMetric {
 
-  public final String address;
-  public final String repliedAddress;
-  public final AtomicInteger beginCount = new AtomicInteger();
-  public final AtomicInteger endCount = new AtomicInteger();
-  public final AtomicInteger failureCount = new AtomicInteger();
-  public final AtomicInteger localCount = new AtomicInteger();
+    public final String address;
+    public final String repliedAddress;
+    public final AtomicInteger beginCount = new AtomicInteger();
+    public final AtomicInteger endCount = new AtomicInteger();
+    public final AtomicInteger failureCount = new AtomicInteger();
+    public final AtomicInteger localCount = new AtomicInteger();
 
-  public HandlerMetric(String address, String repliedAddress) {
-    this.address = address;
-    this.repliedAddress = repliedAddress;
-  }
+    public HandlerMetric(String address, String repliedAddress) {
+        this.address = address;
+        this.repliedAddress = repliedAddress;
+    }
 
-  @Override
-  public String toString() {
-    return "HandlerRegistration[address=" + address + ",repliedAddress=" + repliedAddress + ",beginCount=" + beginCount.get() +
-        ",endCount=" + endCount.get() + ",failureCount=" + failureCount + ",localCount=" + localCount.get() + "]";
-  }
+    @Override
+    public String toString() {
+        return "HandlerRegistration[address=" + address + ",repliedAddress=" + repliedAddress + ",beginCount=" + beginCount.get() +
+                ",endCount=" + endCount.get() + ",failureCount=" + failureCount + ",localCount=" + localCount.get() + "]";
+    }
 }

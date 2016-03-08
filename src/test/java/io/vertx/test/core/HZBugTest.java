@@ -21,11 +21,11 @@ package io.vertx.test.core;
  */
 public class HZBugTest {
 
-  public static void main(String[] args) {
-    new HZBugTest().run();
-  }
+    public static void main(String[] args) {
+        new HZBugTest().run();
+    }
 
-  public void run() {
+    public void run() {
 
-  }
+    }
 }

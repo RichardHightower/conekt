@@ -28,24 +28,24 @@ import java.util.Set;
  */
 public class TestVerticle2 extends AbstractVerticle {
 
-  private static Set<Context> contexts = new HashSet<>();
+    private static Set<Context> contexts = new HashSet<>();
 
-  @Override
-  public void start() throws Exception {
-    synchronized (contexts) {
-      if (contexts.contains(context)) {
-        throw new IllegalStateException("Same context!");
-      } else {
-        contexts.add(context);
-        vertx.eventBus().send("tvstarted", "started");
-      }
+    @Override
+    public void start() throws Exception {
+        synchronized (contexts) {
+            if (contexts.contains(context)) {
+                throw new IllegalStateException("Same context!");
+            } else {
+                contexts.add(context);
+                vertx.eventBus().send("tvstarted", "started");
+            }
+        }
     }
-  }
 
-  @Override
-  public void stop(Future<Void> stopFuture) throws Exception {
-    vertx.eventBus().send("tvstopped", "stopped", reply -> {
-      stopFuture.complete(null);
-    });
-  }
+    @Override
+    public void stop(Future<Void> stopFuture) throws Exception {
+        vertx.eventBus().send("tvstopped", "stopped", reply -> {
+            stopFuture.complete(null);
+        });
+    }
 }

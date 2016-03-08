@@ -29,38 +29,36 @@ import java.util.concurrent.CountDownLatch;
  */
 public class HttpTestBase extends VertxTestBase {
 
-  public static final String DEFAULT_HTTP_HOST = "localhost";
-  public static final int DEFAULT_HTTP_PORT = 8080;
-  public static final String DEFAULT_TEST_URI = "some-uri";
+    public static final String DEFAULT_HTTP_HOST = "localhost";
+    public static final int DEFAULT_HTTP_PORT = 8080;
+    public static final String DEFAULT_TEST_URI = "some-uri";
+    private static final Handler noOp = e -> {
+    };
+    protected HttpServer server;
+    protected HttpClient client;
 
-  protected HttpServer server;
-  protected HttpClient client;
-
-  public void setUp() throws Exception {
-    super.setUp();
-    server = vertx.createHttpServer(new HttpServerOptions().setPort(DEFAULT_HTTP_PORT).setHost(DEFAULT_HTTP_HOST));
-  }
-
-  protected void tearDown() throws Exception {
-    if (client != null) {
-      client.close();
+    public void setUp() throws Exception {
+        super.setUp();
+        server = vertx.createHttpServer(new HttpServerOptions().setPort(DEFAULT_HTTP_PORT).setHost(DEFAULT_HTTP_HOST));
     }
-    if (server != null) {
-      CountDownLatch latch = new CountDownLatch(1);
-      server.close((asyncResult) -> {
-        assertTrue(asyncResult.succeeded());
-        latch.countDown();
-      });
-      awaitLatch(latch);
+
+    protected void tearDown() throws Exception {
+        if (client != null) {
+            client.close();
+        }
+        if (server != null) {
+            CountDownLatch latch = new CountDownLatch(1);
+            server.close((asyncResult) -> {
+                assertTrue(asyncResult.succeeded());
+                latch.countDown();
+            });
+            awaitLatch(latch);
+        }
+        super.tearDown();
     }
-    super.tearDown();
-  }
 
-  @SuppressWarnings("unchecked")
-  protected <E> Handler<E> noOpHandler() {
-    return noOp;
-  }
-
-  private static final Handler noOp = e -> {
-  };
+    @SuppressWarnings("unchecked")
+    protected <E> Handler<E> noOpHandler() {
+        return noOp;
+    }
 }

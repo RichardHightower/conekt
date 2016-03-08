@@ -403,13 +403,11 @@ public class BufferImpl implements Buffer {
         return buffer != null ? buffer.hashCode() : 0;
     }
 
-    @Override
     public void writeToBuffer(Buffer buff) {
         buff.appendInt(this.length());
         buff.appendBuffer(this);
     }
 
-    @Override
     public int readFromBuffer(int pos, Buffer buffer) {
         int len = buffer.getInt(pos);
         Buffer b = buffer.getBuffer(pos + 4, pos + 4 + len);

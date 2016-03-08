@@ -26,9 +26,9 @@ import io.vertx.core.spi.metrics.VertxMetrics;
  */
 public class FakeMetricsFactory implements VertxMetricsFactory {
 
-  @Override
-  public VertxMetrics metrics(Vertx vertx, VertxOptions options) {
-    return new FakeVertxMetrics(vertx);
-  }
+    @Override
+    public VertxMetrics metrics(Vertx vertx, VertxOptions options) {
+        return new FakeVertxMetrics(vertx);
+    }
 
 }

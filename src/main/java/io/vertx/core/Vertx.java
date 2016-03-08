@@ -35,7 +35,6 @@ import io.vertx.core.net.NetClient;
 import io.vertx.core.net.NetClientOptions;
 import io.vertx.core.net.NetServer;
 import io.vertx.core.net.NetServerOptions;
-import io.vertx.core.shareddata.SharedData;
 import io.vertx.core.spi.VerticleFactory;
 import io.vertx.core.spi.VertxFactory;
 import io.vertx.core.streams.ReadStream;
@@ -219,13 +218,6 @@ public interface Vertx extends Measured {
      */
     DnsClient createDnsClient(int port, String host);
 
-    /**
-     * Get the shared data object. There is a single instance of SharedData per Vertx instance.
-     *
-     * @return the shared data object
-     */
-    @CacheReturn
-    SharedData sharedData();
 
     /**
      * Set a one-shot timer to fire after {@code delay} milliseconds, at which point {@code handler} will be called with
@@ -435,12 +427,6 @@ public interface Vertx extends Measured {
     @GenIgnore
     Set<VerticleFactory> verticleFactories();
 
-    /**
-     * Is this Vert.x instance clustered?
-     *
-     * @return true if clustered
-     */
-    boolean isClustered();
 
     /**
      * Safely execute some blocking code.

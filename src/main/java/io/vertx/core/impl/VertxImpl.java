@@ -50,11 +50,8 @@ import io.vertx.core.net.NetServerOptions;
 import io.vertx.core.net.impl.NetClientImpl;
 import io.vertx.core.net.impl.NetServerImpl;
 import io.vertx.core.net.impl.ServerID;
-import io.vertx.core.shareddata.SharedData;
-import io.vertx.core.shareddata.impl.SharedDataImpl;
 import io.vertx.core.spi.VerticleFactory;
 import io.vertx.core.spi.VertxMetricsFactory;
-import io.vertx.core.spi.cluster.ClusterManager;
 import io.vertx.core.spi.metrics.Metrics;
 import io.vertx.core.spi.metrics.MetricsProvider;
 import io.vertx.core.spi.metrics.VertxMetrics;
@@ -83,11 +80,9 @@ public class VertxImpl implements VertxInternal, MetricsProvider {
     }
 
     private final FileSystem fileSystem = getFileSystem();
-    private final SharedData sharedData;
     private final VertxMetrics metrics;
     private final ConcurrentMap<Long, InternalTimerHandler> timeouts = new ConcurrentHashMap<>();
     private final AtomicLong timeoutCounter = new AtomicLong(0);
-    private final ClusterManager clusterManager;
     private final DeploymentManager deploymentManager;
     private final FileResolver fileResolver;
     private final Map<ServerID, HttpServerImpl> sharedHttpServers = new HashMap<>();
@@ -102,7 +97,6 @@ public class VertxImpl implements VertxInternal, MetricsProvider {
     private final BlockedThreadChecker checker;
     private final boolean haEnabled;
     private EventBus eventBus;
-    private HAManager haManager;
     private boolean closed;
 
     VertxImpl() {
@@ -138,26 +132,7 @@ public class VertxImpl implements VertxInternal, MetricsProvider {
         this.deploymentManager = new DeploymentManager(this);
         this.metrics = initialiseMetrics(options);
         this.haEnabled = options.isClustered() && options.isHAEnabled();
-        if (options.isClustered()) {
-            this.clusterManager = getClusterManager(options);
-            this.clusterManager.setVertx(this);
-            this.clusterManager.join(ar -> {
-                if (ar.failed()) {
-                    log.error("Failed to join cluster", ar.cause());
-                } else {
-                    // Provide a memory barrier as we are setting from a different thread
-                    synchronized (VertxImpl.this) {
-                        haManager = new HAManager(this, deploymentManager, clusterManager, options.getQuorumSize(),
-                                options.getHAGroup(), haEnabled);
-                        createAndStartEventBus(options, resultHandler);
-                    }
-                }
-            });
-        } else {
-            this.clusterManager = null;
-            createAndStartEventBus(options, resultHandler);
-        }
-        this.sharedData = new SharedDataImpl(this, clusterManager);
+        createAndStartEventBus(options, resultHandler);
     }
 
     public static Context context() {
@@ -225,9 +200,6 @@ public class VertxImpl implements VertxInternal, MetricsProvider {
         return fileSystem;
     }
 
-    public SharedData sharedData() {
-        return sharedData;
-    }
 
     public HttpServer createHttpServer(HttpServerOptions serverOptions) {
         return new HttpServerImpl(this, serverOptions);
@@ -355,34 +327,6 @@ public class VertxImpl implements VertxInternal, MetricsProvider {
         return new DummyVertxMetrics();
     }
 
-    private ClusterManager getClusterManager(VertxOptions options) {
-        if (options.isClustered()) {
-            if (options.getClusterManager() != null) {
-                return options.getClusterManager();
-            } else {
-                ClusterManager mgr;
-                String clusterManagerClassName = System.getProperty("vertx.cluster.managerClass");
-                if (clusterManagerClassName != null) {
-                    // We allow specify a sys prop for the cluster manager factory which overrides ServiceLoader
-                    try {
-                        Class<?> clazz = Class.forName(clusterManagerClassName);
-                        mgr = (ClusterManager) clazz.newInstance();
-                    } catch (Exception e) {
-                        throw new IllegalStateException("Failed to instantiate " + clusterManagerClassName, e);
-                    }
-                } else {
-                    ServiceLoader<ClusterManager> mgrs = ServiceLoader.load(ClusterManager.class);
-                    if (!mgrs.iterator().hasNext()) {
-                        throw new IllegalStateException("No ClusterManagerFactory instances found on classpath");
-                    }
-                    mgr = mgrs.iterator().next();
-                }
-                return mgr;
-            }
-        } else {
-            return null;
-        }
-    }
 
     private long scheduleTimeout(ContextImpl context, Handler<Long> handler, long delay, boolean periodic) {
         if (delay < 1) {
@@ -413,9 +357,6 @@ public class VertxImpl implements VertxInternal, MetricsProvider {
         return null;
     }
 
-    public ClusterManager getClusterManager() {
-        return clusterManager;
-    }
 
     @Override
     public void close() {
@@ -423,23 +364,9 @@ public class VertxImpl implements VertxInternal, MetricsProvider {
     }
 
     private void closeClusterManager(Handler<AsyncResult<Void>> completionHandler) {
-        if (clusterManager != null) {
-            // Workaround fo Hazelcast bug https://github.com/hazelcast/hazelcast/issues/5220
-            if (clusterManager instanceof ExtendedClusterManager) {
-                ExtendedClusterManager ecm = (ExtendedClusterManager) clusterManager;
-                ecm.beforeLeave();
-            }
-            clusterManager.leave(ar -> {
-                if (ar.failed()) {
-                    log.error("Failed to leave cluster", ar.cause());
-                }
-                if (completionHandler != null) {
-                    runOnContext(v -> completionHandler.handle(Future.succeededFuture()));
-                }
-            });
-        } else if (completionHandler != null) {
-            runOnContext(v -> completionHandler.handle(Future.succeededFuture()));
-        }
+
+        completionHandler.handle(Future.succeededFuture());
+
     }
 
     @Override
@@ -453,9 +380,7 @@ public class VertxImpl implements VertxInternal, MetricsProvider {
         }
         closed = true;
         deploymentManager.undeployAll(ar -> {
-            if (haManager() != null) {
-                haManager().stop();
-            }
+
             eventBus.close(ar2 -> {
                 closeClusterManager(ar3 -> {
                     // Copy set to prevent ConcurrentModificationException
@@ -536,17 +461,9 @@ public class VertxImpl implements VertxInternal, MetricsProvider {
 
     @Override
     public void deployVerticle(String name, DeploymentOptions options, Handler<AsyncResult<String>> completionHandler) {
-        if (options.isHa() && haManager() != null && haManager().isEnabled()) {
-            haManager().deployVerticle(name, options, completionHandler);
-        } else {
-            deploymentManager.deployVerticle(name, options, completionHandler);
-        }
+        deploymentManager.deployVerticle(name, options, completionHandler);
     }
 
-    @Override
-    public String getNodeID() {
-        return clusterManager.getNodeID();
-    }
 
     @Override
     public void undeploy(String deploymentID) {
@@ -556,9 +473,6 @@ public class VertxImpl implements VertxInternal, MetricsProvider {
 
     @Override
     public void undeploy(String deploymentID, Handler<AsyncResult<Void>> completionHandler) {
-        if (haManager() != null && haManager().isEnabled()) {
-            haManager().removeFromHA(deploymentID);
-        }
         deploymentManager.undeployVerticle(deploymentID, completionHandler);
     }
 
@@ -602,46 +516,19 @@ public class VertxImpl implements VertxInternal, MetricsProvider {
         executeBlocking(blockingCodeHandler, true, asyncResultHandler);
     }
 
-    @Override
-    public boolean isClustered() {
-        return clusterManager != null;
-    }
 
     @Override
     public EventLoopGroup nettyEventLoopGroup() {
         return eventLoopGroup;
     }
 
-    // For testing
-    public void simulateKill() {
-        if (haManager() != null) {
-            haManager().simulateKill();
-        }
-    }
 
     @Override
     public Deployment getDeployment(String deploymentID) {
         return deploymentManager.getDeployment(deploymentID);
     }
 
-    @Override
-    public synchronized void failoverCompleteHandler(FailoverCompleteHandler failoverCompleteHandler) {
-        if (haManager() != null) {
-            haManager.setFailoverCompleteHandler(failoverCompleteHandler);
-        }
-    }
 
-    @Override
-    public boolean isKilled() {
-        return haManager().isKilled();
-    }
-
-    @Override
-    public void failDuringFailover(boolean fail) {
-        if (haManager() != null) {
-            haManager().failDuringFailover(fail);
-        }
-    }
 
     @Override
     public VertxMetrics metricsSPI() {
@@ -690,17 +577,6 @@ public class VertxImpl implements VertxInternal, MetricsProvider {
         });
     }
 
-    private HAManager haManager() {
-        // If reading from different thread possibility that it's been set but not visible - so provide
-        // memory barrier
-        if (haManager == null && haEnabled) {
-            synchronized (this) {
-                return haManager;
-            }
-        } else {
-            return haManager;
-        }
-    }
 
     private class InternalTimerHandler implements Handler<Void>, Closeable {
         final Handler<Long> handler;

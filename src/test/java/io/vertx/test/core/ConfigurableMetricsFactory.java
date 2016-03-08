@@ -28,15 +28,15 @@ import io.vertx.core.spi.metrics.VertxMetrics;
  */
 public class ConfigurableMetricsFactory implements VertxMetricsFactory {
 
-  public static VertxMetricsFactory delegate;
+    public static VertxMetricsFactory delegate;
 
-  @Override
-  public VertxMetrics metrics(Vertx vertx, VertxOptions options) {
-    return delegate != null ? delegate.metrics(vertx, options) : new DummyVertxMetrics();
-  }
+    @Override
+    public VertxMetrics metrics(Vertx vertx, VertxOptions options) {
+        return delegate != null ? delegate.metrics(vertx, options) : new DummyVertxMetrics();
+    }
 
-  @Override
-  public MetricsOptions newOptions() {
-    return delegate != null ? delegate.newOptions() : new MetricsOptions();
-  }
+    @Override
+    public MetricsOptions newOptions() {
+        return delegate != null ? delegate.newOptions() : new MetricsOptions();
+    }
 }

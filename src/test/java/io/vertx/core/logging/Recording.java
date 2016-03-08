@@ -27,48 +27,48 @@ import java.util.logging.LogManager;
  * @author <a href="http://escoffier.me">Clement Escoffier</a>
  */
 public class Recording {
-  private static final PrintStream ORIGINAL_ERR = System.err;
+    private static final PrintStream ORIGINAL_ERR = System.err;
 
-  private ByteArrayOutputStream error = new ByteArrayOutputStream();
+    private ByteArrayOutputStream error = new ByteArrayOutputStream();
 
-  public Recording() throws IOException {
-    // Clear and reload as the stream may have been cached.
-    LogManager.getLogManager().reset();
-    LogManager.getLogManager().readConfiguration();
-  }
-
-  public void start() {
-    error.reset();
-    System.setErr(new PrintStream(error));
-  }
-
-  public void stop() {
-    if (System.err != ORIGINAL_ERR) {
-      System.setErr(ORIGINAL_ERR);
+    public Recording() throws IOException {
+        // Clear and reload as the stream may have been cached.
+        LogManager.getLogManager().reset();
+        LogManager.getLogManager().readConfiguration();
     }
-  }
 
-  public String get() {
-    try {
-      error.flush();
-    } catch (IOException e) {
-      // Ignore it.
+    public void start() {
+        error.reset();
+        System.setErr(new PrintStream(error));
     }
-    return error.toString();
-  }
 
-  public void terminate() {
-    if (System.err != ORIGINAL_ERR) {
-      System.setErr(ORIGINAL_ERR);
+    public void stop() {
+        if (System.err != ORIGINAL_ERR) {
+            System.setErr(ORIGINAL_ERR);
+        }
     }
-  }
 
-  public String execute(Runnable runnable) {
-    start();
-    runnable.run();
-    String result = get();
-    stop();
-    return result;
-  }
+    public String get() {
+        try {
+            error.flush();
+        } catch (IOException e) {
+            // Ignore it.
+        }
+        return error.toString();
+    }
+
+    public void terminate() {
+        if (System.err != ORIGINAL_ERR) {
+            System.setErr(ORIGINAL_ERR);
+        }
+    }
+
+    public String execute(Runnable runnable) {
+        start();
+        runnable.run();
+        String result = get();
+        stop();
+        return result;
+    }
 
 }

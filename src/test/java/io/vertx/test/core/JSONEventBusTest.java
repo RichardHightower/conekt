@@ -32,90 +32,90 @@ import java.util.Map;
  */
 public class JSONEventBusTest extends VertxTestBase {
 
-  private EventBus eb;
+    private EventBus eb;
 
-  public void setUp() throws Exception {
-    super.setUp();
-    eb = vertx.eventBus();
-  }
+    public void setUp() throws Exception {
+        super.setUp();
+        eb = vertx.eventBus();
+    }
 
-  @Test
-  public void testChangesNotVisibleObject1() {
-    JsonObject obj = new JsonObject();
-    eb.<JsonObject>consumer("foo").handler((Message<JsonObject> msg) -> {
-      assertFalse(msg.body().containsKey("b"));
-      testComplete();
-    });
-    eb.send("foo", obj);
-    obj.put("b", "blurrgg");
-    await();
-  }
+    @Test
+    public void testChangesNotVisibleObject1() {
+        JsonObject obj = new JsonObject();
+        eb.<JsonObject>consumer("foo").handler((Message<JsonObject> msg) -> {
+            assertFalse(msg.body().containsKey("b"));
+            testComplete();
+        });
+        eb.send("foo", obj);
+        obj.put("b", "blurrgg");
+        await();
+    }
 
-  @Test
-  public void testChangesNotVisibleObject2() {
-    final JsonObject obj = new JsonObject();
-    eb.<JsonObject>consumer("foo").handler((Message<JsonObject> msg) -> {
-      msg.body().put("b", "uqwduihwqd");
-    });
-    eb.send("foo", obj);
-    vertx.setTimer(1000, id -> {
-      assertFalse(obj.containsKey("b"));
-      testComplete();
-    });
-    await();
-  }
+    @Test
+    public void testChangesNotVisibleObject2() {
+        final JsonObject obj = new JsonObject();
+        eb.<JsonObject>consumer("foo").handler((Message<JsonObject> msg) -> {
+            msg.body().put("b", "uqwduihwqd");
+        });
+        eb.send("foo", obj);
+        vertx.setTimer(1000, id -> {
+            assertFalse(obj.containsKey("b"));
+            testComplete();
+        });
+        await();
+    }
 
-  @Test
-  public void testChangesNotVisibleObject3() {
-    Map<String, Object> map = new HashMap<>();
-    final JsonObject obj = new JsonObject(map);
-    eb.<JsonObject>consumer("foo").handler((Message<JsonObject> msg) -> {
-      vertx.setTimer(1000, id -> {
-        assertFalse(msg.body().containsKey("b"));
-        testComplete();
-      });
-    });
-    eb.send("foo", obj);
-    map.put("b", "uhqdihuqwd");
-    await();
-  }
+    @Test
+    public void testChangesNotVisibleObject3() {
+        Map<String, Object> map = new HashMap<>();
+        final JsonObject obj = new JsonObject(map);
+        eb.<JsonObject>consumer("foo").handler((Message<JsonObject> msg) -> {
+            vertx.setTimer(1000, id -> {
+                assertFalse(msg.body().containsKey("b"));
+                testComplete();
+            });
+        });
+        eb.send("foo", obj);
+        map.put("b", "uhqdihuqwd");
+        await();
+    }
 
-  @Test
-  public void testChangesNotVisibleArray1() {
-    JsonArray obj = new JsonArray();
-    eb.<JsonArray>consumer("foo").handler((Message<JsonArray> msg) -> {
-      assertEquals(0, msg.body().size());
-      testComplete();
-    });
-    eb.send("foo", obj);
-    obj.add("blah");
-    await();
-  }
+    @Test
+    public void testChangesNotVisibleArray1() {
+        JsonArray obj = new JsonArray();
+        eb.<JsonArray>consumer("foo").handler((Message<JsonArray> msg) -> {
+            assertEquals(0, msg.body().size());
+            testComplete();
+        });
+        eb.send("foo", obj);
+        obj.add("blah");
+        await();
+    }
 
-  @Test
-  public void testChangesNotVisibleArray2() {
-    final JsonArray obj = new JsonArray();
-    eb.<JsonArray>consumer("foo").handler((Message<JsonArray> msg) ->  msg.body().add("blah"));
-    eb.send("foo", obj);
-    vertx.setTimer(1000, id -> {
-      assertEquals(0, obj.size());
-      testComplete();
-    });
-    await();
-  }
+    @Test
+    public void testChangesNotVisibleArray2() {
+        final JsonArray obj = new JsonArray();
+        eb.<JsonArray>consumer("foo").handler((Message<JsonArray> msg) -> msg.body().add("blah"));
+        eb.send("foo", obj);
+        vertx.setTimer(1000, id -> {
+            assertEquals(0, obj.size());
+            testComplete();
+        });
+        await();
+    }
 
-  @Test
-  public void testChangesNotVisibleArray3() {
-    List<Object> list = new ArrayList<>();
-    final JsonArray obj = new JsonArray(list);
-    eb.<JsonArray>consumer("foo").handler((Message<JsonArray> msg) -> {
-      vertx.setTimer(1000, id -> {
-        assertEquals(0, msg.body().size());
-        testComplete();
-      });
-    });
-    eb.send("foo", obj);
-    list.add("uhwqdiuh");
-    await();
-  }
+    @Test
+    public void testChangesNotVisibleArray3() {
+        List<Object> list = new ArrayList<>();
+        final JsonArray obj = new JsonArray(list);
+        eb.<JsonArray>consumer("foo").handler((Message<JsonArray> msg) -> {
+            vertx.setTimer(1000, id -> {
+                assertEquals(0, msg.body().size());
+                testComplete();
+            });
+        });
+        eb.send("foo", obj);
+        list.add("uhwqdiuh");
+        await();
+    }
 }

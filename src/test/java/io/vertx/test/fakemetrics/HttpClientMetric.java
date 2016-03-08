@@ -23,11 +23,11 @@ import io.vertx.core.http.HttpClientRequest;
  */
 public class HttpClientMetric {
 
-  public final HttpClientRequest request;
-  public final SocketMetric socket;
+    public final HttpClientRequest request;
+    public final SocketMetric socket;
 
-  public HttpClientMetric(HttpClientRequest request, SocketMetric socket) {
-    this.request = request;
-    this.socket = socket;
-  }
+    public HttpClientMetric(HttpClientRequest request, SocketMetric socket) {
+        this.request = request;
+        this.socket = socket;
+    }
 }
