@@ -35,7 +35,6 @@ import io.netty.util.CharsetUtil;
 import io.netty.util.concurrent.GlobalEventExecutor;
 import io.vertx.core.*;
 import io.vertx.core.http.*;
-import io.vertx.core.http.impl.cgbystrom.FlashPolicyHandler;
 import io.vertx.core.http.impl.ws.WebSocketFrameImpl;
 import io.vertx.core.http.impl.ws.WebSocketFrameInternal;
 import io.vertx.core.impl.ContextImpl;
@@ -195,9 +194,6 @@ public class HttpServerImpl implements HttpServer, Closeable, MetricsProvider {
                         ChannelPipeline pipeline = ch.pipeline();
                         if (sslHelper.isSSL()) {
                             pipeline.addLast("ssl", sslHelper.createSslHandler(vertx, false));
-                        }
-                        if (USE_FLASH_POLICY_HANDLER) {
-                            pipeline.addLast("flashpolicy", new FlashPolicyHandler());
                         }
                         pipeline.addLast("httpDecoder", new HttpRequestDecoder(options.getMaxInitialLineLength()
                                 , options.getMaxHeaderSize(), options.getMaxChunkSize(), false));
