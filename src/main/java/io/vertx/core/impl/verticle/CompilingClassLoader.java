@@ -16,8 +16,8 @@
 
 package io.vertx.core.impl.verticle;
 
-import io.vertx.core.logging.Logger;
-import io.vertx.core.logging.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.tools.*;
 import javax.tools.JavaFileObject.Kind;
@@ -101,12 +101,12 @@ public class CompilingClassLoader extends ClassLoader {
                     String code = d.getCode();
                     if (code == null || (!code.startsWith("compiler.warn.annotation.method.not.found") &&
                             !"compiler.warn.proc.processor.incompatible.source.version".equals(code))) {
-                        log.info(d);
+                        log.info("{}", d);
                     }
                 }
             } else {
                 for (Diagnostic<?> d : diagnostics.getDiagnostics()) {
-                    log.warn(d);
+                    log.warn("{}", d);
                 }
                 throw new RuntimeException("Compilation failed!");
             }

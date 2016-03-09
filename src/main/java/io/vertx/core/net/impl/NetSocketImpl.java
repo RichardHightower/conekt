@@ -31,11 +31,11 @@ import io.vertx.core.eventbus.Message;
 import io.vertx.core.eventbus.MessageConsumer;
 import io.vertx.core.impl.ContextImpl;
 import io.vertx.core.impl.VertxInternal;
-import io.vertx.core.logging.Logger;
-import io.vertx.core.logging.LoggerFactory;
 import io.vertx.core.net.NetSocket;
 import io.vertx.core.net.SocketAddress;
 import io.vertx.core.spi.metrics.TCPMetrics;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.SSLPeerUnverifiedException;
 import javax.security.cert.X509Certificate;
@@ -55,6 +55,7 @@ import java.util.UUID;
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
 public class NetSocketImpl extends ConnectionBase implements NetSocket {
+
 
     private static final Logger log = LoggerFactory.getLogger(NetSocketImpl.class);
 
@@ -254,7 +255,7 @@ public class NetSocketImpl extends ConnectionBase implements NetSocket {
             if (future.isSuccess()) {
                 handler.handle(null);
             } else {
-                log.error(future.cause());
+                log.error("", future.cause());
             }
         }));
         return this;

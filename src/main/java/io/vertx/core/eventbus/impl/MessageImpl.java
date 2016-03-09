@@ -21,8 +21,8 @@ import io.vertx.core.Handler;
 import io.vertx.core.MultiMap;
 import io.vertx.core.eventbus.*;
 import io.vertx.core.http.CaseInsensitiveHeaders;
-import io.vertx.core.logging.Logger;
-import io.vertx.core.logging.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Map;
@@ -31,6 +31,7 @@ import java.util.Map;
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
 public class MessageImpl<U, V> implements Message<V> {
+
 
     private static final Logger log = LoggerFactory.getLogger(MessageImpl.class);
 

@@ -24,12 +24,12 @@ import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.impl.ContextImpl;
 import io.vertx.core.impl.VertxInternal;
-import io.vertx.core.logging.Logger;
-import io.vertx.core.logging.LoggerFactory;
 import io.vertx.core.net.NetworkOptions;
 import io.vertx.core.net.SocketAddress;
 import io.vertx.core.spi.metrics.NetworkMetrics;
 import io.vertx.core.spi.metrics.TCPMetrics;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.SSLPeerUnverifiedException;
 import javax.security.cert.X509Certificate;
@@ -177,7 +177,7 @@ public abstract class ConnectionBase {
         if (exceptionHandler != null) {
             exceptionHandler.handle(t);
         } else {
-            log.error(t);
+            log.error("", t);
         }
     }
 

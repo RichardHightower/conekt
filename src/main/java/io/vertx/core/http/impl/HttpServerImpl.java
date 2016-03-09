@@ -40,13 +40,13 @@ import io.vertx.core.http.impl.ws.WebSocketFrameImpl;
 import io.vertx.core.http.impl.ws.WebSocketFrameInternal;
 import io.vertx.core.impl.ContextImpl;
 import io.vertx.core.impl.VertxInternal;
-import io.vertx.core.logging.Logger;
-import io.vertx.core.logging.LoggerFactory;
 import io.vertx.core.net.impl.*;
 import io.vertx.core.spi.metrics.HttpServerMetrics;
 import io.vertx.core.spi.metrics.Metrics;
 import io.vertx.core.spi.metrics.MetricsProvider;
 import io.vertx.core.streams.ReadStream;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -64,6 +64,7 @@ import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
 public class HttpServerImpl implements HttpServer, Closeable, MetricsProvider {
+
 
     private static final Logger log = LoggerFactory.getLogger(HttpServerImpl.class);
     private static final String FLASH_POLICY_HANDLER_PROP_NAME = "vertx.flashPolicyHandler";
@@ -233,7 +234,7 @@ public class HttpServerImpl implements HttpServer, Closeable, MetricsProvider {
                         vertx.runOnContext(v -> listenHandler.handle(Future.failedFuture(t)));
                     } else {
                         // No handler - log so user can see failure
-                        log.error(t);
+                        log.error("", t);
                     }
                     listening = false;
                     return this;
@@ -259,7 +260,7 @@ public class HttpServerImpl implements HttpServer, Closeable, MetricsProvider {
                 } else if (!future.isSuccess()) {
                     listening = false;
                     // No handler - log so user can see failure
-                    log.error(future.cause());
+                    log.error("", future.cause());
                 }
             });
         }

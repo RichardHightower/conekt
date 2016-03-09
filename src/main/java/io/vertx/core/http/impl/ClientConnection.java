@@ -29,13 +29,13 @@ import io.vertx.core.http.WebsocketVersion;
 import io.vertx.core.http.impl.ws.WebSocketFrameInternal;
 import io.vertx.core.impl.ContextImpl;
 import io.vertx.core.impl.VertxInternal;
-import io.vertx.core.logging.Logger;
-import io.vertx.core.logging.LoggerFactory;
 import io.vertx.core.net.NetSocket;
 import io.vertx.core.net.impl.ConnectionBase;
 import io.vertx.core.net.impl.NetSocketImpl;
 import io.vertx.core.net.impl.VertxNetHandler;
 import io.vertx.core.spi.metrics.HttpClientMetrics;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.URI;
 import java.util.ArrayDeque;
@@ -52,6 +52,7 @@ import java.util.Queue;
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
 class ClientConnection extends ConnectionBase {
+
 
     private static final Logger log = LoggerFactory.getLogger(ClientConnection.class);
 

@@ -18,8 +18,8 @@ package io.vertx.test.core;
 
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
-import io.vertx.core.logging.Logger;
-import io.vertx.core.logging.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.hamcrest.Matcher;
 import org.junit.After;
 import org.junit.Assert;

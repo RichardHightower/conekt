@@ -40,8 +40,6 @@ import io.vertx.core.http.HttpServerOptions;
 import io.vertx.core.http.impl.HttpClientImpl;
 import io.vertx.core.http.impl.HttpServerImpl;
 import io.vertx.core.json.JsonObject;
-import io.vertx.core.logging.Logger;
-import io.vertx.core.logging.LoggerFactory;
 import io.vertx.core.metrics.impl.DummyVertxMetrics;
 import io.vertx.core.net.NetClient;
 import io.vertx.core.net.NetClientOptions;
@@ -55,6 +53,8 @@ import io.vertx.core.spi.VertxMetricsFactory;
 import io.vertx.core.spi.metrics.Metrics;
 import io.vertx.core.spi.metrics.MetricsProvider;
 import io.vertx.core.spi.metrics.VertxMetrics;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.*;
@@ -66,6 +66,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
 public class VertxImpl implements VertxInternal, MetricsProvider {
+
 
     private static final Logger log = LoggerFactory.getLogger(VertxImpl.class);
 

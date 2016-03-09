@@ -29,8 +29,11 @@ import io.vertx.core.http.impl.ws.WebSocketFrameImpl;
 import io.vertx.core.http.impl.ws.WebSocketFrameInternal;
 import io.vertx.core.impl.ContextImpl;
 import io.vertx.core.impl.VertxInternal;
-import io.vertx.core.logging.Logger;
-import io.vertx.core.logging.LoggerFactory;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import io.vertx.core.net.impl.KeyStoreHelper;
 import io.vertx.core.net.impl.PartialPooledByteBufAllocator;
 import io.vertx.core.net.impl.SSLHelper;
@@ -54,6 +57,7 @@ import java.util.function.BooleanSupplier;
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
 public class HttpClientImpl implements HttpClient, MetricsProvider {
+
 
     private static final Logger log = LoggerFactory.getLogger(HttpClientImpl.class);
 
@@ -824,7 +828,10 @@ public class HttpClientImpl implements HttpClient, MetricsProvider {
         // If no specific exception handler is provided, fall back to the HttpClient's exception handler.
         // If that doesn't exist just log it
         Handler<Throwable> exHandler =
-                connectionExceptionHandler == null ? log::error : connectionExceptionHandler;
+                connectionExceptionHandler == null ?
+                        (Handler<Throwable>) error -> log.error("", error) : connectionExceptionHandler;
+
+
 
         context.executeFromIO(() -> {
             listener.connectionClosed(null);
@@ -835,7 +842,7 @@ public class HttpClientImpl implements HttpClient, MetricsProvider {
             if (exHandler != null) {
                 exHandler.handle(t);
             } else {
-                log.error(t);
+                log.error("", t);
             }
         });
     }
@@ -953,7 +960,7 @@ public class HttpClientImpl implements HttpClient, MetricsProvider {
                 ContextImpl context = vertx.getOrCreateContext();
                 Handler<Throwable> connectionExceptionHandler = exceptionHandler;
                 if (connectionExceptionHandler == null) {
-                    connectionExceptionHandler = log::error;
+                    connectionExceptionHandler = event -> log.error("", event);
                 }
                 Handler<WebSocket> wsConnect;
                 if (endHandler != null) {

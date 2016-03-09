@@ -29,8 +29,6 @@ import io.netty.util.concurrent.GlobalEventExecutor;
 import io.vertx.core.*;
 import io.vertx.core.impl.ContextImpl;
 import io.vertx.core.impl.VertxInternal;
-import io.vertx.core.logging.Logger;
-import io.vertx.core.logging.LoggerFactory;
 import io.vertx.core.net.NetServer;
 import io.vertx.core.net.NetServerOptions;
 import io.vertx.core.net.NetSocket;
@@ -38,6 +36,8 @@ import io.vertx.core.net.NetSocketStream;
 import io.vertx.core.spi.metrics.Metrics;
 import io.vertx.core.spi.metrics.MetricsProvider;
 import io.vertx.core.spi.metrics.TCPMetrics;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -52,6 +52,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
 public class NetServerImpl implements NetServer, Closeable, MetricsProvider {
+
 
     private static final Logger log = LoggerFactory.getLogger(NetServerImpl.class);
 
@@ -204,7 +205,7 @@ public class NetServerImpl implements NetServer, Closeable, MetricsProvider {
                         vertx.runOnContext(v -> listenHandler.handle(Future.failedFuture(t)));
                     } else {
                         // No handler - log so user can see failure
-                        log.error(t);
+                        log.error("", t);
                     }
                     listening = false;
                     return this;

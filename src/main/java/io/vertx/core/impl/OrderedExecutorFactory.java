@@ -17,8 +17,8 @@
 
 package io.vertx.core.impl;
 
-import io.vertx.core.logging.Logger;
-import io.vertx.core.logging.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.LinkedList;
 import java.util.concurrent.Executor;
@@ -31,6 +31,7 @@ import java.util.concurrent.Executor;
  * @version <tt>$Revision$</tt>
  */
 public class OrderedExecutorFactory {
+
     private static final Logger log = LoggerFactory.getLogger(OrderedExecutorFactory.class);
 
     private final Executor parent;

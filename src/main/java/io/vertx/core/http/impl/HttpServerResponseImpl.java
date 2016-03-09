@@ -29,8 +29,8 @@ import io.vertx.core.http.HttpHeaders;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.core.impl.ContextImpl;
 import io.vertx.core.impl.VertxInternal;
-import io.vertx.core.logging.Logger;
-import io.vertx.core.logging.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -49,6 +49,7 @@ import java.io.RandomAccessFile;
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
 public class HttpServerResponseImpl implements HttpServerResponse {
+
 
     private static final Logger log = LoggerFactory.getLogger(HttpServerResponseImpl.class);
 

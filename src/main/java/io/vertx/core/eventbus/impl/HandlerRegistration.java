@@ -6,10 +6,10 @@ import io.vertx.core.eventbus.MessageConsumer;
 import io.vertx.core.eventbus.ReplyException;
 import io.vertx.core.eventbus.ReplyFailure;
 import io.vertx.core.impl.Arguments;
-import io.vertx.core.logging.Logger;
-import io.vertx.core.logging.LoggerFactory;
 import io.vertx.core.spi.metrics.EventBusMetrics;
 import io.vertx.core.streams.ReadStream;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayDeque;
 import java.util.Objects;
@@ -25,6 +25,7 @@ import java.util.Queue;
 public class HandlerRegistration<T> implements MessageConsumer<T>, Handler<Message<T>> {
 
     public static final int DEFAULT_MAX_BUFFERED_MESSAGES = 1000;
+
     private static final Logger log = LoggerFactory.getLogger(HandlerRegistration.class);
     private final Vertx vertx;
     private final EventBusMetrics metrics;

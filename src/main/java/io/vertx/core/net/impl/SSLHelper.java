@@ -23,10 +23,10 @@ import io.vertx.core.http.ClientAuth;
 import io.vertx.core.http.HttpClientOptions;
 import io.vertx.core.http.HttpServerOptions;
 import io.vertx.core.impl.VertxInternal;
-import io.vertx.core.logging.Logger;
-import io.vertx.core.logging.LoggerFactory;
 import io.vertx.core.net.NetClientOptions;
 import io.vertx.core.net.NetServerOptions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.*;
 import java.io.ByteArrayInputStream;
@@ -48,6 +48,7 @@ import java.util.stream.Stream;
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
 public class SSLHelper {
+
 
     private static final Logger log = LoggerFactory.getLogger(SSLHelper.class);
 

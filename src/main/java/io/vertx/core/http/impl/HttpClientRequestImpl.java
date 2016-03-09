@@ -26,8 +26,8 @@ import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpClientRequest;
 import io.vertx.core.http.HttpClientResponse;
 import io.vertx.core.impl.VertxInternal;
-import io.vertx.core.logging.Logger;
-import io.vertx.core.logging.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import io.vertx.core.net.NetSocket;
 import io.vertx.core.spi.metrics.HttpClientMetrics;
 
@@ -540,7 +540,7 @@ public class HttpClientRequestImpl implements HttpClientRequest {
     }
 
     private Handler<Throwable> getExceptionHandler() {
-        return exceptionHandler != null ? exceptionHandler : log::error;
+        return exceptionHandler != null ? exceptionHandler :  error -> log.error("", error);
     }
 
     private void cancelOutstandingTimeoutTimer() {

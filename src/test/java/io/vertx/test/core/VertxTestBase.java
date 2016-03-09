@@ -17,8 +17,8 @@
 package io.vertx.test.core;
 
 import io.vertx.core.*;
-import io.vertx.core.logging.Logger;
-import io.vertx.core.logging.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import io.vertx.core.net.*;
 import org.junit.Rule;
 

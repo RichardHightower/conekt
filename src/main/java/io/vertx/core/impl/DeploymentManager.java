@@ -18,9 +18,9 @@ package io.vertx.core.impl;
 
 import io.vertx.core.*;
 import io.vertx.core.json.JsonObject;
-import io.vertx.core.logging.Logger;
-import io.vertx.core.logging.LoggerFactory;
 import io.vertx.core.spi.VerticleFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -36,6 +36,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
 public class DeploymentManager {
+
 
     private static final Logger log = LoggerFactory.getLogger(DeploymentManager.class);
 

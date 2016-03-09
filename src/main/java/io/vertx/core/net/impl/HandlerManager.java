@@ -19,8 +19,8 @@ package io.vertx.core.net.impl;
 import io.netty.channel.EventLoop;
 import io.vertx.core.Handler;
 import io.vertx.core.impl.ContextImpl;
-import io.vertx.core.logging.Logger;
-import io.vertx.core.logging.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -32,7 +32,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 public class HandlerManager<T> {
 
-    @SuppressWarnings("unused")
     private static final Logger log = LoggerFactory.getLogger(HandlerManager.class);
 
     private final VertxEventLoopGroup availableWorkers;

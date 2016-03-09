@@ -18,8 +18,8 @@ package io.vertx.core.impl;
 
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonObject;
-import io.vertx.core.logging.Logger;
-import io.vertx.core.logging.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.Executor;
 
@@ -27,6 +27,7 @@ import java.util.concurrent.Executor;
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
 public class EventLoopContext extends ContextImpl {
+
 
     private static final Logger log = LoggerFactory.getLogger(EventLoopContext.class);
 

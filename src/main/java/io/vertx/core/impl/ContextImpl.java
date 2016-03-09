@@ -20,8 +20,8 @@ import io.netty.channel.EventLoop;
 import io.netty.channel.EventLoopGroup;
 import io.vertx.core.*;
 import io.vertx.core.json.JsonObject;
-import io.vertx.core.logging.Logger;
-import io.vertx.core.logging.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashSet;
 import java.util.Map;
@@ -36,6 +36,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
 public abstract class ContextImpl implements ContextInternal {
+
 
     private static final Logger log = LoggerFactory.getLogger(ContextImpl.class);
 

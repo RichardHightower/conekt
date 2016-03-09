@@ -17,8 +17,8 @@
 package io.vertx.core.http.impl;
 
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.vertx.core.logging.Logger;
-import io.vertx.core.logging.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.nio.channels.SocketChannel;
 import java.util.List;

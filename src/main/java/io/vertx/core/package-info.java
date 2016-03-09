@@ -1130,7 +1130,7 @@
  * However, if you prefer you can use the Vert.x logging facility as described above to provide logging for your
  * application too.
  * <p>
- * To do that you use {@link io.vertx.core.logging.LoggerFactory} to get an instance of {@link io.vertx.core.logging.Logger}
+ * To do that you use {@link org.slf4j.LoggerFactory} to get an instance of {@link org.slf4j.Logger}
  * which you then use for logging, e.g.
  * <p>
  * [source,$lang]

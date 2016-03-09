@@ -17,8 +17,8 @@
 package io.vertx.core.impl;
 
 import io.vertx.core.VertxException;
-import io.vertx.core.logging.Logger;
-import io.vertx.core.logging.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 import java.util.Timer;
@@ -29,6 +29,7 @@ import java.util.WeakHashMap;
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
 public class BlockedThreadChecker {
+
 
     private static final Logger log = LoggerFactory.getLogger(BlockedThreadChecker.class);
 

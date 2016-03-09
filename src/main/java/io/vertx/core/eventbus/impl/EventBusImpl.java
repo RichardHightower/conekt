@@ -19,10 +19,10 @@ package io.vertx.core.eventbus.impl;
 import io.vertx.core.*;
 import io.vertx.core.eventbus.*;
 import io.vertx.core.impl.VertxInternal;
-import io.vertx.core.logging.Logger;
-import io.vertx.core.logging.LoggerFactory;
 import io.vertx.core.spi.metrics.EventBusMetrics;
 import io.vertx.core.spi.metrics.MetricsProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Iterator;
 import java.util.List;
@@ -38,6 +38,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * @author <a href="http://tfox.org">Tim Fox</a>                                                                                        T
  */
 public class EventBusImpl implements EventBus, MetricsProvider {
+
 
     private static final Logger log = LoggerFactory.getLogger(EventBusImpl.class);
     protected final VertxInternal vertx;
