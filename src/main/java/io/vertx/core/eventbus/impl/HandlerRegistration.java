@@ -31,7 +31,6 @@ public class HandlerRegistration<T> implements MessageConsumer<T>, Handler<Messa
     private final EventBusImpl eventBus;
     private final String address;
     private final String repliedAddress;
-    private final boolean localOnly;
     private final Handler<AsyncResult<Message<T>>> asyncResultHandler;
     private final Queue<Message<T>> pending = new ArrayDeque<>(8);
     private long timeoutID = -1;
@@ -53,7 +52,6 @@ public class HandlerRegistration<T> implements MessageConsumer<T>, Handler<Messa
         this.eventBus = eventBus;
         this.address = address;
         this.repliedAddress = repliedAddress;
-        this.localOnly = localOnly;
         this.asyncResultHandler = asyncResultHandler;
         if (timeout != -1) {
             timeoutID = vertx.setTimer(timeout, tid -> {
@@ -211,7 +209,7 @@ public class HandlerRegistration<T> implements MessageConsumer<T>, Handler<Messa
         this.handler = handler;
         if (this.handler != null && !registered) {
             registered = true;
-            eventBus.addRegistration(address, this, repliedAddress != null, localOnly);
+            eventBus.addRegistration(address, this, repliedAddress != null, false);
         } else if (this.handler == null && registered) {
             // This will set registered to false
             this.unregister();

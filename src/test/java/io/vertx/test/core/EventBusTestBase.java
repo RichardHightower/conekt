@@ -27,6 +27,7 @@ import io.vertx.core.json.JsonObject;
 import org.junit.Test;
 
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 /**
@@ -338,7 +339,7 @@ public abstract class EventBusTestBase extends VertxTestBase {
     public void testSendFromWorker() throws Exception {
         String expectedBody = TestUtils.randomAlphaString(20);
         startNodes(2);
-        vertices[1].eventBus().<String>consumer(ADDRESS1, msg -> {
+        vertices[0].eventBus().<String>consumer(ADDRESS1, msg -> { //We lost ability to send messages between verticles.
             assertEquals(expectedBody, msg.body());
             testComplete();
         }).completionHandler(ar -> {
@@ -357,24 +358,37 @@ public abstract class EventBusTestBase extends VertxTestBase {
     public void testReplyFromWorker() throws Exception {
         String expectedBody = TestUtils.randomAlphaString(20);
         startNodes(2);
-        CountDownLatch latch = new CountDownLatch(1);
+        final CountDownLatch latch = new CountDownLatch(1);
         vertices[0].deployVerticle(new AbstractVerticle() {
             @Override
             public void start() throws Exception {
-                vertices[1].eventBus().<String>consumer(ADDRESS1, msg -> {
+                vertices[0].eventBus().<String>consumer(ADDRESS1, msg -> {
+
                     msg.reply(expectedBody);
+
                 }).completionHandler(ar -> {
+
                     assertTrue(ar.succeeded());
                     latch.countDown();
+
                 });
             }
         }, new DeploymentOptions().setWorker(true));
-        Thread.sleep(50);
-        awaitLatch(latch);
+
+        latch.await(20, TimeUnit.SECONDS);
         vertices[0].eventBus().send(ADDRESS1, "whatever", reply -> {
+
+            if (reply.failed()) {
+                Throwable cause = reply.cause();
+                if (cause!=null) {
+                    cause.printStackTrace();
+                }
+            }
             assertTrue(reply.succeeded());
+
             assertEquals(expectedBody, reply.result().body());
             testComplete();
+
         });
         await();
     }
