@@ -16,9 +16,9 @@
 
 package io.vertx.test.fakemetrics;
 
-import io.vertx.core.eventbus.EventBus;
-import io.vertx.core.eventbus.ReplyFailure;
-import io.vertx.core.spi.metrics.EventBusMetrics;
+import io.smallvertx.core.eventbus.EventBus;
+import io.smallvertx.core.eventbus.ReplyFailure;
+import io.smallvertx.core.spi.metrics.EventBusMetrics;
 
 import java.util.ArrayList;
 import java.util.Collections;

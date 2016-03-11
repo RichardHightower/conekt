@@ -16,8 +16,8 @@
 
 package io.vertx.test.core;
 
-import io.vertx.core.AbstractVerticle;
-import io.vertx.core.impl.IsolatingClassLoader;
+import io.smallvertx.core.AbstractVerticle;
+import io.smallvertx.core.impl.IsolatingClassLoader;
 import org.junit.Assert;
 
 /**

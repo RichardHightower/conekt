@@ -16,14 +16,14 @@
 
 package io.vertx.test.core;
 
-import io.vertx.core.*;
-import io.vertx.core.eventbus.*;
-import io.vertx.core.eventbus.impl.HandlerRegistration;
-import io.vertx.core.http.CaseInsensitiveHeaders;
-import io.vertx.core.impl.*;
-import io.vertx.core.streams.Pump;
-import io.vertx.core.streams.ReadStream;
-import io.vertx.core.streams.WriteStream;
+import io.smallvertx.core.*;
+import io.smallvertx.core.eventbus.*;
+import io.smallvertx.core.impl.*;
+import io.smallvertx.core.eventbus.impl.HandlerRegistration;
+import io.smallvertx.core.http.CaseInsensitiveHeaders;
+import io.smallvertx.core.streams.Pump;
+import io.smallvertx.core.streams.ReadStream;
+import io.smallvertx.core.streams.WriteStream;
 import org.junit.Test;
 
 import java.util.Arrays;

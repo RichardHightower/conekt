@@ -16,9 +16,9 @@
 
 package io.vertx.test.fakemetrics;
 
-import io.vertx.core.http.*;
-import io.vertx.core.net.SocketAddress;
-import io.vertx.core.spi.metrics.HttpClientMetrics;
+import io.smallvertx.core.http.*;
+import io.smallvertx.core.net.SocketAddress;
+import io.smallvertx.core.spi.metrics.HttpClientMetrics;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;

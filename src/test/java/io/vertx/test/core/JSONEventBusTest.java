@@ -16,10 +16,10 @@
 
 package io.vertx.test.core;
 
-import io.vertx.core.eventbus.EventBus;
-import io.vertx.core.eventbus.Message;
-import io.vertx.core.json.JsonArray;
-import io.vertx.core.json.JsonObject;
+import io.smallvertx.core.eventbus.EventBus;
+import io.smallvertx.core.eventbus.Message;
+import io.smallvertx.core.json.JsonArray;
+import io.smallvertx.core.json.JsonObject;
 import org.junit.Test;
 
 import java.util.ArrayList;

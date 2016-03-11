@@ -22,11 +22,11 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.vertx.core.Vertx;
-import io.vertx.core.buffer.Buffer;
-import io.vertx.core.impl.ContextInternal;
-import io.vertx.core.net.NetClientOptions;
-import io.vertx.core.net.NetSocket;
+import io.smallvertx.core.Vertx;
+import io.smallvertx.core.buffer.Buffer;
+import io.smallvertx.core.impl.ContextInternal;
+import io.smallvertx.core.net.NetClientOptions;
+import io.smallvertx.core.net.NetSocket;
 import org.junit.Test;
 
 import java.nio.charset.StandardCharsets;

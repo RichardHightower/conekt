@@ -1,8 +1,8 @@
 package io.vertx.test.core;
 
-import io.vertx.core.eventbus.EventBus;
-import io.vertx.core.eventbus.MessageConsumer;
-import io.vertx.core.eventbus.MessageProducer;
+import io.smallvertx.core.eventbus.EventBus;
+import io.smallvertx.core.eventbus.MessageConsumer;
+import io.smallvertx.core.eventbus.MessageProducer;
 import org.junit.Test;
 
 import java.util.concurrent.atomic.AtomicBoolean;

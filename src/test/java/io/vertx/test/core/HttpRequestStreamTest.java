@@ -15,13 +15,13 @@
  */
 package io.vertx.test.core;
 
-import io.vertx.core.Vertx;
-import io.vertx.core.buffer.Buffer;
-import io.vertx.core.http.*;
-import io.vertx.core.net.NetClient;
-import io.vertx.core.net.NetClientOptions;
-import io.vertx.core.net.NetSocket;
-import io.vertx.core.streams.ReadStream;
+import io.smallvertx.core.Vertx;
+import io.smallvertx.core.buffer.Buffer;
+import io.smallvertx.core.http.*;
+import io.smallvertx.core.net.NetClient;
+import io.smallvertx.core.net.NetClientOptions;
+import io.smallvertx.core.net.NetSocket;
+import io.smallvertx.core.streams.ReadStream;
 import org.junit.Test;
 
 import java.util.concurrent.CountDownLatch;

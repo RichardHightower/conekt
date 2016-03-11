@@ -16,18 +16,18 @@
 
 package io.vertx.test.core;
 
-import io.vertx.core.VertxOptions;
-import io.vertx.core.datagram.DatagramSocket;
-import io.vertx.core.datagram.DatagramSocketOptions;
-import io.vertx.core.http.HttpClient;
-import io.vertx.core.http.HttpClientOptions;
-import io.vertx.core.http.HttpServer;
-import io.vertx.core.http.HttpServerOptions;
-import io.vertx.core.metrics.MetricsOptions;
-import io.vertx.core.net.NetClient;
-import io.vertx.core.net.NetClientOptions;
-import io.vertx.core.net.NetServer;
-import io.vertx.core.net.NetServerOptions;
+import io.smallvertx.core.VertxOptions;
+import io.smallvertx.core.datagram.DatagramSocket;
+import io.smallvertx.core.datagram.DatagramSocketOptions;
+import io.smallvertx.core.http.HttpClient;
+import io.smallvertx.core.http.HttpClientOptions;
+import io.smallvertx.core.http.HttpServer;
+import io.smallvertx.core.http.HttpServerOptions;
+import io.smallvertx.core.metrics.MetricsOptions;
+import io.smallvertx.core.net.NetClient;
+import io.smallvertx.core.net.NetClientOptions;
+import io.smallvertx.core.net.NetServer;
+import io.smallvertx.core.net.NetServerOptions;
 import org.junit.Test;
 
 /**

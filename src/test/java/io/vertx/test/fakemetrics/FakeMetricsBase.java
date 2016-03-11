@@ -16,8 +16,8 @@
 
 package io.vertx.test.fakemetrics;
 
-import io.vertx.core.metrics.Measured;
-import io.vertx.core.spi.metrics.Metrics;
+import io.smallvertx.core.metrics.Measured;
+import io.smallvertx.core.spi.metrics.Metrics;
 
 import java.util.concurrent.ConcurrentHashMap;
 

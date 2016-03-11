@@ -16,7 +16,7 @@
 
 package io.vertx.test.fakemetrics;
 
-import io.vertx.core.http.HttpClientRequest;
+import io.smallvertx.core.http.HttpClientRequest;
 
 /**
  * @author <a href="mailto:julien@julienviet.com">Julien Viet</a>

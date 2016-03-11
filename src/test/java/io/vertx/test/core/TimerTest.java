@@ -16,11 +16,11 @@
 
 package io.vertx.test.core;
 
-import io.vertx.core.AbstractVerticle;
-import io.vertx.core.Handler;
-import io.vertx.core.TimeoutStream;
-import io.vertx.core.Vertx;
-import io.vertx.core.streams.ReadStream;
+import io.smallvertx.core.AbstractVerticle;
+import io.smallvertx.core.Handler;
+import io.smallvertx.core.TimeoutStream;
+import io.smallvertx.core.Vertx;
+import io.smallvertx.core.streams.ReadStream;
 import org.junit.Test;
 
 import java.util.concurrent.atomic.AtomicBoolean;

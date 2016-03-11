@@ -16,9 +16,9 @@
 
 package io.vertx.test.core;
 
-import io.vertx.core.AbstractVerticle;
-import io.vertx.core.DeploymentOptions;
-import io.vertx.core.dns.*;
+import io.smallvertx.core.AbstractVerticle;
+import io.smallvertx.core.DeploymentOptions;
+import io.smallvertx.core.dns.*;
 import io.vertx.test.fakedns.FakeDNSServer;
 import org.junit.Test;
 

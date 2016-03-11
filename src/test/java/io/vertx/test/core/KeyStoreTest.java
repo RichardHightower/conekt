@@ -15,10 +15,10 @@
  */
 package io.vertx.test.core;
 
-import io.vertx.core.buffer.Buffer;
-import io.vertx.core.impl.VertxInternal;
-import io.vertx.core.net.*;
-import io.vertx.core.net.impl.KeyStoreHelper;
+import io.smallvertx.core.buffer.Buffer;
+import io.smallvertx.core.impl.VertxInternal;
+import io.smallvertx.core.net.*;
+import io.smallvertx.core.net.impl.KeyStoreHelper;
 import org.junit.Test;
 
 import javax.net.ssl.KeyManager;

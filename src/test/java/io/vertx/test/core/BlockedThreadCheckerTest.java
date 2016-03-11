@@ -1,6 +1,6 @@
 package io.vertx.test.core;
 
-import io.vertx.core.*;
+import io.smallvertx.core.*;
 import org.junit.Test;
 
 /**

@@ -16,8 +16,8 @@
 
 package io.vertx.test.core;
 
-import io.vertx.core.VertxOptions;
-import io.vertx.core.metrics.MetricsOptions;
+import io.smallvertx.core.VertxOptions;
+import io.smallvertx.core.metrics.MetricsOptions;
 import org.junit.Test;
 
 import java.util.Random;

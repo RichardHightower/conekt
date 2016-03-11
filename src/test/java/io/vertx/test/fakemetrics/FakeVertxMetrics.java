@@ -16,17 +16,17 @@
 
 package io.vertx.test.fakemetrics;
 
-import io.vertx.core.Verticle;
-import io.vertx.core.Vertx;
-import io.vertx.core.datagram.DatagramSocket;
-import io.vertx.core.datagram.DatagramSocketOptions;
-import io.vertx.core.eventbus.EventBus;
-import io.vertx.core.http.HttpClient;
-import io.vertx.core.http.HttpClientOptions;
-import io.vertx.core.http.HttpServer;
-import io.vertx.core.http.HttpServerOptions;
-import io.vertx.core.net.*;
-import io.vertx.core.spi.metrics.*;
+import io.smallvertx.core.Verticle;
+import io.smallvertx.core.Vertx;
+import io.smallvertx.core.datagram.DatagramSocket;
+import io.smallvertx.core.datagram.DatagramSocketOptions;
+import io.smallvertx.core.eventbus.EventBus;
+import io.smallvertx.core.http.HttpClient;
+import io.smallvertx.core.http.HttpClientOptions;
+import io.smallvertx.core.http.HttpServer;
+import io.smallvertx.core.http.HttpServerOptions;
+import io.smallvertx.core.net.*;
+import io.smallvertx.core.spi.metrics.*;
 
 import java.util.concurrent.atomic.AtomicReference;
 

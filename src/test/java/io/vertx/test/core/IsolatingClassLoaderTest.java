@@ -1,7 +1,7 @@
 package io.vertx.test.core;
 
-import io.vertx.core.impl.IsolatingClassLoader;
-import io.vertx.core.json.JsonObject;
+import io.smallvertx.core.impl.IsolatingClassLoader;
+import io.smallvertx.core.json.JsonObject;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,7 +17,7 @@ import java.util.Scanner;
 import static org.junit.Assert.*;
 
 /**
- * Unit tests for {@link io.vertx.core.impl.IsolatingClassLoader}
+ * Unit tests for {@link IsolatingClassLoader}
  */
 public class IsolatingClassLoaderTest {
 

@@ -16,10 +16,10 @@
 
 package io.vertx.test.core;
 
-import io.vertx.core.*;
+import io.smallvertx.core.*;
+import io.smallvertx.core.net.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import io.vertx.core.net.*;
 import org.junit.Rule;
 
 import java.io.File;

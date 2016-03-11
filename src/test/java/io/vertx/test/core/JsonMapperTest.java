@@ -17,7 +17,7 @@
 package io.vertx.test.core;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.vertx.core.json.Json;
+import io.smallvertx.core.json.Json;
 import org.junit.Test;
 
 /**

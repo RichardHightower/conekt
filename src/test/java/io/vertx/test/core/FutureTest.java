@@ -15,10 +15,10 @@
  */
 package io.vertx.test.core;
 
-import io.vertx.core.AsyncResult;
-import io.vertx.core.CompositeFuture;
-import io.vertx.core.Future;
-import io.vertx.core.Handler;
+import io.smallvertx.core.AsyncResult;
+import io.smallvertx.core.CompositeFuture;
+import io.smallvertx.core.Future;
+import io.smallvertx.core.Handler;
 import org.junit.Test;
 
 import java.util.ArrayList;

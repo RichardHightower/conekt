@@ -16,10 +16,10 @@
 
 package io.vertx.test.core;
 
-import io.vertx.core.Handler;
-import io.vertx.core.http.HttpClient;
-import io.vertx.core.http.HttpServer;
-import io.vertx.core.http.HttpServerOptions;
+import io.smallvertx.core.Handler;
+import io.smallvertx.core.http.HttpClient;
+import io.smallvertx.core.http.HttpServer;
+import io.smallvertx.core.http.HttpServerOptions;
 
 import java.util.concurrent.CountDownLatch;
 

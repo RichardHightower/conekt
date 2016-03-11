@@ -16,10 +16,10 @@
 
 package io.vertx.test.core;
 
-import io.vertx.core.Handler;
-import io.vertx.core.streams.Pump;
-import io.vertx.core.streams.ReadStream;
-import io.vertx.core.streams.WriteStream;
+import io.smallvertx.core.Handler;
+import io.smallvertx.core.streams.Pump;
+import io.smallvertx.core.streams.ReadStream;
+import io.smallvertx.core.streams.WriteStream;
 import org.junit.Test;
 
 import java.util.ArrayList;

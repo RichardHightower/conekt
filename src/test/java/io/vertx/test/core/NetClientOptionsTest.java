@@ -1,6 +1,6 @@
 package io.vertx.test.core;
 
-import io.vertx.core.net.NetClientOptions;
+import io.smallvertx.core.net.NetClientOptions;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

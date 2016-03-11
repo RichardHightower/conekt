@@ -16,7 +16,7 @@
 
 package io.vertx.test.core;
 
-import io.vertx.core.metrics.MetricsOptions;
+import io.smallvertx.core.metrics.MetricsOptions;
 
 /**
  * @author <a href="mailto:julien@julienviet.com">Julien Viet</a>

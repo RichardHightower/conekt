@@ -16,10 +16,10 @@
 
 package io.vertx.test.core;
 
-import io.vertx.core.AbstractVerticle;
-import io.vertx.core.Future;
-import io.vertx.core.http.HttpServer;
-import io.vertx.core.http.HttpServerOptions;
+import io.smallvertx.core.AbstractVerticle;
+import io.smallvertx.core.Future;
+import io.smallvertx.core.http.HttpServer;
+import io.smallvertx.core.http.HttpServerOptions;
 
 /**
  * @author <a href="http://tfox.org">Tim Fox</a>

@@ -16,13 +16,13 @@
 
 package io.vertx.test.core;
 
-import io.vertx.core.Vertx;
-import io.vertx.core.buffer.Buffer;
-import io.vertx.core.http.HttpClientOptions;
-import io.vertx.core.http.HttpMethod;
-import io.vertx.core.http.HttpServerOptions;
-import io.vertx.core.impl.FileResolver;
-import io.vertx.core.impl.VertxInternal;
+import io.smallvertx.core.Vertx;
+import io.smallvertx.core.buffer.Buffer;
+import io.smallvertx.core.http.HttpClientOptions;
+import io.smallvertx.core.http.HttpMethod;
+import io.smallvertx.core.http.HttpServerOptions;
+import io.smallvertx.core.impl.FileResolver;
+import io.smallvertx.core.impl.VertxInternal;
 import org.junit.Test;
 
 import java.io.File;

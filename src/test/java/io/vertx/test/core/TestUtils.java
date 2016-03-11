@@ -19,7 +19,7 @@
 
 package io.vertx.test.core;
 
-import io.vertx.core.buffer.Buffer;
+import io.smallvertx.core.buffer.Buffer;
 
 import java.util.Random;
 

@@ -16,8 +16,8 @@
 
 package io.vertx.test.core;
 
-import io.vertx.core.AbstractVerticle;
-import io.vertx.core.json.JsonObject;
+import io.smallvertx.core.AbstractVerticle;
+import io.smallvertx.core.json.JsonObject;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;

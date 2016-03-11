@@ -16,9 +16,9 @@
 
 package io.vertx.test.fakemetrics;
 
-import io.vertx.core.metrics.Measured;
-import io.vertx.core.net.SocketAddress;
-import io.vertx.core.spi.metrics.DatagramSocketMetrics;
+import io.smallvertx.core.metrics.Measured;
+import io.smallvertx.core.net.SocketAddress;
+import io.smallvertx.core.spi.metrics.DatagramSocketMetrics;
 
 import java.util.ArrayList;
 import java.util.Collections;

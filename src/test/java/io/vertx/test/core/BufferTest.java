@@ -17,10 +17,10 @@
 package io.vertx.test.core;
 
 import io.netty.buffer.ByteBuf;
-import io.vertx.core.buffer.Buffer;
-import io.vertx.core.json.DecodeException;
-import io.vertx.core.json.JsonArray;
-import io.vertx.core.json.JsonObject;
+import io.smallvertx.core.buffer.Buffer;
+import io.smallvertx.core.json.DecodeException;
+import io.smallvertx.core.json.JsonArray;
+import io.smallvertx.core.json.JsonObject;
 import org.junit.Test;
 
 import java.nio.ByteBuffer;

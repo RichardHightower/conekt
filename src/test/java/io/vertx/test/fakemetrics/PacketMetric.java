@@ -16,7 +16,7 @@
 
 package io.vertx.test.fakemetrics;
 
-import io.vertx.core.net.SocketAddress;
+import io.smallvertx.core.net.SocketAddress;
 
 /**
  * @author <a href="mailto:julien@julienviet.com">Julien Viet</a>

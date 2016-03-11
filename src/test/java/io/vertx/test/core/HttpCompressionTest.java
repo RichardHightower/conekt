@@ -16,9 +16,9 @@
 
 package io.vertx.test.core;
 
-import io.vertx.core.http.HttpClientOptions;
-import io.vertx.core.http.HttpMethod;
-import io.vertx.core.http.HttpServerOptions;
+import io.smallvertx.core.http.HttpClientOptions;
+import io.smallvertx.core.http.HttpMethod;
+import io.smallvertx.core.http.HttpServerOptions;
 import org.junit.Test;
 
 /**

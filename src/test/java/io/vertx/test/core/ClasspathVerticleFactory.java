@@ -16,9 +16,9 @@
 
 package io.vertx.test.core;
 
-import io.vertx.core.Verticle;
-import io.vertx.core.Vertx;
-import io.vertx.core.spi.VerticleFactory;
+import io.smallvertx.core.Verticle;
+import io.smallvertx.core.Vertx;
+import io.smallvertx.core.spi.VerticleFactory;
 
 /**
  * @author <a href="http://tfox.org">Tim Fox</a>

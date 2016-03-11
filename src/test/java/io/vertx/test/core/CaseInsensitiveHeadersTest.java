@@ -1,7 +1,7 @@
 package io.vertx.test.core;
 
-import io.vertx.core.MultiMap;
-import io.vertx.core.http.CaseInsensitiveHeaders;
+import io.smallvertx.core.MultiMap;
+import io.smallvertx.core.http.CaseInsensitiveHeaders;
 import org.junit.Test;
 
 import java.util.*;

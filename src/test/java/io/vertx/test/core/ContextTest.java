@@ -16,11 +16,11 @@
 
 package io.vertx.test.core;
 
-import io.vertx.core.AbstractVerticle;
-import io.vertx.core.Context;
-import io.vertx.core.DeploymentOptions;
-import io.vertx.core.Vertx;
-import io.vertx.core.impl.ContextInternal;
+import io.smallvertx.core.AbstractVerticle;
+import io.smallvertx.core.Context;
+import io.smallvertx.core.DeploymentOptions;
+import io.smallvertx.core.Vertx;
+import io.smallvertx.core.impl.ContextInternal;
 import org.junit.Test;
 
 import java.util.concurrent.CountDownLatch;

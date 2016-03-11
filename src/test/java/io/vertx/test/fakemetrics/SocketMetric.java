@@ -16,7 +16,7 @@
 
 package io.vertx.test.fakemetrics;
 
-import io.vertx.core.net.SocketAddress;
+import io.smallvertx.core.net.SocketAddress;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;

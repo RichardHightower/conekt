@@ -16,9 +16,9 @@
 
 package io.vertx.test.core;
 
-import io.vertx.core.AbstractVerticle;
-import io.vertx.core.Context;
-import io.vertx.core.Future;
+import io.smallvertx.core.AbstractVerticle;
+import io.smallvertx.core.Context;
+import io.smallvertx.core.Future;
 
 import java.util.HashSet;
 import java.util.Set;

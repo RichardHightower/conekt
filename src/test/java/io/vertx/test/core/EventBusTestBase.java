@@ -17,13 +17,13 @@
 package io.vertx.test.core;
 
 import io.netty.util.CharsetUtil;
-import io.vertx.core.AbstractVerticle;
-import io.vertx.core.DeploymentOptions;
-import io.vertx.core.buffer.Buffer;
-import io.vertx.core.eventbus.DeliveryOptions;
-import io.vertx.core.eventbus.MessageCodec;
-import io.vertx.core.json.JsonArray;
-import io.vertx.core.json.JsonObject;
+import io.smallvertx.core.AbstractVerticle;
+import io.smallvertx.core.DeploymentOptions;
+import io.smallvertx.core.buffer.Buffer;
+import io.smallvertx.core.eventbus.DeliveryOptions;
+import io.smallvertx.core.eventbus.MessageCodec;
+import io.smallvertx.core.json.JsonArray;
+import io.smallvertx.core.json.JsonObject;
 import org.junit.Test;
 
 import java.util.concurrent.CountDownLatch;

@@ -16,10 +16,10 @@
 
 package io.vertx.test.fakemetrics;
 
-import io.vertx.core.Vertx;
-import io.vertx.core.VertxOptions;
-import io.vertx.core.spi.VertxMetricsFactory;
-import io.vertx.core.spi.metrics.VertxMetrics;
+import io.smallvertx.core.Vertx;
+import io.smallvertx.core.VertxOptions;
+import io.smallvertx.core.spi.VertxMetricsFactory;
+import io.smallvertx.core.spi.metrics.VertxMetrics;
 
 /**
  * @author <a href="mailto:julien@julienviet.com">Julien Viet</a>

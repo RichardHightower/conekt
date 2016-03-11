@@ -16,14 +16,14 @@
 
 package io.vertx.test.core;
 
-import io.vertx.core.*;
-import io.vertx.core.buffer.Buffer;
-import io.vertx.core.eventbus.Message;
-import io.vertx.core.eventbus.MessageConsumer;
-import io.vertx.core.http.ClientAuth;
-import io.vertx.core.impl.*;
-import io.vertx.core.net.*;
-import io.vertx.core.net.impl.SocketAddressImpl;
+import io.smallvertx.core.*;
+import io.smallvertx.core.impl.*;
+import io.smallvertx.core.net.*;
+import io.smallvertx.core.buffer.Buffer;
+import io.smallvertx.core.eventbus.Message;
+import io.smallvertx.core.eventbus.MessageConsumer;
+import io.smallvertx.core.http.ClientAuth;
+import io.smallvertx.core.net.impl.SocketAddressImpl;
 import org.junit.Assume;
 import org.junit.Rule;
 import org.junit.Test;

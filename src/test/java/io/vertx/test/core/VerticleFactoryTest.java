@@ -16,11 +16,11 @@
 
 package io.vertx.test.core;
 
-import io.vertx.core.*;
-import io.vertx.core.impl.Deployment;
-import io.vertx.core.impl.VertxInternal;
-import io.vertx.core.json.JsonObject;
-import io.vertx.core.spi.VerticleFactory;
+import io.smallvertx.core.*;
+import io.smallvertx.core.impl.Deployment;
+import io.smallvertx.core.impl.VertxInternal;
+import io.smallvertx.core.json.JsonObject;
+import io.smallvertx.core.spi.VerticleFactory;
 import org.junit.Test;
 
 import java.io.IOException;

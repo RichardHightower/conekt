@@ -1,8 +1,8 @@
 package io.vertx.test.core;
 
-import io.vertx.core.Handler;
-import io.vertx.core.eventbus.EventBus;
-import io.vertx.core.eventbus.SendContext;
+import io.smallvertx.core.Handler;
+import io.smallvertx.core.eventbus.EventBus;
+import io.smallvertx.core.eventbus.SendContext;
 import org.junit.Test;
 
 import java.util.concurrent.atomic.AtomicInteger;

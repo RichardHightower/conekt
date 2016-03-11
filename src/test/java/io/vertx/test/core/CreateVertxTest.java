@@ -16,8 +16,8 @@
 
 package io.vertx.test.core;
 
-import io.vertx.core.Vertx;
-import io.vertx.core.VertxOptions;
+import io.smallvertx.core.Vertx;
+import io.smallvertx.core.VertxOptions;
 import org.junit.Test;
 
 /**

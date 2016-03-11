@@ -16,14 +16,14 @@
 
 package io.vertx.test.core;
 
-import io.vertx.core.AbstractVerticle;
-import io.vertx.core.DeploymentOptions;
-import io.vertx.core.Vertx;
-import io.vertx.core.buffer.Buffer;
-import io.vertx.core.datagram.DatagramSocket;
-import io.vertx.core.datagram.DatagramSocketOptions;
-import io.vertx.core.net.NetworkOptions;
-import io.vertx.core.streams.WriteStream;
+import io.smallvertx.core.AbstractVerticle;
+import io.smallvertx.core.DeploymentOptions;
+import io.smallvertx.core.Vertx;
+import io.smallvertx.core.buffer.Buffer;
+import io.smallvertx.core.datagram.DatagramSocket;
+import io.smallvertx.core.datagram.DatagramSocketOptions;
+import io.smallvertx.core.net.NetworkOptions;
+import io.smallvertx.core.streams.WriteStream;
 import org.junit.Test;
 
 import java.net.InetAddress;

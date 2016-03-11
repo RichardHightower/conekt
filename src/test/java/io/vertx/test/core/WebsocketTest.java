@@ -18,15 +18,15 @@ package io.vertx.test.core;
 
 
 import io.netty.handler.codec.http.websocketx.WebSocketHandshakeException;
-import io.vertx.core.AbstractVerticle;
-import io.vertx.core.Context;
-import io.vertx.core.DeploymentOptions;
-import io.vertx.core.Vertx;
-import io.vertx.core.buffer.Buffer;
-import io.vertx.core.http.*;
-import io.vertx.core.impl.ConcurrentHashSet;
-import io.vertx.core.net.NetSocket;
-import io.vertx.core.streams.ReadStream;
+import io.smallvertx.core.AbstractVerticle;
+import io.smallvertx.core.Context;
+import io.smallvertx.core.DeploymentOptions;
+import io.smallvertx.core.Vertx;
+import io.smallvertx.core.buffer.Buffer;
+import io.smallvertx.core.http.*;
+import io.smallvertx.core.impl.ConcurrentHashSet;
+import io.smallvertx.core.net.NetSocket;
+import io.smallvertx.core.streams.ReadStream;
 import org.junit.Test;
 
 import java.security.MessageDigest;

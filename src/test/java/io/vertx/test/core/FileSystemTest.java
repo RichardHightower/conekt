@@ -18,17 +18,17 @@ package io.vertx.test.core;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import io.vertx.core.AsyncResultHandler;
-import io.vertx.core.Handler;
-import io.vertx.core.Vertx;
-import io.vertx.core.buffer.Buffer;
-import io.vertx.core.file.*;
-import io.vertx.core.file.FileSystemException;
-import io.vertx.core.file.impl.AsyncFileImpl;
-import io.vertx.core.impl.Utils;
-import io.vertx.core.streams.Pump;
-import io.vertx.core.streams.ReadStream;
-import io.vertx.core.streams.WriteStream;
+import io.smallvertx.core.AsyncResultHandler;
+import io.smallvertx.core.Handler;
+import io.smallvertx.core.Vertx;
+import io.smallvertx.core.buffer.Buffer;
+import io.smallvertx.core.file.*;
+import io.smallvertx.core.file.FileSystemException;
+import io.smallvertx.core.file.impl.AsyncFileImpl;
+import io.smallvertx.core.impl.Utils;
+import io.smallvertx.core.streams.Pump;
+import io.smallvertx.core.streams.ReadStream;
+import io.smallvertx.core.streams.WriteStream;
 import org.junit.Assume;
 import org.junit.Rule;
 import org.junit.Test;
@@ -682,7 +682,7 @@ public class FileSystemTest extends VertxTestBase {
                 if (shouldPass) {
                     fail(ar.cause().getMessage());
                 } else {
-                    assertTrue(ar.cause() instanceof io.vertx.core.file.FileSystemException);
+                    assertTrue(ar.cause() instanceof FileSystemException);
                     if (afterOK != null) {
                         afterOK.handle(ar.result());
                     }

@@ -16,7 +16,7 @@
 
 package io.vertx.test.core;
 
-import io.vertx.core.Context;
+import io.smallvertx.core.Context;
 import org.junit.Test;
 
 import java.util.concurrent.CountDownLatch;
