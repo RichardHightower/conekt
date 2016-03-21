@@ -18,7 +18,6 @@ package io.smallvertx.core.net;
 
 import io.smallvertx.core.streams.Pump;
 import io.smallvertx.core.streams.WriteStream;
-import io.vertx.codegen.annotations.*;
 import io.smallvertx.core.AsyncResult;
 import io.smallvertx.core.Handler;
 import io.smallvertx.core.buffer.Buffer;
@@ -40,7 +39,6 @@ import javax.security.cert.X509Certificate;
  *
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
-@VertxGen
 public interface NetSocket extends ReadStream<Buffer>, WriteStream<Buffer> {
 
     @Override
@@ -85,7 +83,6 @@ public interface NetSocket extends ReadStream<Buffer>, WriteStream<Buffer> {
      * @param str the string to write
      * @return a reference to this, so the API can be used fluently
      */
-    @Fluent
     NetSocket write(String str);
 
     /**
@@ -95,7 +92,6 @@ public interface NetSocket extends ReadStream<Buffer>, WriteStream<Buffer> {
      * @param enc the encoding to use
      * @return a reference to this, so the API can be used fluently
      */
-    @Fluent
     NetSocket write(String str, String enc);
 
     /**
@@ -105,7 +101,6 @@ public interface NetSocket extends ReadStream<Buffer>, WriteStream<Buffer> {
      * @param filename file name of the file to send
      * @return a reference to this, so the API can be used fluently
      */
-    @Fluent
     default NetSocket sendFile(String filename) {
         return sendFile(filename, 0, Long.MAX_VALUE);
     }
@@ -118,7 +113,6 @@ public interface NetSocket extends ReadStream<Buffer>, WriteStream<Buffer> {
      * @param offset   offset
      * @return a reference to this, so the API can be used fluently
      */
-    @Fluent
     default NetSocket sendFile(String filename, long offset) {
         return sendFile(filename, offset, Long.MAX_VALUE);
     }
@@ -132,7 +126,6 @@ public interface NetSocket extends ReadStream<Buffer>, WriteStream<Buffer> {
      * @param length   length
      * @return a reference to this, so the API can be used fluently
      */
-    @Fluent
     NetSocket sendFile(String filename, long offset, long length);
 
     /**
@@ -143,7 +136,6 @@ public interface NetSocket extends ReadStream<Buffer>, WriteStream<Buffer> {
      * @param resultHandler handler
      * @return a reference to this, so the API can be used fluently
      */
-    @Fluent
     default NetSocket sendFile(String filename, Handler<AsyncResult<Void>> resultHandler) {
         return sendFile(filename, 0, Long.MAX_VALUE, resultHandler);
     }
@@ -157,7 +149,6 @@ public interface NetSocket extends ReadStream<Buffer>, WriteStream<Buffer> {
      * @param resultHandler handler
      * @return a reference to this, so the API can be used fluently
      */
-    @Fluent
     default NetSocket sendFile(String filename, long offset, Handler<AsyncResult<Void>> resultHandler) {
         return sendFile(filename, offset, Long.MAX_VALUE, resultHandler);
     }
@@ -172,19 +163,16 @@ public interface NetSocket extends ReadStream<Buffer>, WriteStream<Buffer> {
      * @param resultHandler handler
      * @return a reference to this, so the API can be used fluently
      */
-    @Fluent
     NetSocket sendFile(String filename, long offset, long length, Handler<AsyncResult<Void>> resultHandler);
 
     /**
      * @return the remote address for this socket
      */
-    @CacheReturn
     SocketAddress remoteAddress();
 
     /**
      * @return the local address for this socket
      */
-    @CacheReturn
     SocketAddress localAddress();
 
     /**
@@ -204,8 +192,7 @@ public interface NetSocket extends ReadStream<Buffer>, WriteStream<Buffer> {
      * @param handler the handler
      * @return a reference to this, so the API can be used fluently
      */
-    @Fluent
-    NetSocket closeHandler(@Nullable Handler<Void> handler);
+    NetSocket closeHandler( Handler<Void> handler);
 
     /**
      * Upgrade channel to use SSL/TLS. Be aware that for this to work SSL must be configured.
@@ -213,7 +200,6 @@ public interface NetSocket extends ReadStream<Buffer>, WriteStream<Buffer> {
      * @param handler the handler will be notified when it's upgraded
      * @return a reference to this, so the API can be used fluently
      */
-    @Fluent
     NetSocket upgradeToSsl(Handler<Void> handler);
 
     /**
@@ -226,7 +212,6 @@ public interface NetSocket extends ReadStream<Buffer>, WriteStream<Buffer> {
      * not SSL.
      * @throws javax.net.ssl.SSLPeerUnverifiedException SSL peer's identity has not been verified.
      */
-    @GenIgnore
     X509Certificate[] peerCertificateChain() throws SSLPeerUnverifiedException;
 }
 

@@ -17,7 +17,6 @@
 package io.smallvertx.core.net;
 
 import io.smallvertx.core.buffer.Buffer;
-import io.vertx.codegen.annotations.DataObject;
 
 /**
  * Key store options configuring a private key and its certificate based on
@@ -65,7 +64,6 @@ import io.vertx.codegen.annotations.DataObject;
  * @author <a href="mailto:julien@julienviet.com">Julien Viet</a>
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
-@DataObject(generateConverter = true)
 public class PemKeyCertOptions implements KeyCertOptions, Cloneable {
 
     private String keyPath;

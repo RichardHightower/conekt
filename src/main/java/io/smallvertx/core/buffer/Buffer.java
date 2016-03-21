@@ -20,9 +20,6 @@ import io.netty.buffer.ByteBuf;
 import io.smallvertx.core.ServiceHelper;
 import io.smallvertx.core.json.JsonArray;
 import io.smallvertx.core.spi.BufferFactory;
-import io.vertx.codegen.annotations.Fluent;
-import io.vertx.codegen.annotations.GenIgnore;
-import io.vertx.codegen.annotations.VertxGen;
 import io.smallvertx.core.json.JsonObject;
 
 import java.nio.ByteBuffer;
@@ -38,7 +35,6 @@ import java.nio.charset.Charset;
  *
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
-@VertxGen
 public interface Buffer {
 
     static final BufferFactory factory = ServiceHelper.loadFactory(BufferFactory.class);
@@ -92,7 +88,6 @@ public interface Buffer {
      * @param bytes the byte array
      * @return the buffer
      */
-    @GenIgnore
     static Buffer buffer(byte[] bytes) {
         return factory.buffer(bytes);
     }
@@ -103,7 +98,6 @@ public interface Buffer {
      * @param byteBuf the Netty ByteBuf
      * @return the buffer
      */
-    @GenIgnore
     static Buffer buffer(ByteBuf byteBuf) {
         return factory.buffer(byteBuf);
     }
@@ -121,7 +115,6 @@ public interface Buffer {
     /**
      * Returns a {@code String} representation of the Buffer with the encoding specified by {@code enc}
      */
-    @GenIgnore
     String toString(Charset enc);
 
     /**
@@ -200,14 +193,12 @@ public interface Buffer {
     /**
      * Returns a copy of the entire Buffer as a {@code byte[]}
      */
-    @GenIgnore
     byte[] getBytes();
 
     /**
      * Returns a copy of a sub-sequence the Buffer as a {@code byte[]} starting at position {@code start}
      * and ending at position {@code end - 1}
      */
-    @GenIgnore
     byte[] getBytes(int start, int end);
 
     /**
@@ -216,7 +207,6 @@ public interface Buffer {
      * @param dst the destination byte array
      * @throws IndexOutOfBoundsException if the content of the Buffer cannot fit into the destination byte array
      */
-    @GenIgnore
     Buffer getBytes(byte[] dst);
 
     /**
@@ -225,7 +215,6 @@ public interface Buffer {
      * @param dst the destination byte array
      * @throws IndexOutOfBoundsException if the content of the Buffer cannot fit into the destination byte array
      */
-    @GenIgnore
     Buffer getBytes(byte[] dst, int dstIndex);
 
     /**
@@ -235,7 +224,6 @@ public interface Buffer {
      * @param dst the destination byte array
      * @throws IndexOutOfBoundsException if the content of the Buffer cannot fit into the destination byte array
      */
-    @GenIgnore
     Buffer getBytes(int start, int end, byte[] dst);
 
     /**
@@ -245,7 +233,6 @@ public interface Buffer {
      * @param dst the destination byte array
      * @throws IndexOutOfBoundsException if the content of the Buffer cannot fit into the destination byte array
      */
-    @GenIgnore
     Buffer getBytes(int start, int end, byte[] dst, int dstIndex);
 
     /**
@@ -271,7 +258,6 @@ public interface Buffer {
      * any bytes written.<p>
      * Returns a reference to {@code this} so multiple operations can be appended together.
      */
-    @Fluent
     Buffer appendBuffer(Buffer buff);
 
     /**
@@ -279,15 +265,12 @@ public interface Buffer {
      * any bytes written.<p>
      * Returns a reference to {@code this} so multiple operations can be appended together.
      */
-    @Fluent
     Buffer appendBuffer(Buffer buff, int offset, int len);
 
     /**
      * Appends the specified {@code byte[]} to the end of the Buffer. The buffer will expand as necessary to accommodate any bytes written.<p>
      * Returns a reference to {@code this} so multiple operations can be appended together.
      */
-    @GenIgnore
-    @Fluent
     Buffer appendBytes(byte[] bytes);
 
     /**
@@ -295,71 +278,60 @@ public interface Buffer {
      * The buffer will expand as necessary to accommodate any bytes written.<p>
      * Returns a reference to {@code this} so multiple operations can be appended together.
      */
-    @GenIgnore
-    @Fluent
     Buffer appendBytes(byte[] bytes, int offset, int len);
 
     /**
      * Appends the specified {@code byte} to the end of the Buffer. The buffer will expand as necessary to accommodate any bytes written.<p>
      * Returns a reference to {@code this} so multiple operations can be appended together.
      */
-    @Fluent
     Buffer appendByte(byte b);
 
     /**
      * Appends the specified unsigned {@code byte} to the end of the Buffer. The buffer will expand as necessary to accommodate any bytes written.<p>
      * Returns a reference to {@code this} so multiple operations can be appended together.
      */
-    @Fluent
     Buffer appendUnsignedByte(short b);
 
     /**
      * Appends the specified {@code int} to the end of the Buffer. The buffer will expand as necessary to accommodate any bytes written.<p>
      * Returns a reference to {@code this} so multiple operations can be appended together.
      */
-    @Fluent
     Buffer appendInt(int i);
 
     /**
      * Appends the specified unsigned {@code int} to the end of the Buffer. The buffer will expand as necessary to accommodate any bytes written.<p>
      * Returns a reference to {@code this} so multiple operations can be appended together.
      */
-    @Fluent
     Buffer appendUnsignedInt(long i);
 
     /**
      * Appends the specified {@code long} to the end of the Buffer. The buffer will expand as necessary to accommodate any bytes written.<p>
      * Returns a reference to {@code this} so multiple operations can be appended together.
      */
-    @Fluent
     Buffer appendLong(long l);
 
     /**
      * Appends the specified {@code short} to the end of the Buffer.The buffer will expand as necessary to accommodate any bytes written.<p>
      * Returns a reference to {@code this} so multiple operations can be appended together.
      */
-    @Fluent
     Buffer appendShort(short s);
 
     /**
      * Appends the specified unsigned {@code short} to the end of the Buffer.The buffer will expand as necessary to accommodate any bytes written.<p>
      * Returns a reference to {@code this} so multiple operations can be appended together.
      */
-    @Fluent
     Buffer appendUnsignedShort(int s);
 
     /**
      * Appends the specified {@code float} to the end of the Buffer. The buffer will expand as necessary to accommodate any bytes written.<p>
      * Returns a reference to {@code this} so multiple operations can be appended together.
      */
-    @Fluent
     Buffer appendFloat(float f);
 
     /**
      * Appends the specified {@code double} to the end of the Buffer. The buffer will expand as necessary to accommodate any bytes written.<p>
      * Returns a reference to {@code this} so multiple operations can be appended together.
      */
-    @Fluent
     Buffer appendDouble(double d);
 
     /**
@@ -367,7 +339,6 @@ public interface Buffer {
      * The buffer will expand as necessary to accommodate any bytes written.<p>
      * Returns a reference to {@code this} so multiple operations can be appended together.<p>
      */
-    @Fluent
     Buffer appendString(String str, String enc);
 
     /**
@@ -375,14 +346,12 @@ public interface Buffer {
      * The buffer will expand as necessary to accommodate any bytes written.<p>
      * Returns a reference to {@code this} so multiple operations can be appended together<p>
      */
-    @Fluent
     Buffer appendString(String str);
 
     /**
      * Sets the {@code byte} at position {@code pos} in the Buffer to the value {@code b}.<p>
      * The buffer will expand as necessary to accommodate any value written.
      */
-    @Fluent
     Buffer setByte(int pos, byte b);
 
     /**
@@ -395,101 +364,84 @@ public interface Buffer {
      * Sets the {@code int} at position {@code pos} in the Buffer to the value {@code i}.<p>
      * The buffer will expand as necessary to accommodate any value written.
      */
-    @Fluent
     Buffer setInt(int pos, int i);
 
     /**
      * Sets the unsigned {@code int} at position {@code pos} in the Buffer to the value {@code i}.<p>
      * The buffer will expand as necessary to accommodate any value written.
      */
-    @Fluent
     Buffer setUnsignedInt(int pos, long i);
 
     /**
      * Sets the {@code long} at position {@code pos} in the Buffer to the value {@code l}.<p>
      * The buffer will expand as necessary to accommodate any value written.
      */
-    @Fluent
     Buffer setLong(int pos, long l);
 
     /**
      * Sets the {@code double} at position {@code pos} in the Buffer to the value {@code d}.<p>
      * The buffer will expand as necessary to accommodate any value written.
      */
-    @Fluent
     Buffer setDouble(int pos, double d);
 
     /**
      * Sets the {@code float} at position {@code pos} in the Buffer to the value {@code f}.<p>
      * The buffer will expand as necessary to accommodate any value written.
      */
-    @Fluent
     Buffer setFloat(int pos, float f);
 
     /**
      * Sets the {@code short} at position {@code pos} in the Buffer to the value {@code s}.<p>
      * The buffer will expand as necessary to accommodate any value written.
      */
-    @Fluent
     Buffer setShort(int pos, short s);
 
     /**
      * Sets the unsigned {@code short} at position {@code pos} in the Buffer to the value {@code s}.<p>
      * The buffer will expand as necessary to accommodate any value written.
      */
-    @Fluent
     Buffer setUnsignedShort(int pos, int s);
 
     /**
      * Sets the bytes at position {@code pos} in the Buffer to the bytes represented by the {@code Buffer b}.<p>
      * The buffer will expand as necessary to accommodate any value written.
      */
-    @Fluent
     Buffer setBuffer(int pos, Buffer b);
 
     /**
      * Sets the bytes at position {@code pos} in the Buffer to the bytes represented by the {@code Buffer b} on the given {@code offset} and {@code len}.<p>
      * The buffer will expand as necessary to accommodate any value written.
      */
-    @Fluent
     Buffer setBuffer(int pos, Buffer b, int offset, int len);
 
     /**
      * Sets the bytes at position {@code pos} in the Buffer to the bytes represented by the {@code ByteBuffer b}.<p>
      * The buffer will expand as necessary to accommodate any value written.
      */
-    @GenIgnore
-    @Fluent
     Buffer setBytes(int pos, ByteBuffer b);
 
     /**
      * Sets the bytes at position {@code pos} in the Buffer to the bytes represented by the {@code byte[] b}.<p>
      * The buffer will expand as necessary to accommodate any value written.
      */
-    @GenIgnore
-    @Fluent
     Buffer setBytes(int pos, byte[] b);
 
     /**
      * Sets the given number of bytes at position {@code pos} in the Buffer to the bytes represented by the {@code byte[] b}.<p></p>
      * The buffer will expand as necessary to accommodate any value written.
      */
-    @GenIgnore
-    @Fluent
     Buffer setBytes(int pos, byte[] b, int offset, int len);
 
     /**
      * Sets the bytes at position {@code pos} in the Buffer to the value of {@code str} encoded in UTF-8.<p>
      * The buffer will expand as necessary to accommodate any value written.
      */
-    @Fluent
     Buffer setString(int pos, String str);
 
     /**
      * Sets the bytes at position {@code pos} in the Buffer to the value of {@code str} encoded in encoding {@code enc}.<p>
      * The buffer will expand as necessary to accommodate any value written.
      */
-    @Fluent
     Buffer setString(int pos, String str, String enc);
 
     /**
@@ -522,7 +474,6 @@ public interface Buffer {
      * The returned buffer is a duplicate.<p>
      * This method is meant for internal use only.
      */
-    @GenIgnore
     ByteBuf getByteBuf();
 
 }

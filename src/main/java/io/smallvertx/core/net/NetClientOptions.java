@@ -17,14 +17,11 @@
 package io.smallvertx.core.net;
 
 import io.smallvertx.core.buffer.Buffer;
-import io.vertx.codegen.annotations.DataObject;
-
 /**
  * Options for configuring a {@link NetClient}.
  *
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
-@DataObject(generateConverter = true)
 public class NetClientOptions extends ClientOptionsBase {
 
     /**

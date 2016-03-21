@@ -20,7 +20,6 @@ import io.smallvertx.core.MultiMap;
 import io.smallvertx.core.http.CaseInsensitiveHeaders;
 import io.smallvertx.core.impl.Arguments;
 import io.smallvertx.core.json.JsonObject;
-import io.vertx.codegen.annotations.DataObject;
 
 import java.util.Map;
 import java.util.Objects;
@@ -33,7 +32,6 @@ import java.util.Objects;
  *
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
-@DataObject
 public class DeliveryOptions {
 
     /**

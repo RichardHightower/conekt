@@ -17,7 +17,6 @@
 package io.smallvertx.core;
 
 import io.smallvertx.core.impl.CompositeFutureImpl;
-import io.vertx.codegen.annotations.VertxGen;
 
 import java.util.List;
 
@@ -27,7 +26,6 @@ import java.util.List;
  *
  * @author <a href="mailto:julien@julienviet.com">Julien Viet</a>
  */
-@VertxGen
 public interface CompositeFuture extends Future<CompositeFuture> {
 
     /**

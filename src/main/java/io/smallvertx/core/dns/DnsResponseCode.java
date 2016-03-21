@@ -15,13 +15,11 @@
  */
 package io.smallvertx.core.dns;
 
-import io.vertx.codegen.annotations.VertxGen;
 
 /**
  * Represents the possible response codes a server may send after receiving a
  * query. A response code of 0 indicates no error.
  */
-@VertxGen
 public enum DnsResponseCode {
 
     /**

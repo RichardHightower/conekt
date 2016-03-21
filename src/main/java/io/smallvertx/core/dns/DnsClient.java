@@ -16,9 +16,6 @@
 package io.smallvertx.core.dns;
 
 
-import io.vertx.codegen.annotations.Fluent;
-import io.vertx.codegen.annotations.Nullable;
-import io.vertx.codegen.annotations.VertxGen;
 import io.smallvertx.core.AsyncResult;
 import io.smallvertx.core.Handler;
 
@@ -31,7 +28,6 @@ import java.util.List;
  *
  * @author <a href="mailto:nmaurer@redhat.com">Norman Maurer</a>
  */
-@VertxGen
 public interface DnsClient {
 
     /**
@@ -43,8 +39,7 @@ public interface DnsClient {
      *                will get notifed with {@code null}. If an error accours it will get failed.
      * @return a reference to this, so the API can be used fluently
      */
-    @Fluent
-    DnsClient lookup(String name, Handler<AsyncResult<@Nullable String>> handler);
+    DnsClient lookup(String name, Handler<AsyncResult<String>> handler);
 
     /**
      * Try to lookup the A (ipv4) record for the given name. The first found will be used.
@@ -55,8 +50,7 @@ public interface DnsClient {
      *                If non was found it will get notifed with {@code null}. If an error accours it will get failed.
      * @return a reference to this, so the API can be used fluently
      */
-    @Fluent
-    DnsClient lookup4(String name, Handler<AsyncResult<@Nullable String>> handler);
+    DnsClient lookup4(String name, Handler<AsyncResult<String>> handler);
 
     /**
      * Try to lookup the AAAA (ipv6) record for the given name. The first found will be used.
@@ -67,8 +61,7 @@ public interface DnsClient {
      *                it will get notifed with {@code null}. If an error accours it will get failed.
      * @return a reference to this, so the API can be used fluently
      */
-    @Fluent
-    DnsClient lookup6(String name, Handler<AsyncResult<@Nullable String>> handler);
+    DnsClient lookup6(String name, Handler<AsyncResult< String>> handler);
 
     /**
      * Try to resolve all A (ipv4) records for the given name.
@@ -80,7 +73,6 @@ public interface DnsClient {
      *                If an error accours it will get failed.
      * @return a reference to this, so the API can be used fluently
      */
-    @Fluent
     DnsClient resolveA(String name, Handler<AsyncResult<List<String>>> handler);
 
     /**
@@ -93,7 +85,6 @@ public interface DnsClient {
      *                If an error accours it will get failed.
      * @return a reference to this, so the API can be used fluently
      */
-    @Fluent
     DnsClient resolveAAAA(String name, Handler<AsyncResult<List<String>>> handler);
 
     /**
@@ -105,7 +96,6 @@ public interface DnsClient {
      *                get notified with {@code null}. If an error accours it will get failed.
      * @return a reference to this, so the API can be used fluently.
      */
-    @Fluent
     DnsClient resolveCNAME(String name, Handler<AsyncResult<List<String>>> handler);
 
     /**
@@ -118,7 +108,6 @@ public interface DnsClient {
      *                {@link java.util.List}.  If an error accours it will get failed.
      * @return a reference to this, so the API can be used fluently.
      */
-    @Fluent
     DnsClient resolveMX(String name, Handler<AsyncResult<List<MxRecord>>> handler);
 
     /**
@@ -130,7 +119,6 @@ public interface DnsClient {
      *                get notified with an empty {@link java.util.List}. If an error accours it will get failed.
      * @return a reference to this, so the API can be used fluently.
      */
-    @Fluent
     DnsClient resolveTXT(String name, Handler<AsyncResult<List<String>>> handler);
 
     /**
@@ -142,8 +130,7 @@ public interface DnsClient {
      *                get notified with {@code null}. If an error accours it will get failed.
      * @return a reference to this, so the API can be used fluently.
      */
-    @Fluent
-    DnsClient resolvePTR(String name, Handler<AsyncResult<@Nullable String>> handler);
+    DnsClient resolvePTR(String name, Handler<AsyncResult< String>> handler);
 
     /**
      * Try to resolve the NS records for the given name.
@@ -154,7 +141,6 @@ public interface DnsClient {
      *                get notified with an empty {@link java.util.List}.  If an error accours it will get failed.
      * @return a reference to this, so the API can be used fluently.
      */
-    @Fluent
     DnsClient resolveNS(String name, Handler<AsyncResult<List<String>>> handler);
 
     /**
@@ -166,7 +152,6 @@ public interface DnsClient {
      *                get notified with an empty {@link java.util.List}. If an error accours it will get failed.
      * @return a reference to this, so the API can be used fluently.
      */
-    @Fluent
     DnsClient resolveSRV(String name, Handler<AsyncResult<List<SrvRecord>>> handler);
 
     /**
@@ -179,6 +164,5 @@ public interface DnsClient {
      *                  get notified with {@code null}. If an error accours it will get failed.
      * @return a reference to this, so the API can be used fluently.
      */
-    @Fluent
-    DnsClient reverseLookup(String ipaddress, Handler<AsyncResult<@Nullable String>> handler);
+    DnsClient reverseLookup(String ipaddress, Handler<AsyncResult<String>> handler);
 }

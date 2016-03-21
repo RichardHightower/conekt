@@ -18,10 +18,6 @@ package io.smallvertx.core.http;
 
 import io.smallvertx.core.Handler;
 import io.smallvertx.core.MultiMap;
-import io.vertx.codegen.annotations.CacheReturn;
-import io.vertx.codegen.annotations.GenIgnore;
-import io.vertx.codegen.annotations.Nullable;
-import io.vertx.codegen.annotations.VertxGen;
 import io.smallvertx.core.buffer.Buffer;
 
 import javax.net.ssl.SSLPeerUnverifiedException;
@@ -35,7 +31,6 @@ import javax.security.cert.X509Certificate;
  *
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
-@VertxGen
 public interface ServerWebSocket extends WebSocketBase {
 
     @Override
@@ -93,13 +88,12 @@ public interface ServerWebSocket extends WebSocketBase {
     /**
      * @return the WebSocket handshake query string.
      */
-    @Nullable String query();
+     String query();
 
     /**
      * @return the headers in the WebSocket handshake
      */
-    @CacheReturn
-    MultiMap headers();
+         MultiMap headers();
 
     /**
      * Reject the WebSocket.
@@ -117,6 +111,5 @@ public interface ServerWebSocket extends WebSocketBase {
      * not SSL.
      * @throws javax.net.ssl.SSLPeerUnverifiedException SSL peer's identity has not been verified.
      */
-    @GenIgnore
     X509Certificate[] peerCertificateChain() throws SSLPeerUnverifiedException;
 }

@@ -17,7 +17,6 @@
 package io.smallvertx.core.net;
 
 import io.smallvertx.core.Handler;
-import io.vertx.codegen.annotations.VertxGen;
 import io.smallvertx.core.streams.ReadStream;
 
 /**
@@ -26,7 +25,6 @@ import io.smallvertx.core.streams.ReadStream;
  *
  * @author <a href="mailto:julien@julienviet.com">Julien Viet</a>
  */
-@VertxGen
 public interface NetSocketStream extends ReadStream<NetSocket> {
 
     @Override

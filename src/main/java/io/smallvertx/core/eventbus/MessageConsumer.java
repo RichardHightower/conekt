@@ -17,7 +17,6 @@
 package io.smallvertx.core.eventbus;
 
 import io.smallvertx.core.AsyncResult;
-import io.vertx.codegen.annotations.VertxGen;
 import io.smallvertx.core.Handler;
 import io.smallvertx.core.streams.ReadStream;
 
@@ -34,7 +33,6 @@ import io.smallvertx.core.streams.ReadStream;
  *
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-@VertxGen
 public interface MessageConsumer<T> extends ReadStream<Message<T>> {
 
     @Override

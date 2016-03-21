@@ -18,10 +18,6 @@ package io.smallvertx.core;
 
 import io.netty.channel.EventLoopGroup;
 import io.smallvertx.core.dns.DnsClient;
-import io.vertx.codegen.annotations.CacheReturn;
-import io.vertx.codegen.annotations.GenIgnore;
-import io.vertx.codegen.annotations.Nullable;
-import io.vertx.codegen.annotations.VertxGen;
 import io.smallvertx.core.datagram.DatagramSocket;
 import io.smallvertx.core.datagram.DatagramSocketOptions;
 import io.smallvertx.core.eventbus.EventBus;
@@ -66,7 +62,6 @@ import java.util.Set;
  *
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
-@VertxGen
 public interface Vertx extends Measured {
 
     VertxFactory factory = ServiceHelper.loadFactory(VertxFactory.class);
@@ -107,7 +102,7 @@ public interface Vertx extends Measured {
      *
      * @return The current context or null if no current context
      */
-    static @Nullable Context currentContext() {
+    static Context currentContext() {
         return factory.context();
     }
 
@@ -198,7 +193,6 @@ public interface Vertx extends Measured {
      *
      * @return the filesystem object
      */
-    @CacheReturn
     FileSystem fileSystem();
 
     /**
@@ -206,7 +200,6 @@ public interface Vertx extends Measured {
      *
      * @return the event bus object
      */
-    @CacheReturn
     EventBus eventBus();
 
     /**
@@ -298,7 +291,6 @@ public interface Vertx extends Measured {
      *
      * @param verticle the verticle instance to deploy.
      */
-    @GenIgnore
     void deployVerticle(Verticle verticle);
 
     /**
@@ -312,7 +304,6 @@ public interface Vertx extends Measured {
      * @param verticle          the verticle instance to deploy
      * @param completionHandler a handler which will be notified when the deployment is complete
      */
-    @GenIgnore
     void deployVerticle(Verticle verticle, Handler<AsyncResult<String>> completionHandler);
 
     /**
@@ -322,7 +313,6 @@ public interface Vertx extends Measured {
      * @param verticle the verticle instance to deploy
      * @param options  the deployment options.
      */
-    @GenIgnore
     void deployVerticle(Verticle verticle, DeploymentOptions options);
 
     /**
@@ -333,7 +323,6 @@ public interface Vertx extends Measured {
      * @param options           the deployment options.
      * @param completionHandler a handler which will be notified when the deployment is complete
      */
-    @GenIgnore
     void deployVerticle(Verticle verticle, DeploymentOptions options, Handler<AsyncResult<String>> completionHandler);
 
     /**
@@ -408,7 +397,6 @@ public interface Vertx extends Measured {
      *
      * @param factory the factory to register
      */
-    @GenIgnore
     void registerVerticleFactory(VerticleFactory factory);
 
     /**
@@ -416,7 +404,6 @@ public interface Vertx extends Measured {
      *
      * @param factory the factory to unregister
      */
-    @GenIgnore
     void unregisterVerticleFactory(VerticleFactory factory);
 
     /**
@@ -424,7 +411,6 @@ public interface Vertx extends Measured {
      *
      * @return the set of verticle factories
      */
-    @GenIgnore
     Set<VerticleFactory> verticleFactories();
 
 
@@ -462,6 +448,5 @@ public interface Vertx extends Measured {
      *
      * @return the EventLoopGroup
      */
-    @GenIgnore
     EventLoopGroup nettyEventLoopGroup();
 }

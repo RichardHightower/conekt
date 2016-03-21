@@ -16,12 +16,9 @@
 
 package io.smallvertx.core.metrics;
 
-import io.vertx.codegen.annotations.VertxGen;
-
 /**
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-@VertxGen(concrete = false)
 public interface Measured {
 
     /**

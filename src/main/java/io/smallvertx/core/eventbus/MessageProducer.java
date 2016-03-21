@@ -18,8 +18,6 @@ package io.smallvertx.core.eventbus;
 
 import io.smallvertx.core.Handler;
 import io.smallvertx.core.streams.WriteStream;
-import io.vertx.codegen.annotations.Fluent;
-import io.vertx.codegen.annotations.VertxGen;
 import io.smallvertx.core.AsyncResult;
 
 /**
@@ -28,7 +26,6 @@ import io.smallvertx.core.AsyncResult;
  *
  * @author <a href="mailto:julien@julienviet.com">Julien Viet</a>
  */
-@VertxGen
 public interface MessageProducer<T> extends WriteStream<T> {
 
     int DEFAULT_WRITE_QUEUE_MAX_SIZE = 1000;
@@ -61,7 +58,6 @@ public interface MessageProducer<T> extends WriteStream<T> {
      * @param options the new options
      * @return this producer object
      */
-    @Fluent
     MessageProducer<T> deliveryOptions(DeliveryOptions options);
 
     /**

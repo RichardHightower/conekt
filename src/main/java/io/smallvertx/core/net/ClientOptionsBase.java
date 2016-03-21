@@ -16,14 +16,12 @@
 
 package io.smallvertx.core.net;
 
-import io.vertx.codegen.annotations.DataObject;
 
 /**
  * Base class for Client options
  *
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
-@DataObject(generateConverter = true)
 public abstract class ClientOptionsBase extends TCPSSLOptions {
 
     /**

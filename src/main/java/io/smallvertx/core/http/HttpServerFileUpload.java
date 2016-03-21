@@ -15,8 +15,6 @@
  */
 package io.smallvertx.core.http;
 
-import io.vertx.codegen.annotations.Fluent;
-import io.vertx.codegen.annotations.VertxGen;
 import io.smallvertx.core.Handler;
 import io.smallvertx.core.buffer.Buffer;
 import io.smallvertx.core.streams.ReadStream;
@@ -26,7 +24,6 @@ import io.smallvertx.core.streams.ReadStream;
  *
  * @author <a href="mailto:nmaurer@redhat.com">Norman Maurer</a>
  */
-@VertxGen
 public interface HttpServerFileUpload extends ReadStream<Buffer> {
 
     @Override
@@ -49,7 +46,6 @@ public interface HttpServerFileUpload extends ReadStream<Buffer> {
      *
      * @param filename the name of the file
      */
-    @Fluent
     HttpServerFileUpload streamToFileSystem(String filename);
 
     /**

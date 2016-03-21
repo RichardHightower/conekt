@@ -17,9 +17,6 @@
 package io.smallvertx.core.streams;
 
 import io.smallvertx.core.Handler;
-import io.vertx.codegen.annotations.Fluent;
-import io.vertx.codegen.annotations.Nullable;
-import io.vertx.codegen.annotations.VertxGen;
 
 /**
  * Represents a stream of items that can be read from.
@@ -29,7 +26,6 @@ import io.vertx.codegen.annotations.VertxGen;
  *
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
-@VertxGen(concrete = false)
 public interface ReadStream<T> extends StreamBase {
 
     /**
@@ -45,15 +41,13 @@ public interface ReadStream<T> extends StreamBase {
      *
      * @return a reference to this, so the API can be used fluently
      */
-    @Fluent
-    ReadStream<T> handler(@Nullable Handler<T> handler);
+    ReadStream<T> handler(Handler<T> handler);
 
     /**
      * Pause the {@code ReadSupport}. While it's paused, no data will be sent to the {@code dataHandler}
      *
      * @return a reference to this, so the API can be used fluently
      */
-    @Fluent
     ReadStream<T> pause();
 
     /**
@@ -61,7 +55,6 @@ public interface ReadStream<T> extends StreamBase {
      *
      * @return a reference to this, so the API can be used fluently
      */
-    @Fluent
     ReadStream<T> resume();
 
     /**
@@ -69,7 +62,6 @@ public interface ReadStream<T> extends StreamBase {
      *
      * @return a reference to this, so the API can be used fluently
      */
-    @Fluent
-    ReadStream<T> endHandler(@Nullable Handler<Void> endHandler);
+    ReadStream<T> endHandler(Handler<Void> endHandler);
 
 }

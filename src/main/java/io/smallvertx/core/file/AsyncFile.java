@@ -20,8 +20,6 @@ import io.smallvertx.core.AsyncResult;
 import io.smallvertx.core.http.HttpClientRequest;
 import io.smallvertx.core.streams.Pump;
 import io.smallvertx.core.streams.WriteStream;
-import io.vertx.codegen.annotations.Fluent;
-import io.vertx.codegen.annotations.VertxGen;
 import io.smallvertx.core.Handler;
 import io.smallvertx.core.buffer.Buffer;
 import io.smallvertx.core.streams.ReadStream;
@@ -36,7 +34,6 @@ import io.smallvertx.core.streams.ReadStream;
  *
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
-@VertxGen
 public interface AsyncFile extends ReadStream<Buffer>, WriteStream<Buffer> {
 
     @Override
@@ -98,7 +95,6 @@ public interface AsyncFile extends ReadStream<Buffer>, WriteStream<Buffer> {
      * @param handler  the handler to call when the write is complete
      * @return a reference to this, so the API can be used fluently
      */
-    @Fluent
     AsyncFile write(Buffer buffer, long position, Handler<AsyncResult<Void>> handler);
 
     /**
@@ -118,7 +114,6 @@ public interface AsyncFile extends ReadStream<Buffer>, WriteStream<Buffer> {
      * @param handler  the handler to call when the write is complete
      * @return a reference to this, so the API can be used fluently
      */
-    @Fluent
     AsyncFile read(Buffer buffer, int offset, long position, int length, Handler<AsyncResult<Buffer>> handler);
 
     /**
@@ -130,13 +125,11 @@ public interface AsyncFile extends ReadStream<Buffer>, WriteStream<Buffer> {
      *
      * @return a reference to this, so the API can be used fluently
      */
-    @Fluent
     AsyncFile flush();
 
     /**
      * Same as {@link #flush} but the handler will be called when the flush is complete or if an error occurs
      */
-    @Fluent
     AsyncFile flush(Handler<AsyncResult<Void>> handler);
 
     /**
@@ -145,7 +138,6 @@ public interface AsyncFile extends ReadStream<Buffer>, WriteStream<Buffer> {
      * @param readPos the position in the file
      * @return a reference to this, so the API can be used fluently
      */
-    @Fluent
     AsyncFile setReadPos(long readPos);
 
     /**
@@ -154,7 +146,6 @@ public interface AsyncFile extends ReadStream<Buffer>, WriteStream<Buffer> {
      * @param writePos the position in the file
      * @return a reference to this, so the API can be used fluently
      */
-    @Fluent
     AsyncFile setWritePos(long writePos);
 
     /**
@@ -164,6 +155,5 @@ public interface AsyncFile extends ReadStream<Buffer>, WriteStream<Buffer> {
      * @param readBufferSize the buffer size
      * @return a reference to this, so the API can be used fluently
      */
-    @Fluent
     AsyncFile setReadBufferSize(int readBufferSize);
 }

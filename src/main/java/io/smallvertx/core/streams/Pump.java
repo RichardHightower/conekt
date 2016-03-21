@@ -21,8 +21,6 @@ import io.smallvertx.core.http.HttpServerRequest;
 import io.smallvertx.core.http.WebSocket;
 import io.smallvertx.core.net.NetSocket;
 import io.smallvertx.core.spi.PumpFactory;
-import io.vertx.codegen.annotations.Fluent;
-import io.vertx.codegen.annotations.VertxGen;
 import io.smallvertx.core.ServiceHelper;
 
 /**
@@ -48,7 +46,6 @@ import io.smallvertx.core.ServiceHelper;
  *
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
-@VertxGen
 public interface Pump {
 
     static final PumpFactory factory = ServiceHelper.loadFactory(PumpFactory.class);
@@ -83,7 +80,6 @@ public interface Pump {
      * @param maxSize the max size
      * @return a reference to this, so the API can be used fluently
      */
-    @Fluent
     Pump setWriteQueueMaxSize(int maxSize);
 
     /**
@@ -91,7 +87,6 @@ public interface Pump {
      *
      * @return a reference to this, so the API can be used fluently
      */
-    @Fluent
     Pump start();
 
     /**
@@ -99,7 +94,6 @@ public interface Pump {
      *
      * @return a reference to this, so the API can be used fluently
      */
-    @Fluent
     Pump stop();
 
     /**

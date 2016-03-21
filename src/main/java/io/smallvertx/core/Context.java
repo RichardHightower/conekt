@@ -16,9 +16,6 @@
 
 package io.smallvertx.core;
 
-import io.vertx.codegen.annotations.GenIgnore;
-import io.vertx.codegen.annotations.Nullable;
-import io.vertx.codegen.annotations.VertxGen;
 import io.smallvertx.core.impl.ContextImpl;
 import io.smallvertx.core.json.JsonObject;
 
@@ -56,7 +53,6 @@ import io.smallvertx.core.json.JsonObject;
  *
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
-@VertxGen
 public interface Context {
 
     /**
@@ -142,7 +138,7 @@ public interface Context {
      *
      * @return the configuration of the deployment or null if not a Verticle deployment
      */
-    @Nullable JsonObject config();
+    JsonObject config();
 
 
     /**
@@ -212,10 +208,8 @@ public interface Context {
      */
     int getInstanceCount();
 
-    @GenIgnore
     void addCloseHook(Closeable hook);
 
-    @GenIgnore
     void removeCloseHook(Closeable hook);
 
 }

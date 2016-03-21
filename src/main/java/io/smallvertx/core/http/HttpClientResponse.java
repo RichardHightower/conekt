@@ -21,7 +21,6 @@ import io.smallvertx.core.MultiMap;
 import io.smallvertx.core.buffer.Buffer;
 import io.smallvertx.core.net.NetSocket;
 import io.smallvertx.core.streams.Pump;
-import io.vertx.codegen.annotations.*;
 import io.smallvertx.core.streams.ReadStream;
 
 import java.util.List;
@@ -37,7 +36,6 @@ import java.util.List;
  *
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
-@VertxGen
 public interface HttpClientResponse extends ReadStream<Buffer> {
 
     @Override
@@ -68,8 +66,7 @@ public interface HttpClientResponse extends ReadStream<Buffer> {
     /**
      * @return the headers
      */
-    @CacheReturn
-    MultiMap headers();
+         MultiMap headers();
 
     /**
      * Return the first header value with the specified name
@@ -77,7 +74,7 @@ public interface HttpClientResponse extends ReadStream<Buffer> {
      * @param headerName the header name
      * @return the header value
      */
-    @Nullable String getHeader(String headerName);
+     String getHeader(String headerName);
 
     /**
      * Return the first header value with the specified name
@@ -85,7 +82,6 @@ public interface HttpClientResponse extends ReadStream<Buffer> {
      * @param headerName the header name
      * @return the header value
      */
-    @GenIgnore
     String getHeader(CharSequence headerName);
 
     /**
@@ -94,19 +90,17 @@ public interface HttpClientResponse extends ReadStream<Buffer> {
      * @param trailerName the trailer name
      * @return the trailer value
      */
-    @Nullable String getTrailer(String trailerName);
+     String getTrailer(String trailerName);
 
     /**
      * @return the trailers
      */
-    @CacheReturn
-    MultiMap trailers();
+         MultiMap trailers();
 
     /**
      * @return the Set-Cookie headers (including trailers)
      */
-    @CacheReturn
-    List<String> cookies();
+         List<String> cookies();
 
     /**
      * Convenience method for receiving the entire request body in one piece.
@@ -116,7 +110,6 @@ public interface HttpClientResponse extends ReadStream<Buffer> {
      *
      * @param bodyHandler This handler will be called after all the body has been received
      */
-    @Fluent
     HttpClientResponse bodyHandler(Handler<Buffer> bodyHandler);
 
     /**
@@ -129,7 +122,6 @@ public interface HttpClientResponse extends ReadStream<Buffer> {
      *
      * @return the net socket
      */
-    @CacheReturn
-    NetSocket netSocket();
+         NetSocket netSocket();
 
 }

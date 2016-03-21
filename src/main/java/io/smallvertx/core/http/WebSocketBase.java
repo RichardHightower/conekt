@@ -18,10 +18,6 @@ package io.smallvertx.core.http;
 
 import io.smallvertx.core.streams.Pump;
 import io.smallvertx.core.streams.WriteStream;
-import io.vertx.codegen.annotations.CacheReturn;
-import io.vertx.codegen.annotations.Fluent;
-import io.vertx.codegen.annotations.Nullable;
-import io.vertx.codegen.annotations.VertxGen;
 import io.smallvertx.core.Handler;
 import io.smallvertx.core.buffer.Buffer;
 import io.smallvertx.core.net.SocketAddress;
@@ -35,7 +31,6 @@ import io.smallvertx.core.streams.ReadStream;
  *
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
-@VertxGen(concrete = false)
 public interface WebSocketBase extends ReadStream<Buffer>, WriteStream<Buffer> {
 
     @Override
@@ -90,7 +85,6 @@ public interface WebSocketBase extends ReadStream<Buffer>, WriteStream<Buffer> {
      * @param frame the frame to write
      * @return a reference to this, so the API can be used fluently
      */
-    @Fluent
     WebSocketBase writeFrame(WebSocketFrame frame);
 
     /**
@@ -99,7 +93,6 @@ public interface WebSocketBase extends ReadStream<Buffer>, WriteStream<Buffer> {
      * @param text The text to write
      * @return a reference to this, so the API can be used fluently
      */
-    @Fluent
     WebSocketBase writeFinalTextFrame(String text);
 
     /**
@@ -108,7 +101,6 @@ public interface WebSocketBase extends ReadStream<Buffer>, WriteStream<Buffer> {
      * @param data The data to write
      * @return a reference to this, so the API can be used fluently
      */
-    @Fluent
     WebSocketBase writeFinalBinaryFrame(Buffer data);
 
     /**
@@ -118,7 +110,6 @@ public interface WebSocketBase extends ReadStream<Buffer>, WriteStream<Buffer> {
      * @param data the data to write
      * @return a reference to this, so the API can be used fluently
      */
-    @Fluent
     WebSocketBase writeBinaryMessage(Buffer data);
 
     /**
@@ -127,8 +118,7 @@ public interface WebSocketBase extends ReadStream<Buffer>, WriteStream<Buffer> {
      * @param handler the handler
      * @return a reference to this, so the API can be used fluently
      */
-    @Fluent
-    WebSocketBase closeHandler(@Nullable Handler<Void> handler);
+    WebSocketBase closeHandler( Handler<Void> handler);
 
     /**
      * Set a frame handler on the connection. This handler will be called when frames are read on the connection.
@@ -136,8 +126,7 @@ public interface WebSocketBase extends ReadStream<Buffer>, WriteStream<Buffer> {
      * @param handler the handler
      * @return a reference to this, so the API can be used fluently
      */
-    @Fluent
-    WebSocketBase frameHandler(@Nullable Handler<WebSocketFrame> handler);
+    WebSocketBase frameHandler( Handler<WebSocketFrame> handler);
 
     /**
      * Calls {@link #close()}
@@ -153,13 +142,11 @@ public interface WebSocketBase extends ReadStream<Buffer>, WriteStream<Buffer> {
     /**
      * @return the remote address for this socket
      */
-    @CacheReturn
-    SocketAddress remoteAddress();
+         SocketAddress remoteAddress();
 
     /**
      * @return the local address for this socket
      */
-    @CacheReturn
-    SocketAddress localAddress();
+         SocketAddress localAddress();
 
 }

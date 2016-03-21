@@ -19,9 +19,6 @@ package io.smallvertx.core.eventbus;
 import io.smallvertx.core.AsyncResult;
 import io.smallvertx.core.Handler;
 import io.smallvertx.core.MultiMap;
-import io.vertx.codegen.annotations.CacheReturn;
-import io.vertx.codegen.annotations.Nullable;
-import io.vertx.codegen.annotations.VertxGen;
 
 /**
  * Represents a message that is received from the event bus in a handler.
@@ -35,7 +32,6 @@ import io.vertx.codegen.annotations.VertxGen;
  *
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
-@VertxGen
 public interface Message<T> {
 
     /**
@@ -55,15 +51,14 @@ public interface Message<T> {
      *
      * @return the body, or null.
      */
-    @CacheReturn
-    T body();
+         T body();
 
     /**
      * The reply address. Can be null.
      *
      * @return the reply address, or null, if message was sent without a reply handler.
      */
-    @Nullable String replyAddress();
+     String replyAddress();
 
     /**
      * Reply to this message.

@@ -16,7 +16,6 @@
 package io.smallvertx.core.datagram;
 
 import io.smallvertx.core.net.SocketAddress;
-import io.vertx.codegen.annotations.VertxGen;
 import io.smallvertx.core.buffer.Buffer;
 
 /**
@@ -24,7 +23,6 @@ import io.smallvertx.core.buffer.Buffer;
  *
  * @author <a href="mailto:nmaurer@redhat.com">Norman Maurer</a>
  */
-@VertxGen
 public interface DatagramPacket {
 
     /**

@@ -22,7 +22,6 @@ import io.smallvertx.core.buffer.Buffer;
 import io.smallvertx.core.streams.Pump;
 import io.smallvertx.core.streams.ReadStream;
 import io.smallvertx.core.streams.WriteStream;
-import io.vertx.codegen.annotations.*;
 
 /**
  * Represents a client-side HTTP request.
@@ -53,7 +52,6 @@ import io.vertx.codegen.annotations.*;
  *
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
-@VertxGen
 public interface HttpClientRequest extends WriteStream<Buffer>, ReadStream<HttpClientResponse> {
 
     @Override
@@ -94,7 +92,6 @@ public interface HttpClientRequest extends WriteStream<Buffer>, ReadStream<HttpC
      * @param chunked true if chunked encoding
      * @return a reference to this, so the API can be used fluently
      */
-    @Fluent
     HttpClientRequest setChunked(boolean chunked);
 
     /**
@@ -110,8 +107,7 @@ public interface HttpClientRequest extends WriteStream<Buffer>, ReadStream<HttpC
     /**
      * @return The HTTP headers
      */
-    @CacheReturn
-    MultiMap headers();
+         MultiMap headers();
 
     /**
      * Put an HTTP header
@@ -120,13 +116,11 @@ public interface HttpClientRequest extends WriteStream<Buffer>, ReadStream<HttpC
      * @param value The header value
      * @return a reference to this, so the API can be used fluently
      */
-    @Fluent
     HttpClientRequest putHeader(String name, String value);
 
     /**
      * Like {@link #putHeader(String, String)} but using CharSequence
      */
-    @GenIgnore
     HttpClientRequest putHeader(CharSequence name, CharSequence value);
 
     /**
@@ -136,13 +130,11 @@ public interface HttpClientRequest extends WriteStream<Buffer>, ReadStream<HttpC
      * @param values The header values
      * @return @return a reference to this, so the API can be used fluently
      */
-    @GenIgnore
     HttpClientRequest putHeader(String name, Iterable<String> values);
 
     /**
      * Like {@link #putHeader(String, Iterable)} but using CharSequence
      */
-    @GenIgnore
     HttpClientRequest putHeader(CharSequence name, Iterable<CharSequence> values);
 
     /**
@@ -151,7 +143,6 @@ public interface HttpClientRequest extends WriteStream<Buffer>, ReadStream<HttpC
      * @return @return a reference to this, so the API can be used fluently
      * @throws java.lang.IllegalStateException when no response handler is set
      */
-    @Fluent
     HttpClientRequest write(String chunk);
 
     /**
@@ -160,7 +151,6 @@ public interface HttpClientRequest extends WriteStream<Buffer>, ReadStream<HttpC
      * @return @return a reference to this, so the API can be used fluently
      * @throws java.lang.IllegalStateException when no response handler is set
      */
-    @Fluent
     HttpClientRequest write(String chunk, String enc);
 
     /**
@@ -173,8 +163,7 @@ public interface HttpClientRequest extends WriteStream<Buffer>, ReadStream<HttpC
      *
      * @return a reference to this, so the API can be used fluently
      */
-    @Fluent
-    HttpClientRequest continueHandler(@Nullable Handler<Void> handler);
+    HttpClientRequest continueHandler( Handler<Void> handler);
 
     /**
      * Forces the head of the request to be written before {@link #end()} is called on the request or any data is
@@ -186,7 +175,6 @@ public interface HttpClientRequest extends WriteStream<Buffer>, ReadStream<HttpC
      * @return a reference to this, so the API can be used fluently
      * @throws java.lang.IllegalStateException when no response handler is set
      */
-    @Fluent
     HttpClientRequest sendHead();
 
     /**
@@ -232,7 +220,6 @@ public interface HttpClientRequest extends WriteStream<Buffer>, ReadStream<HttpC
      * @param timeoutMs The quantity of time in milliseconds.
      * @return a reference to this, so the API can be used fluently
      */
-    @Fluent
     HttpClientRequest setTimeout(long timeoutMs);
 
 }

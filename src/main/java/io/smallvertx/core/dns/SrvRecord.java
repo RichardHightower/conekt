@@ -15,15 +15,12 @@
  */
 package io.smallvertx.core.dns;
 
-import io.vertx.codegen.annotations.Nullable;
-import io.vertx.codegen.annotations.VertxGen;
 
 /**
  * Represent a Service-Record (SRV) which was resolved for a domain.
  *
  * @author <a href="mailto:nmaurer@redhat.com">Norman Maurer</a>
  */
-@VertxGen
 public interface SrvRecord {
 
     /**
@@ -59,5 +56,5 @@ public interface SrvRecord {
     /**
      * Returns the name of the host for the service.
      */
-    @Nullable String target();
+     String target();
 }

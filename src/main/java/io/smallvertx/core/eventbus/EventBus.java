@@ -18,9 +18,6 @@ package io.smallvertx.core.eventbus;
 
 import io.smallvertx.core.metrics.Measured;
 import io.smallvertx.core.streams.WriteStream;
-import io.vertx.codegen.annotations.Fluent;
-import io.vertx.codegen.annotations.GenIgnore;
-import io.vertx.codegen.annotations.VertxGen;
 import io.smallvertx.core.AsyncResult;
 import io.smallvertx.core.Handler;
 
@@ -36,7 +33,6 @@ import io.smallvertx.core.Handler;
  *
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
-@VertxGen
 public interface EventBus extends Measured {
 
     /**
@@ -48,7 +44,6 @@ public interface EventBus extends Measured {
      * @param message the message, may be {@code null}
      * @return a reference to this, so the API can be used fluently
      */
-    @Fluent
     EventBus send(String address, Object message);
 
     /**
@@ -60,7 +55,6 @@ public interface EventBus extends Measured {
      * @param replyHandler reply handler will be called when any reply from the recipient is received, may be {@code null}
      * @return a reference to this, so the API can be used fluently
      */
-    @Fluent
     <T> EventBus send(String address, Object message, Handler<AsyncResult<Message<T>>> replyHandler);
 
     /**
@@ -71,7 +65,6 @@ public interface EventBus extends Measured {
      * @param options delivery options
      * @return a reference to this, so the API can be used fluently
      */
-    @Fluent
     EventBus send(String address, Object message, DeliveryOptions options);
 
     /**
@@ -84,7 +77,6 @@ public interface EventBus extends Measured {
      * @param replyHandler reply handler will be called when any reply from the recipient is received, may be {@code null}
      * @return a reference to this, so the API can be used fluently
      */
-    @Fluent
     <T> EventBus send(String address, Object message, DeliveryOptions options, Handler<AsyncResult<Message<T>>> replyHandler);
 
     /**
@@ -95,7 +87,6 @@ public interface EventBus extends Measured {
      * @param message the message, may be {@code null}
      * @return a reference to this, so the API can be used fluently
      */
-    @Fluent
     EventBus publish(String address, Object message);
 
     /**
@@ -106,7 +97,6 @@ public interface EventBus extends Measured {
      * @param options the delivery options
      * @return a reference to this, so the API can be used fluently
      */
-    @Fluent
     EventBus publish(String address, Object message, DeliveryOptions options);
 
     /**
@@ -202,7 +192,6 @@ public interface EventBus extends Measured {
      * @param codec the message codec to register
      * @return a reference to this, so the API can be used fluently
      */
-    @GenIgnore
     EventBus registerCodec(MessageCodec codec);
 
     /**
@@ -212,7 +201,6 @@ public interface EventBus extends Measured {
      * @param name the name of the codec
      * @return a reference to this, so the API can be used fluently
      */
-    @GenIgnore
     EventBus unregisterCodec(String name);
 
     /**
@@ -228,7 +216,6 @@ public interface EventBus extends Measured {
      * @param codec the message codec to register
      * @return a reference to this, so the API can be used fluently
      */
-    @GenIgnore
     <T> EventBus registerDefaultCodec(Class<T> clazz, MessageCodec<T, ?> codec);
 
     /**
@@ -238,7 +225,6 @@ public interface EventBus extends Measured {
      * @param clazz the class for which the codec was registered
      * @return a reference to this, so the API can be used fluently
      */
-    @GenIgnore
     EventBus unregisterDefaultCodec(Class clazz);
 
     /**
@@ -246,7 +232,6 @@ public interface EventBus extends Measured {
      *
      * @param completionHandler handler will be called when event bus is started
      */
-    @GenIgnore
     void start(Handler<AsyncResult<Void>> completionHandler);
 
     /**
@@ -254,7 +239,6 @@ public interface EventBus extends Measured {
      *
      * @param completionHandler may be {@code null}
      */
-    @GenIgnore
     void close(Handler<AsyncResult<Void>> completionHandler);
 
     /**

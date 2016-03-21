@@ -17,13 +17,11 @@
 package io.smallvertx.core.net;
 
 import io.smallvertx.core.impl.Arguments;
-import io.vertx.codegen.annotations.DataObject;
 
 
 /**
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
-@DataObject(generateConverter = true)
 public abstract class NetworkOptions {
 
     /**

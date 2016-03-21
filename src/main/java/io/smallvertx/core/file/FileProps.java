@@ -16,7 +16,6 @@
 
 package io.smallvertx.core.file;
 
-import io.vertx.codegen.annotations.VertxGen;
 
 /**
  * Represents properties of a file on the file system.
@@ -24,7 +23,6 @@ import io.vertx.codegen.annotations.VertxGen;
  *
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
-@VertxGen
 public interface FileProps {
 
     /**

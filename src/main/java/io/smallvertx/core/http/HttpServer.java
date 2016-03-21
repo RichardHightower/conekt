@@ -20,9 +20,7 @@ import io.smallvertx.core.AsyncResult;
 import io.smallvertx.core.Handler;
 import io.smallvertx.core.metrics.Measured;
 import io.smallvertx.core.streams.ReadStream;
-import io.vertx.codegen.annotations.Fluent;
-import io.vertx.codegen.annotations.GenIgnore;
-import io.vertx.codegen.annotations.VertxGen;
+
 
 /**
  * An HTTP and WebSockets server.
@@ -35,7 +33,6 @@ import io.vertx.codegen.annotations.VertxGen;
  *
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
-@VertxGen
 public interface HttpServer extends Measured {
 
     /**
@@ -57,7 +54,6 @@ public interface HttpServer extends Measured {
     /**
      * @return the request handler
      */
-    @GenIgnore
     Handler<HttpServerRequest> requestHandler();
 
     /**
@@ -79,7 +75,6 @@ public interface HttpServer extends Measured {
     /**
      * @return the websocketHandler
      */
-    @GenIgnore
     Handler<ServerWebSocket> websocketHandler();
 
     /**
@@ -90,7 +85,6 @@ public interface HttpServer extends Measured {
      *
      * @return a reference to this, so the API can be used fluently
      */
-    @Fluent
     HttpServer listen();
 
     /**
@@ -103,7 +97,6 @@ public interface HttpServer extends Measured {
      * @param host the host to listen on
      * @return a reference to this, so the API can be used fluently
      */
-    @Fluent
     HttpServer listen(int port, String host);
 
     /**
@@ -114,7 +107,6 @@ public interface HttpServer extends Measured {
      * @param host          the host to listen on
      * @param listenHandler the listen handler
      */
-    @Fluent
     HttpServer listen(int port, String host, Handler<AsyncResult<HttpServer>> listenHandler);
 
     /**
@@ -124,7 +116,6 @@ public interface HttpServer extends Measured {
      * @param port the port to listen on
      * @return a reference to this, so the API can be used fluently
      */
-    @Fluent
     HttpServer listen(int port);
 
     /**
@@ -133,7 +124,6 @@ public interface HttpServer extends Measured {
      * @param port          the port to listen on
      * @param listenHandler the listen handler
      */
-    @Fluent
     HttpServer listen(int port, Handler<AsyncResult<HttpServer>> listenHandler);
 
     /**
@@ -141,7 +131,6 @@ public interface HttpServer extends Measured {
      *
      * @param listenHandler the listen handler
      */
-    @Fluent
     HttpServer listen(Handler<AsyncResult<HttpServer>> listenHandler);
 
     /**

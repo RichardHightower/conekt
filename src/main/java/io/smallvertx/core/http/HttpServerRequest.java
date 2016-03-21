@@ -21,7 +21,6 @@ import io.smallvertx.core.MultiMap;
 import io.smallvertx.core.net.NetSocket;
 import io.smallvertx.core.net.SocketAddress;
 import io.smallvertx.core.streams.Pump;
-import io.vertx.codegen.annotations.*;
 import io.smallvertx.core.buffer.Buffer;
 import io.smallvertx.core.streams.ReadStream;
 
@@ -41,7 +40,6 @@ import javax.security.cert.X509Certificate;
  *
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
-@VertxGen
 public interface HttpServerRequest extends ReadStream<Buffer> {
 
     @Override
@@ -87,20 +85,18 @@ public interface HttpServerRequest extends ReadStream<Buffer> {
     /**
      * @return the query part of the uri. For example someparam=32&amp;someotherparam=x
      */
-    @Nullable String query();
+     String query();
 
     /**
      * @return the response. Each instance of this class has an {@link HttpServerResponse} instance attached to it. This is used
      * to send the response back to the client.
      */
-    @CacheReturn
-    HttpServerResponse response();
+         HttpServerResponse response();
 
     /**
      * @return the headers in the request.
      */
-    @CacheReturn
-    MultiMap headers();
+         MultiMap headers();
 
     /**
      * Return the first header value with the specified name
@@ -108,7 +104,7 @@ public interface HttpServerRequest extends ReadStream<Buffer> {
      * @param headerName the header name
      * @return the header value
      */
-    @Nullable String getHeader(String headerName);
+     String getHeader(String headerName);
 
     /**
      * Return the first header value with the specified name
@@ -116,14 +112,12 @@ public interface HttpServerRequest extends ReadStream<Buffer> {
      * @param headerName the header name
      * @return the header value
      */
-    @GenIgnore
     String getHeader(CharSequence headerName);
 
     /**
      * @return the query parameters in the request
      */
-    @CacheReturn
-    MultiMap params();
+         MultiMap params();
 
     /**
      * Return the first param value with the specified name
@@ -131,27 +125,24 @@ public interface HttpServerRequest extends ReadStream<Buffer> {
      * @param paramName the param name
      * @return the param value
      */
-    @Nullable String getParam(String paramName);
+     String getParam(String paramName);
 
 
     /**
      * @return the remote (client side) address of the request
      */
-    @CacheReturn
-    SocketAddress remoteAddress();
+         SocketAddress remoteAddress();
 
     /**
      * @return the local (server side) address of the server that handles the request
      */
-    @CacheReturn
-    SocketAddress localAddress();
+         SocketAddress localAddress();
 
     /**
      * @return an array of the peer certificates. Returns null if connection is
      * not SSL.
      * @throws javax.net.ssl.SSLPeerUnverifiedException SSL peer's identity has not been verified.
      */
-    @GenIgnore
     X509Certificate[] peerCertificateChain() throws SSLPeerUnverifiedException;
 
     /**
@@ -167,8 +158,7 @@ public interface HttpServerRequest extends ReadStream<Buffer> {
      *
      * @param bodyHandler This handler will be called after all the body has been received
      */
-    @Fluent
-    HttpServerRequest bodyHandler(@Nullable Handler<Buffer> bodyHandler);
+    HttpServerRequest bodyHandler( Handler<Buffer> bodyHandler);
 
     /**
      * Get a net socket for the underlying connection of this request.
@@ -181,8 +171,7 @@ public interface HttpServerRequest extends ReadStream<Buffer> {
      *
      * @return the net socket
      */
-    @CacheReturn
-    NetSocket netSocket();
+         NetSocket netSocket();
 
     /**
      * @return true if we are expecting a multi-part body for this request. See {@link #setExpectMultipart}.
@@ -196,7 +185,6 @@ public interface HttpServerRequest extends ReadStream<Buffer> {
      * @param expect true - if you are expecting a multi-part body
      * @return a reference to this, so the API can be used fluently
      */
-    @Fluent
     HttpServerRequest setExpectMultipart(boolean expect);
 
     /**
@@ -205,8 +193,7 @@ public interface HttpServerRequest extends ReadStream<Buffer> {
      *
      * @return a reference to this, so the API can be used fluently
      */
-    @Fluent
-    HttpServerRequest uploadHandler(@Nullable Handler<HttpServerFileUpload> uploadHandler);
+    HttpServerRequest uploadHandler( Handler<HttpServerFileUpload> uploadHandler);
 
     /**
      * Returns a map of all form attributes in the request.
@@ -218,8 +205,7 @@ public interface HttpServerRequest extends ReadStream<Buffer> {
      *
      * @return the form attributes
      */
-    @CacheReturn
-    MultiMap formAttributes();
+         MultiMap formAttributes();
 
     /**
      * Return the first form attribute value with the specified name
@@ -227,7 +213,7 @@ public interface HttpServerRequest extends ReadStream<Buffer> {
      * @param attributeName the attribute name
      * @return the attribute value
      */
-    @Nullable String getFormAttribute(String attributeName);
+     String getFormAttribute(String attributeName);
 
     /**
      * Upgrade the connection to a WebSocket connection.

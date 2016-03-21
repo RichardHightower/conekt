@@ -16,7 +16,6 @@
 
 package io.smallvertx.core.net;
 
-import io.vertx.codegen.annotations.DataObject;
 import io.smallvertx.core.buffer.Buffer;
 
 import java.util.*;
@@ -26,7 +25,6 @@ import java.util.*;
  *
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
-@DataObject(generateConverter = true)
 public abstract class TCPSSLOptions extends NetworkOptions {
 
     /**

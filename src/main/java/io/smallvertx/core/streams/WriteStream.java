@@ -16,9 +16,6 @@
 
 package io.smallvertx.core.streams;
 
-import io.vertx.codegen.annotations.Fluent;
-import io.vertx.codegen.annotations.Nullable;
-import io.vertx.codegen.annotations.VertxGen;
 import io.smallvertx.core.Handler;
 
 /**
@@ -29,7 +26,6 @@ import io.smallvertx.core.Handler;
  *
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
-@VertxGen(concrete = false)
 public interface WriteStream<T> extends StreamBase {
 
     /**
@@ -49,7 +45,6 @@ public interface WriteStream<T> extends StreamBase {
      * @param data the data to write
      * @return a reference to this, so the API can be used fluently
      */
-    @Fluent
     WriteStream<T> write(T data);
 
     /**
@@ -75,7 +70,6 @@ public interface WriteStream<T> extends StreamBase {
      * @param maxSize the max size of the write stream
      * @return a reference to this, so the API can be used fluently
      */
-    @Fluent
     WriteStream<T> setWriteQueueMaxSize(int maxSize);
 
     /**
@@ -93,7 +87,6 @@ public interface WriteStream<T> extends StreamBase {
      * @param handler the handler
      * @return a reference to this, so the API can be used fluently
      */
-    @Fluent
-    WriteStream<T> drainHandler(@Nullable Handler<Void> handler);
+    WriteStream<T> drainHandler( Handler<Void> handler);
 
 }

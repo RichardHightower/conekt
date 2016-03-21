@@ -16,7 +16,6 @@
 
 package io.smallvertx.core;
 
-import io.vertx.codegen.annotations.DataObject;
 import io.smallvertx.core.json.JsonArray;
 import io.smallvertx.core.json.JsonObject;
 
@@ -29,7 +28,6 @@ import java.util.List;
  *
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
-@DataObject(generateConverter = true)
 public class DeploymentOptions {
 
     public static final boolean DEFAULT_WORKER = false;

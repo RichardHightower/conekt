@@ -17,7 +17,6 @@
 package io.smallvertx.core.json;
 
 import io.smallvertx.core.buffer.Buffer;
-import io.vertx.codegen.annotations.Fluent;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
@@ -797,7 +796,6 @@ public class JsonObject implements Iterable<Map.Entry<String, Object>> {
     /**
      * Remove all the entries in this JSON object
      */
-    @Fluent
     public JsonObject clear() {
         map.clear();
         return this;

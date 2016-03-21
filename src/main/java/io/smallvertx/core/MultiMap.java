@@ -17,10 +17,6 @@
 package io.smallvertx.core;
 
 import io.smallvertx.core.http.CaseInsensitiveHeaders;
-import io.vertx.codegen.annotations.Fluent;
-import io.vertx.codegen.annotations.GenIgnore;
-import io.vertx.codegen.annotations.Nullable;
-import io.vertx.codegen.annotations.VertxGen;
 
 import java.util.List;
 import java.util.Map;
@@ -35,7 +31,6 @@ import java.util.Set;
  * @author <a href="mailto:nmaurer@redhat.com">Norman Maurer</a>
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
-@VertxGen
 public interface MultiMap extends Iterable<Map.Entry<String, String>> {
 
     /**
@@ -47,7 +42,6 @@ public interface MultiMap extends Iterable<Map.Entry<String, String>> {
         return new CaseInsensitiveHeaders();
     }
 
-    @GenIgnore
     String get(CharSequence name);
 
     /**
@@ -57,7 +51,7 @@ public interface MultiMap extends Iterable<Map.Entry<String, String>> {
      * @param name The name of the header to search
      * @return The first header value or {@code null} if there is no such entry
      */
-    @Nullable String get(String name);
+    String get(String name);
 
     /**
      * Returns the values with the specified name
@@ -71,7 +65,6 @@ public interface MultiMap extends Iterable<Map.Entry<String, String>> {
     /**
      * Like {@link #getAll(String)} but accepting a {@code CharSequence} as a parameter
      */
-    @GenIgnore
     List<String> getAll(CharSequence name);
 
     /**
@@ -80,7 +73,6 @@ public interface MultiMap extends Iterable<Map.Entry<String, String>> {
      * @return A immutable {@link java.util.List} of the name-value entries, which will be
      * empty if no pairs are found
      */
-    @GenIgnore
     List<Map.Entry<String, String>> entries();
 
     /**
@@ -94,7 +86,6 @@ public interface MultiMap extends Iterable<Map.Entry<String, String>> {
     /**
      * Like {@link #contains(String)} but accepting a {@code CharSequence} as a parameter
      */
-    @GenIgnore
     boolean contains(CharSequence name);
 
     /**
@@ -116,13 +107,11 @@ public interface MultiMap extends Iterable<Map.Entry<String, String>> {
      * @param value The value being added
      * @return a reference to this, so the API can be used fluently
      */
-    @Fluent
     MultiMap add(String name, String value);
 
     /**
      * Like {@link #add(String, String)} but accepting {@code CharSequence} as parameters
      */
-    @GenIgnore
     MultiMap add(CharSequence name, CharSequence value);
 
     /**
@@ -132,13 +121,11 @@ public interface MultiMap extends Iterable<Map.Entry<String, String>> {
      * @param values The values
      * @return a reference to this, so the API can be used fluently
      */
-    @GenIgnore
     MultiMap add(String name, Iterable<String> values);
 
     /**
      * Like {@link #add(String, Iterable)} but accepting {@code CharSequence} as parameters
      */
-    @GenIgnore
     MultiMap add(CharSequence name, Iterable<CharSequence> values);
 
     /**
@@ -146,7 +133,6 @@ public interface MultiMap extends Iterable<Map.Entry<String, String>> {
      *
      * @return a reference to this, so the API can be used fluently
      */
-    @Fluent
     MultiMap addAll(MultiMap map);
 
     /**
@@ -154,7 +140,6 @@ public interface MultiMap extends Iterable<Map.Entry<String, String>> {
      *
      * @return a reference to this, so the API can be used fluently
      */
-    @GenIgnore
     MultiMap addAll(Map<String, String> headers);
 
     /**
@@ -166,13 +151,11 @@ public interface MultiMap extends Iterable<Map.Entry<String, String>> {
      * @param value The value
      * @return a reference to this, so the API can be used fluently
      */
-    @Fluent
     MultiMap set(String name, String value);
 
     /**
      * Like {@link #set(String, String)} but accepting {@code CharSequence} as parameters
      */
-    @GenIgnore
     MultiMap set(CharSequence name, CharSequence value);
 
     /**
@@ -182,13 +165,11 @@ public interface MultiMap extends Iterable<Map.Entry<String, String>> {
      * @param values The values of the headers being set
      * @return a reference to this, so the API can be used fluently
      */
-    @GenIgnore
     MultiMap set(String name, Iterable<String> values);
 
     /**
      * Like {@link #set(String, Iterable)} but accepting {@code CharSequence} as parameters
      */
-    @GenIgnore
     MultiMap set(CharSequence name, Iterable<CharSequence> values);
 
     /**
@@ -196,7 +177,6 @@ public interface MultiMap extends Iterable<Map.Entry<String, String>> {
      *
      * @return a reference to this, so the API can be used fluently
      */
-    @Fluent
     MultiMap setAll(MultiMap map);
 
     /**
@@ -204,7 +184,6 @@ public interface MultiMap extends Iterable<Map.Entry<String, String>> {
      *
      * @return a reference to this, so the API can be used fluently
      */
-    @GenIgnore
     MultiMap setAll(Map<String, String> headers);
 
     /**
@@ -213,13 +192,11 @@ public interface MultiMap extends Iterable<Map.Entry<String, String>> {
      * @param name The name  of the value to remove
      * @return a reference to this, so the API can be used fluently
      */
-    @Fluent
     MultiMap remove(String name);
 
     /**
      * Like {@link #remove(String)} but accepting {@code CharSequence} as parameters
      */
-    @GenIgnore
     MultiMap remove(CharSequence name);
 
     /**
@@ -227,7 +204,6 @@ public interface MultiMap extends Iterable<Map.Entry<String, String>> {
      *
      * @return a reference to this, so the API can be used fluently
      */
-    @Fluent
     MultiMap clear();
 
     /**

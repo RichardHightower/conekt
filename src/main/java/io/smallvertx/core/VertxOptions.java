@@ -16,7 +16,6 @@
 
 package io.smallvertx.core;
 
-import io.vertx.codegen.annotations.DataObject;
 import io.smallvertx.core.metrics.MetricsOptions;
 
 import java.util.Objects;
@@ -26,7 +25,6 @@ import java.util.Objects;
  *
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
-@DataObject(generateConverter = true)
 public class VertxOptions {
 
     /**

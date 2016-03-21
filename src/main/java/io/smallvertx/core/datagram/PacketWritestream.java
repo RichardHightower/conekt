@@ -20,7 +20,6 @@ import io.smallvertx.core.Handler;
 import io.smallvertx.core.buffer.Buffer;
 import io.smallvertx.core.net.SocketAddress;
 import io.smallvertx.core.streams.WriteStream;
-import io.vertx.codegen.annotations.VertxGen;
 
 /**
  * A {@link WriteStream} for sending packets to a {@link SocketAddress}.
@@ -28,7 +27,6 @@ import io.vertx.codegen.annotations.VertxGen;
  *
  * @author <a href="mailto:julien@julienviet.com">Julien Viet</a>
  */
-@VertxGen
 public interface PacketWritestream extends WriteStream<Buffer> {
 
     @Override

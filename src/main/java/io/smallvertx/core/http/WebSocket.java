@@ -17,7 +17,6 @@
 package io.smallvertx.core.http;
 
 import io.smallvertx.core.Handler;
-import io.vertx.codegen.annotations.VertxGen;
 import io.smallvertx.core.buffer.Buffer;
 
 /**
@@ -25,7 +24,6 @@ import io.smallvertx.core.buffer.Buffer;
  *
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
-@VertxGen
 public interface WebSocket extends WebSocketBase {
 
     @Override

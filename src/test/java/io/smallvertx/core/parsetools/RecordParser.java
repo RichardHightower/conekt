@@ -16,7 +16,7 @@
 
 package io.smallvertx.core.parsetools;
 
-import io.vertx.codegen.annotations.VertxGen;
+
 import io.smallvertx.core.Handler;
 import io.smallvertx.core.buffer.Buffer;
 import io.smallvertx.core.parsetools.impl.RecordParserImpl;
@@ -55,7 +55,6 @@ import io.smallvertx.core.parsetools.impl.RecordParserImpl;
  * @author <a href="http://tfox.org">Tim Fox</a>
  * @author <a href="mailto:larsdtimm@gmail.com">Lars Timm</a>
  */
-@VertxGen
 public interface RecordParser extends Handler<Buffer> {
 
     /**

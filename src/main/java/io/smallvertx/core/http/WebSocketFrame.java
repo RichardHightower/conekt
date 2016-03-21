@@ -19,8 +19,6 @@ package io.smallvertx.core.http;
 import io.smallvertx.core.ServiceHelper;
 import io.smallvertx.core.buffer.Buffer;
 import io.smallvertx.core.spi.WebSocketFrameFactory;
-import io.vertx.codegen.annotations.CacheReturn;
-import io.vertx.codegen.annotations.VertxGen;
 
 /**
  * A WebSocket frame that represents either text or binary data.
@@ -37,7 +35,6 @@ import io.vertx.codegen.annotations.VertxGen;
  * @author <a href="http://tfox.org">Tim Fox</a>
  * @version $Rev: 2080 $, $Date: 2010-01-26 18:04:19 +0900 (Tue, 26 Jan 2010) $
  */
-@VertxGen
 public interface WebSocketFrame {
 
     static final WebSocketFrameFactory factory = ServiceHelper.loadFactory(WebSocketFrameFactory.class);
@@ -94,13 +91,11 @@ public interface WebSocketFrame {
      * @return the content of this frame as a UTF-8 string and returns the
      * converted string. Only use this for text frames.
      */
-    @CacheReturn
     String textData();
 
     /**
      * @return the data of the frame
      */
-    @CacheReturn
     Buffer binaryData();
 
     /**

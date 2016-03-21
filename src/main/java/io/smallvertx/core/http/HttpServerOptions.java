@@ -17,7 +17,6 @@
 package io.smallvertx.core.http;
 
 import io.smallvertx.core.net.*;
-import io.vertx.codegen.annotations.DataObject;
 import io.smallvertx.core.buffer.Buffer;
 
 /**
@@ -25,7 +24,6 @@ import io.smallvertx.core.buffer.Buffer;
  *
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
-@DataObject(generateConverter = true)
 public class HttpServerOptions extends NetServerOptions {
 
     /**

@@ -18,8 +18,6 @@ package io.smallvertx.core.net;
 
 import io.smallvertx.core.Handler;
 import io.smallvertx.core.metrics.Measured;
-import io.vertx.codegen.annotations.Fluent;
-import io.vertx.codegen.annotations.VertxGen;
 import io.smallvertx.core.AsyncResult;
 
 /**
@@ -32,7 +30,6 @@ import io.smallvertx.core.AsyncResult;
  *
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
-@VertxGen
 public interface NetClient extends Measured {
 
     /**
@@ -45,7 +42,6 @@ public interface NetClient extends Measured {
      * @param host the host
      * @return a reference to this, so the API can be used fluently
      */
-    @Fluent
     NetClient connect(int port, String host, Handler<AsyncResult<NetSocket>> connectHandler);
 
     /**

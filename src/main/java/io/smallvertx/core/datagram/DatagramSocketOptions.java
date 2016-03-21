@@ -17,7 +17,6 @@
 package io.smallvertx.core.datagram;
 
 import io.smallvertx.core.impl.Arguments;
-import io.vertx.codegen.annotations.DataObject;
 import io.smallvertx.core.net.NetworkOptions;
 
 /**
@@ -25,7 +24,6 @@ import io.smallvertx.core.net.NetworkOptions;
  *
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
-@DataObject(generateConverter = true)
 public class DatagramSocketOptions extends NetworkOptions {
 
     /**

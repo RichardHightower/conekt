@@ -16,10 +16,6 @@
 
 package io.smallvertx.core;
 
-import io.vertx.codegen.annotations.CacheReturn;
-import io.vertx.codegen.annotations.Fluent;
-import io.vertx.codegen.annotations.GenIgnore;
-import io.vertx.codegen.annotations.VertxGen;
 import io.smallvertx.core.spi.FutureFactory;
 
 /**
@@ -28,7 +24,6 @@ import io.smallvertx.core.spi.FutureFactory;
  *
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
-@VertxGen
 public interface Future<T> extends AsyncResult<T> {
 
     static FutureFactory factory = ServiceHelper.loadFactory(FutureFactory.class);
@@ -71,7 +66,6 @@ public interface Future<T> extends AsyncResult<T> {
      * @param <T> the result type
      * @return the future
      */
-    @GenIgnore
     static <T> Future<T> failedFuture(Throwable t) {
         return factory.completedFuture(t);
     }
@@ -105,7 +99,6 @@ public interface Future<T> extends AsyncResult<T> {
      * @param handler the Handler that will be called with the result
      * @return a reference to this, so it can be used fluently
      */
-    @Fluent
     Future<T> setHandler(Handler<AsyncResult<T>> handler);
 
     /**
@@ -199,8 +192,7 @@ public interface Future<T> extends AsyncResult<T> {
     /**
      * @return an handler completing this future
      */
-    @CacheReturn
-    default Handler<AsyncResult<T>> completer() {
+         default Handler<AsyncResult<T>> completer() {
         return ar -> {
             if (ar.succeeded()) {
                 complete(ar.result());
