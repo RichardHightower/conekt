@@ -198,8 +198,6 @@
  * <p>
  * include::override/dns.adoc[]
  */
-@Document(fileName = "dns.adoc")
 package io.smallvertx.core.dns;
 
-import io.vertx.docgen.Document;
 

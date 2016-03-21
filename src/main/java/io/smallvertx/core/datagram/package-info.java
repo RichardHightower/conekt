@@ -202,8 +202,6 @@
  * You can close a socket by invoking the {@link io.smallvertx.core.datagram.DatagramSocket#close} method. This will close
  * the socket and release all resources
  */
-@Document(fileName = "datagrams.adoc")
 package io.smallvertx.core.datagram;
 
-import io.vertx.docgen.Document;
 

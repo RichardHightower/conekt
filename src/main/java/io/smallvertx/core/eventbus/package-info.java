@@ -263,10 +263,8 @@
  * <p>
  * [source,$lang]
  * ----
- * {@link examples.EventBusExamples#example12}
  * ----
  * <p>
- * You should also make sure you have a {@link io.vertx.core.spi.cluster.ClusterManager} implementation on your classpath,
  * for example the default {@code HazelcastClusterManager}.
  * <p>
  * ==== Clustering on the command line
@@ -280,9 +278,7 @@
  * If you're registering event bus handlers from inside verticles, those handlers will be automatically unregistered
  * when the verticle is undeployed.
  */
-@Document(fileName = "eventbus.adoc")
 package io.smallvertx.core.eventbus;
 
 import io.smallvertx.core.Handler;
-import io.vertx.docgen.Document;
 

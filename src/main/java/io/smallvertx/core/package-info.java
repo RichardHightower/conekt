@@ -1400,8 +1400,6 @@
  * * add / remove commands using {@link io.vertx.core.impl.launcher.VertxCommandLauncher#register(java.lang.Class)}
  * and {@link io.vertx.core.impl.launcher.VertxCommandLauncher#unregister(java.lang.String)}
  */
-@Document(fileName = "index.adoc")
 @io.vertx.codegen.annotations.ModuleGen(name = "vertx", groupPackage = "io.vertx")
 package io.smallvertx.core;
 
-import io.vertx.docgen.Document;

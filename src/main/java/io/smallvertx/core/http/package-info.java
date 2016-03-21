@@ -1139,11 +1139,9 @@
  * If you're creating http servers and clients from inside verticles, those servers and clients will be automatically closed
  * when the verticle is undeployed.
  */
-@Document(fileName = "http.adoc")
 package io.smallvertx.core.http;
 
 import io.smallvertx.core.Handler;
 import io.smallvertx.core.Vertx;
 import io.smallvertx.core.buffer.Buffer;
-import io.vertx.docgen.Document;
 

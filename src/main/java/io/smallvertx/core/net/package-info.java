@@ -567,9 +567,7 @@
  * <p>
  * Cipher suite can be specified on the {@link io.smallvertx.core.net.NetServerOptions} or {@link io.smallvertx.core.net.NetClientOptions} configuration.
  */
-@Document(fileName = "net.adoc")
 package io.smallvertx.core.net;
 
 import io.smallvertx.core.Handler;
-import io.vertx.docgen.Document;
 

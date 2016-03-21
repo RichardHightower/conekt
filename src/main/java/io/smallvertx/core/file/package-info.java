@@ -172,10 +172,8 @@
  * To close an `AsyncFile` call the {@link io.smallvertx.core.file.AsyncFile#close()} method. Closing is asynchronous and
  * if you want to be notified when the close has been completed you can specify a handler function as an argument.
  */
-@Document(fileName = "filesystem.adoc")
 package io.smallvertx.core.file;
 
 import io.smallvertx.core.Handler;
 import io.smallvertx.core.buffer.Buffer;
-import io.vertx.docgen.Document;
 

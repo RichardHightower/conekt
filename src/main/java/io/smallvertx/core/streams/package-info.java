@@ -155,8 +155,6 @@
  * <p>
  * When a pump is first created it is _not_ started. You need to call the `start()` method to start it.
  */
-@Document(fileName = "streams.adoc")
 package io.smallvertx.core.streams;
 
 import io.smallvertx.core.Vertx;
-import io.vertx.docgen.Document;
