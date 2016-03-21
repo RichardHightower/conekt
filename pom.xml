@@ -216,8 +216,6 @@
               <archive>
                 <!-- Generate a jar INDEX.LIST -->
                 <index>true</index>
-                <!-- A manifest containing the OSGi metadata has been generated using the maven-bundle-plugin -->
-                <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
                 <!-- Add the Maven coordinates in the manifest -->
                 <manifestEntries>
                   <Maven-Group-Id>${project.groupId}</Maven-Group-Id>
