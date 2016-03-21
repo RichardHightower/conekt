@@ -20,15 +20,14 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;
 import io.netty.handler.codec.http.*;
-import io.netty.handler.codec.http.HttpVersion;
 import io.smallvertx.core.AsyncResult;
 import io.smallvertx.core.Future;
 import io.smallvertx.core.Handler;
 import io.smallvertx.core.MultiMap;
 import io.smallvertx.core.buffer.Buffer;
+import io.smallvertx.core.http.HttpServerResponse;
 import io.smallvertx.core.impl.ContextImpl;
 import io.smallvertx.core.impl.VertxInternal;
-import io.smallvertx.core.http.HttpServerResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

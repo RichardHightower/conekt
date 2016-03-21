@@ -17,13 +17,13 @@
 package io.smallvertx.core.metrics.impl;
 
 import io.smallvertx.core.Verticle;
+import io.smallvertx.core.datagram.DatagramSocket;
+import io.smallvertx.core.datagram.DatagramSocketOptions;
 import io.smallvertx.core.eventbus.EventBus;
+import io.smallvertx.core.eventbus.ReplyFailure;
 import io.smallvertx.core.http.*;
 import io.smallvertx.core.net.*;
 import io.smallvertx.core.spi.metrics.*;
-import io.smallvertx.core.datagram.DatagramSocket;
-import io.smallvertx.core.datagram.DatagramSocketOptions;
-import io.smallvertx.core.eventbus.ReplyFailure;
 
 /**
  * @author <a href="http://tfox.org">Tim Fox</a>

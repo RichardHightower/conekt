@@ -87,6 +87,6 @@ public interface WriteStream<T> extends StreamBase {
      * @param handler the handler
      * @return a reference to this, so the API can be used fluently
      */
-    WriteStream<T> drainHandler( Handler<Void> handler);
+    WriteStream<T> drainHandler(Handler<Void> handler);
 
 }

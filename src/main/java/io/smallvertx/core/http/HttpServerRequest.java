@@ -18,10 +18,10 @@ package io.smallvertx.core.http;
 
 import io.smallvertx.core.Handler;
 import io.smallvertx.core.MultiMap;
+import io.smallvertx.core.buffer.Buffer;
 import io.smallvertx.core.net.NetSocket;
 import io.smallvertx.core.net.SocketAddress;
 import io.smallvertx.core.streams.Pump;
-import io.smallvertx.core.buffer.Buffer;
 import io.smallvertx.core.streams.ReadStream;
 
 import javax.net.ssl.SSLPeerUnverifiedException;
@@ -85,18 +85,18 @@ public interface HttpServerRequest extends ReadStream<Buffer> {
     /**
      * @return the query part of the uri. For example someparam=32&amp;someotherparam=x
      */
-     String query();
+    String query();
 
     /**
      * @return the response. Each instance of this class has an {@link HttpServerResponse} instance attached to it. This is used
      * to send the response back to the client.
      */
-         HttpServerResponse response();
+    HttpServerResponse response();
 
     /**
      * @return the headers in the request.
      */
-         MultiMap headers();
+    MultiMap headers();
 
     /**
      * Return the first header value with the specified name
@@ -104,7 +104,7 @@ public interface HttpServerRequest extends ReadStream<Buffer> {
      * @param headerName the header name
      * @return the header value
      */
-     String getHeader(String headerName);
+    String getHeader(String headerName);
 
     /**
      * Return the first header value with the specified name
@@ -117,7 +117,7 @@ public interface HttpServerRequest extends ReadStream<Buffer> {
     /**
      * @return the query parameters in the request
      */
-         MultiMap params();
+    MultiMap params();
 
     /**
      * Return the first param value with the specified name
@@ -125,18 +125,18 @@ public interface HttpServerRequest extends ReadStream<Buffer> {
      * @param paramName the param name
      * @return the param value
      */
-     String getParam(String paramName);
+    String getParam(String paramName);
 
 
     /**
      * @return the remote (client side) address of the request
      */
-         SocketAddress remoteAddress();
+    SocketAddress remoteAddress();
 
     /**
      * @return the local (server side) address of the server that handles the request
      */
-         SocketAddress localAddress();
+    SocketAddress localAddress();
 
     /**
      * @return an array of the peer certificates. Returns null if connection is
@@ -158,7 +158,7 @@ public interface HttpServerRequest extends ReadStream<Buffer> {
      *
      * @param bodyHandler This handler will be called after all the body has been received
      */
-    HttpServerRequest bodyHandler( Handler<Buffer> bodyHandler);
+    HttpServerRequest bodyHandler(Handler<Buffer> bodyHandler);
 
     /**
      * Get a net socket for the underlying connection of this request.
@@ -171,7 +171,7 @@ public interface HttpServerRequest extends ReadStream<Buffer> {
      *
      * @return the net socket
      */
-         NetSocket netSocket();
+    NetSocket netSocket();
 
     /**
      * @return true if we are expecting a multi-part body for this request. See {@link #setExpectMultipart}.
@@ -193,7 +193,7 @@ public interface HttpServerRequest extends ReadStream<Buffer> {
      *
      * @return a reference to this, so the API can be used fluently
      */
-    HttpServerRequest uploadHandler( Handler<HttpServerFileUpload> uploadHandler);
+    HttpServerRequest uploadHandler(Handler<HttpServerFileUpload> uploadHandler);
 
     /**
      * Returns a map of all form attributes in the request.
@@ -205,7 +205,7 @@ public interface HttpServerRequest extends ReadStream<Buffer> {
      *
      * @return the form attributes
      */
-         MultiMap formAttributes();
+    MultiMap formAttributes();
 
     /**
      * Return the first form attribute value with the specified name
@@ -213,7 +213,7 @@ public interface HttpServerRequest extends ReadStream<Buffer> {
      * @param attributeName the attribute name
      * @return the attribute value
      */
-     String getFormAttribute(String attributeName);
+    String getFormAttribute(String attributeName);
 
     /**
      * Upgrade the connection to a WebSocket connection.

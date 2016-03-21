@@ -19,12 +19,12 @@ package io.smallvertx.core.impl;
 
 import io.netty.channel.EventLoopGroup;
 import io.smallvertx.core.AsyncResult;
+import io.smallvertx.core.Handler;
 import io.smallvertx.core.Vertx;
 import io.smallvertx.core.http.impl.HttpServerImpl;
-import io.smallvertx.core.net.impl.ServerID;
-import io.smallvertx.core.Handler;
 import io.smallvertx.core.json.JsonObject;
 import io.smallvertx.core.net.impl.NetServerImpl;
+import io.smallvertx.core.net.impl.ServerID;
 import io.smallvertx.core.spi.metrics.VertxMetrics;
 
 import java.io.File;

@@ -16,11 +16,11 @@
 
 package io.smallvertx.core.eventbus.impl;
 
+import io.smallvertx.core.AsyncResult;
+import io.smallvertx.core.Handler;
 import io.smallvertx.core.MultiMap;
 import io.smallvertx.core.eventbus.*;
 import io.smallvertx.core.http.CaseInsensitiveHeaders;
-import io.smallvertx.core.AsyncResult;
-import io.smallvertx.core.Handler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

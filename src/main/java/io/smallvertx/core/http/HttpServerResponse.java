@@ -17,11 +17,11 @@
 package io.smallvertx.core.http;
 
 import io.smallvertx.core.AsyncResult;
+import io.smallvertx.core.Handler;
 import io.smallvertx.core.MultiMap;
+import io.smallvertx.core.buffer.Buffer;
 import io.smallvertx.core.streams.Pump;
 import io.smallvertx.core.streams.WriteStream;
-import io.smallvertx.core.Handler;
-import io.smallvertx.core.buffer.Buffer;
 
 /**
  * Represents a server-side HTTP response.

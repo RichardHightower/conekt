@@ -22,19 +22,19 @@ import io.netty.handler.codec.http.*;
 import io.netty.handler.ssl.SslHandler;
 import io.netty.handler.timeout.IdleStateHandler;
 import io.smallvertx.core.*;
+import io.smallvertx.core.buffer.Buffer;
 import io.smallvertx.core.http.*;
 import io.smallvertx.core.http.HttpMethod;
+import io.smallvertx.core.http.impl.ws.WebSocketFrameImpl;
 import io.smallvertx.core.http.impl.ws.WebSocketFrameInternal;
+import io.smallvertx.core.impl.ContextImpl;
+import io.smallvertx.core.impl.VertxInternal;
 import io.smallvertx.core.net.impl.KeyStoreHelper;
 import io.smallvertx.core.net.impl.PartialPooledByteBufAllocator;
 import io.smallvertx.core.net.impl.SSLHelper;
 import io.smallvertx.core.spi.metrics.HttpClientMetrics;
 import io.smallvertx.core.spi.metrics.Metrics;
 import io.smallvertx.core.spi.metrics.MetricsProvider;
-import io.smallvertx.core.buffer.Buffer;
-import io.smallvertx.core.http.impl.ws.WebSocketFrameImpl;
-import io.smallvertx.core.impl.ContextImpl;
-import io.smallvertx.core.impl.VertxInternal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -827,7 +827,6 @@ public class HttpClientImpl implements HttpClient, MetricsProvider {
         Handler<Throwable> exHandler =
                 connectionExceptionHandler == null ?
                         (Handler<Throwable>) error -> log.error("", error) : connectionExceptionHandler;
-
 
 
         context.executeFromIO(() -> {

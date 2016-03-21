@@ -17,9 +17,9 @@
 package io.smallvertx.core;
 
 import io.netty.channel.EventLoopGroup;
-import io.smallvertx.core.dns.DnsClient;
 import io.smallvertx.core.datagram.DatagramSocket;
 import io.smallvertx.core.datagram.DatagramSocketOptions;
+import io.smallvertx.core.dns.DnsClient;
 import io.smallvertx.core.eventbus.EventBus;
 import io.smallvertx.core.file.FileSystem;
 import io.smallvertx.core.http.HttpClient;

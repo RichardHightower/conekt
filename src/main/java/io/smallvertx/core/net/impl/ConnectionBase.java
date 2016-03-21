@@ -21,13 +21,13 @@ import io.netty.handler.ssl.SslHandler;
 import io.netty.handler.stream.ChunkedFile;
 import io.smallvertx.core.AsyncResult;
 import io.smallvertx.core.Future;
-import io.smallvertx.core.net.SocketAddress;
-import io.smallvertx.core.spi.metrics.TCPMetrics;
 import io.smallvertx.core.Handler;
 import io.smallvertx.core.impl.ContextImpl;
 import io.smallvertx.core.impl.VertxInternal;
 import io.smallvertx.core.net.NetworkOptions;
+import io.smallvertx.core.net.SocketAddress;
 import io.smallvertx.core.spi.metrics.NetworkMetrics;
+import io.smallvertx.core.spi.metrics.TCPMetrics;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

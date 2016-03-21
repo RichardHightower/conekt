@@ -17,9 +17,9 @@
 package io.smallvertx.core.impl;
 
 import io.smallvertx.core.AsyncResult;
+import io.smallvertx.core.DeploymentOptions;
 import io.smallvertx.core.Handler;
 import io.smallvertx.core.Verticle;
-import io.smallvertx.core.DeploymentOptions;
 
 import java.util.Set;
 

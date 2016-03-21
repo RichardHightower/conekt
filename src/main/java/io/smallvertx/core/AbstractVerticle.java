@@ -30,7 +30,7 @@ import io.smallvertx.core.json.JsonObject;
  * <p>
  * This class also provides maintains references to the {@link Vertx} and {@link Context}
  * instances of the verticle for easy access.<p>
- * It also provides methods for getting the {@link #config verticle configuration}, {@link #processArgs process arguments},
+ * It also provides methods for getting the {@link #config verticle configuration},
  * and {@link #deploymentID deployment ID}.
  *
  * @author <a href="http://tfox.org">Tim Fox</a>

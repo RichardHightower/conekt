@@ -149,7 +149,7 @@ public interface DatagramSocket extends ReadStream<DatagramPacket>, Measured {
      * @param handler          the handler to notify once the operation completes
      * @return a reference to this, so the API can be used fluently
      */
-    DatagramSocket unlistenMulticastGroup(String multicastAddress, String networkInterface,  String source,
+    DatagramSocket unlistenMulticastGroup(String multicastAddress, String networkInterface, String source,
                                           Handler<AsyncResult<DatagramSocket>> handler);
 
     /**

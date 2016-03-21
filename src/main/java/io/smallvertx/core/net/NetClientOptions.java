@@ -17,6 +17,7 @@
 package io.smallvertx.core.net;
 
 import io.smallvertx.core.buffer.Buffer;
+
 /**
  * Options for configuring a {@link NetClient}.
  *

@@ -17,9 +17,9 @@
 package io.smallvertx.core.streams.impl;
 
 import io.smallvertx.core.spi.PumpFactory;
-import io.smallvertx.core.streams.WriteStream;
 import io.smallvertx.core.streams.Pump;
 import io.smallvertx.core.streams.ReadStream;
+import io.smallvertx.core.streams.WriteStream;
 
 import java.util.Objects;
 

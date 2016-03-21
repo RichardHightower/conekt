@@ -20,8 +20,8 @@ import io.smallvertx.core.AsyncResult;
 import io.smallvertx.core.Handler;
 import io.smallvertx.core.file.AsyncFile;
 import io.smallvertx.core.file.OpenOptions;
-import io.smallvertx.core.impl.VertxInternal;
 import io.smallvertx.core.impl.ContextImpl;
+import io.smallvertx.core.impl.VertxInternal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

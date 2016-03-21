@@ -16,9 +16,9 @@
 
 package io.smallvertx.core.eventbus;
 
+import io.smallvertx.core.AsyncResult;
 import io.smallvertx.core.Handler;
 import io.smallvertx.core.streams.WriteStream;
-import io.smallvertx.core.AsyncResult;
 
 /**
  * Represents a stream of message that can be written to.

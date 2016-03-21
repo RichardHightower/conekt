@@ -16,8 +16,8 @@
 
 package io.smallvertx.core.http;
 
-import io.smallvertx.core.net.*;
 import io.smallvertx.core.buffer.Buffer;
+import io.smallvertx.core.net.*;
 
 /**
  * Options describing how an {@link HttpClient} will make connections.

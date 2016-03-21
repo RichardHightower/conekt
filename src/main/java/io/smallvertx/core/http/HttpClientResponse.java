@@ -66,7 +66,7 @@ public interface HttpClientResponse extends ReadStream<Buffer> {
     /**
      * @return the headers
      */
-         MultiMap headers();
+    MultiMap headers();
 
     /**
      * Return the first header value with the specified name
@@ -74,7 +74,7 @@ public interface HttpClientResponse extends ReadStream<Buffer> {
      * @param headerName the header name
      * @return the header value
      */
-     String getHeader(String headerName);
+    String getHeader(String headerName);
 
     /**
      * Return the first header value with the specified name
@@ -90,17 +90,17 @@ public interface HttpClientResponse extends ReadStream<Buffer> {
      * @param trailerName the trailer name
      * @return the trailer value
      */
-     String getTrailer(String trailerName);
+    String getTrailer(String trailerName);
 
     /**
      * @return the trailers
      */
-         MultiMap trailers();
+    MultiMap trailers();
 
     /**
      * @return the Set-Cookie headers (including trailers)
      */
-         List<String> cookies();
+    List<String> cookies();
 
     /**
      * Convenience method for receiving the entire request body in one piece.
@@ -122,6 +122,6 @@ public interface HttpClientResponse extends ReadStream<Buffer> {
      *
      * @return the net socket
      */
-         NetSocket netSocket();
+    NetSocket netSocket();
 
 }

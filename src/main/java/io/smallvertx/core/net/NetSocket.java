@@ -16,12 +16,12 @@
 
 package io.smallvertx.core.net;
 
-import io.smallvertx.core.streams.Pump;
-import io.smallvertx.core.streams.WriteStream;
 import io.smallvertx.core.AsyncResult;
 import io.smallvertx.core.Handler;
 import io.smallvertx.core.buffer.Buffer;
+import io.smallvertx.core.streams.Pump;
 import io.smallvertx.core.streams.ReadStream;
+import io.smallvertx.core.streams.WriteStream;
 
 import javax.net.ssl.SSLPeerUnverifiedException;
 import javax.security.cert.X509Certificate;
@@ -192,7 +192,7 @@ public interface NetSocket extends ReadStream<Buffer>, WriteStream<Buffer> {
      * @param handler the handler
      * @return a reference to this, so the API can be used fluently
      */
-    NetSocket closeHandler( Handler<Void> handler);
+    NetSocket closeHandler(Handler<Void> handler);
 
     /**
      * Upgrade channel to use SSL/TLS. Be aware that for this to work SSL must be configured.

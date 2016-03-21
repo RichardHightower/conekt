@@ -16,10 +16,10 @@
 
 package io.smallvertx.core.eventbus;
 
-import io.smallvertx.core.metrics.Measured;
-import io.smallvertx.core.streams.WriteStream;
 import io.smallvertx.core.AsyncResult;
 import io.smallvertx.core.Handler;
+import io.smallvertx.core.metrics.Measured;
+import io.smallvertx.core.streams.WriteStream;
 
 /**
  * A Vert.x event-bus is a light-weight distributed messaging system which allows different parts of your application,

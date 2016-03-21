@@ -16,9 +16,9 @@
 
 package io.smallvertx.core.net;
 
+import io.smallvertx.core.AsyncResult;
 import io.smallvertx.core.Handler;
 import io.smallvertx.core.metrics.Measured;
-import io.smallvertx.core.AsyncResult;
 
 /**
  * A TCP client.

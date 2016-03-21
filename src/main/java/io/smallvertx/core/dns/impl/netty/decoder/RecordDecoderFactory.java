@@ -16,8 +16,8 @@
 package io.smallvertx.core.dns.impl.netty.decoder;
 
 import io.smallvertx.core.dns.impl.netty.DnsEntry;
-import io.smallvertx.core.dns.impl.netty.DnsResponse;
 import io.smallvertx.core.dns.impl.netty.DnsResource;
+import io.smallvertx.core.dns.impl.netty.DnsResponse;
 
 import java.util.HashMap;
 import java.util.Map;

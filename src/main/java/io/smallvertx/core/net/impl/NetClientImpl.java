@@ -28,14 +28,14 @@ import io.smallvertx.core.Future;
 import io.smallvertx.core.Handler;
 import io.smallvertx.core.impl.ContextImpl;
 import io.smallvertx.core.impl.VertxInternal;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import io.smallvertx.core.net.NetClient;
 import io.smallvertx.core.net.NetClientOptions;
 import io.smallvertx.core.net.NetSocket;
 import io.smallvertx.core.spi.metrics.Metrics;
 import io.smallvertx.core.spi.metrics.MetricsProvider;
 import io.smallvertx.core.spi.metrics.TCPMetrics;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.InetSocketAddress;
 import java.util.Map;

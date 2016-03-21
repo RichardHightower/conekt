@@ -34,6 +34,7 @@ public class VertxThreadFactory implements ThreadFactory {
     private final AtomicInteger threadCount = new AtomicInteger(0);
     private final BlockedThreadChecker checker;
     private final boolean worker;
+
     VertxThreadFactory(String prefix, BlockedThreadChecker checker, boolean worker) {
         this.prefix = prefix;
         this.checker = checker;

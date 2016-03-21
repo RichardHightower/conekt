@@ -15,9 +15,9 @@
  */
 package io.smallvertx.core.net.impl;
 
-import io.smallvertx.core.net.*;
 import io.smallvertx.core.buffer.Buffer;
 import io.smallvertx.core.impl.VertxInternal;
+import io.smallvertx.core.net.*;
 
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.KeyManagerFactory;

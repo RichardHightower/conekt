@@ -61,7 +61,7 @@ public interface DnsClient {
      *                it will get notifed with {@code null}. If an error accours it will get failed.
      * @return a reference to this, so the API can be used fluently
      */
-    DnsClient lookup6(String name, Handler<AsyncResult< String>> handler);
+    DnsClient lookup6(String name, Handler<AsyncResult<String>> handler);
 
     /**
      * Try to resolve all A (ipv4) records for the given name.
@@ -130,7 +130,7 @@ public interface DnsClient {
      *                get notified with {@code null}. If an error accours it will get failed.
      * @return a reference to this, so the API can be used fluently.
      */
-    DnsClient resolvePTR(String name, Handler<AsyncResult< String>> handler);
+    DnsClient resolvePTR(String name, Handler<AsyncResult<String>> handler);
 
     /**
      * Try to resolve the NS records for the given name.

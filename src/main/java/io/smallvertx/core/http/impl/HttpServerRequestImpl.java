@@ -27,10 +27,10 @@ import io.smallvertx.core.MultiMap;
 import io.smallvertx.core.buffer.Buffer;
 import io.smallvertx.core.http.*;
 import io.smallvertx.core.http.HttpVersion;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import io.smallvertx.core.net.NetSocket;
 import io.smallvertx.core.net.SocketAddress;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.SSLPeerUnverifiedException;
 import javax.security.cert.X509Certificate;

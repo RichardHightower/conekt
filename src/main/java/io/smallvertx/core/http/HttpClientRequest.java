@@ -107,7 +107,7 @@ public interface HttpClientRequest extends WriteStream<Buffer>, ReadStream<HttpC
     /**
      * @return The HTTP headers
      */
-         MultiMap headers();
+    MultiMap headers();
 
     /**
      * Put an HTTP header
@@ -163,7 +163,7 @@ public interface HttpClientRequest extends WriteStream<Buffer>, ReadStream<HttpC
      *
      * @return a reference to this, so the API can be used fluently
      */
-    HttpClientRequest continueHandler( Handler<Void> handler);
+    HttpClientRequest continueHandler(Handler<Void> handler);
 
     /**
      * Forces the head of the request to be written before {@link #end()} is called on the request or any data is

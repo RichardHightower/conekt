@@ -16,12 +16,12 @@
 
 package io.smallvertx.core.streams;
 
+import io.smallvertx.core.ServiceHelper;
 import io.smallvertx.core.file.AsyncFile;
 import io.smallvertx.core.http.HttpServerRequest;
 import io.smallvertx.core.http.WebSocket;
 import io.smallvertx.core.net.NetSocket;
 import io.smallvertx.core.spi.PumpFactory;
-import io.smallvertx.core.ServiceHelper;
 
 /**
  * Pumps data from a {@link ReadStream} to a {@link WriteStream} and performs flow control where necessary to

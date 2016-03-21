@@ -17,7 +17,6 @@
 package io.smallvertx.core.eventbus;
 
 
-
 /**
  * Represents the type of reply failure
  *

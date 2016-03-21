@@ -15,8 +15,8 @@
  */
 package io.smallvertx.core.http.impl;
 
-import io.smallvertx.core.Vertx;
 import io.smallvertx.core.Handler;
+import io.smallvertx.core.Vertx;
 import io.smallvertx.core.buffer.Buffer;
 import io.smallvertx.core.file.AsyncFile;
 import io.smallvertx.core.file.OpenOptions;

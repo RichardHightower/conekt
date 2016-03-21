@@ -27,16 +27,15 @@ import io.netty.handler.stream.ChunkedWriteHandler;
 import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.concurrent.GlobalEventExecutor;
 import io.smallvertx.core.*;
+import io.smallvertx.core.impl.ContextImpl;
 import io.smallvertx.core.impl.VertxInternal;
 import io.smallvertx.core.net.NetServer;
 import io.smallvertx.core.net.NetServerOptions;
 import io.smallvertx.core.net.NetSocket;
+import io.smallvertx.core.net.NetSocketStream;
 import io.smallvertx.core.spi.metrics.Metrics;
 import io.smallvertx.core.spi.metrics.MetricsProvider;
 import io.smallvertx.core.spi.metrics.TCPMetrics;
-
-import io.smallvertx.core.impl.ContextImpl;
-import io.smallvertx.core.net.NetSocketStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

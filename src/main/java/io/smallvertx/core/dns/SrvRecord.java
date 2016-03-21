@@ -56,5 +56,5 @@ public interface SrvRecord {
     /**
      * Returns the name of the host for the service.
      */
-     String target();
+    String target();
 }

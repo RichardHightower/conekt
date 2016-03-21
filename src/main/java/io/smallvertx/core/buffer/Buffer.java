@@ -19,8 +19,8 @@ package io.smallvertx.core.buffer;
 import io.netty.buffer.ByteBuf;
 import io.smallvertx.core.ServiceHelper;
 import io.smallvertx.core.json.JsonArray;
-import io.smallvertx.core.spi.BufferFactory;
 import io.smallvertx.core.json.JsonObject;
+import io.smallvertx.core.spi.BufferFactory;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;

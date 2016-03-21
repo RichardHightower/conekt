@@ -18,8 +18,8 @@ package io.smallvertx.core.dns.impl.netty.decoder;
 import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.DecoderException;
 import io.netty.util.CharsetUtil;
-import io.smallvertx.core.dns.impl.netty.DnsResponse;
 import io.smallvertx.core.dns.impl.netty.DnsResource;
+import io.smallvertx.core.dns.impl.netty.DnsResponse;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;

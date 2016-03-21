@@ -17,12 +17,12 @@
 package io.smallvertx.core.file;
 
 import io.smallvertx.core.AsyncResult;
-import io.smallvertx.core.http.HttpClientRequest;
-import io.smallvertx.core.streams.Pump;
-import io.smallvertx.core.streams.WriteStream;
 import io.smallvertx.core.Handler;
 import io.smallvertx.core.buffer.Buffer;
+import io.smallvertx.core.http.HttpClientRequest;
+import io.smallvertx.core.streams.Pump;
 import io.smallvertx.core.streams.ReadStream;
+import io.smallvertx.core.streams.WriteStream;
 
 /**
  * Represents a file on the file-system which can be read from, or written to asynchronously.

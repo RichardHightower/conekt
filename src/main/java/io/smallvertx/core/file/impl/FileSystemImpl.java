@@ -17,12 +17,9 @@
 package io.smallvertx.core.file.impl;
 
 import io.smallvertx.core.AsyncResult;
-import io.smallvertx.core.file.AsyncFile;
-import io.smallvertx.core.file.FileProps;
-import io.smallvertx.core.file.FileSystemProps;
-import io.smallvertx.core.file.OpenOptions;
 import io.smallvertx.core.Handler;
 import io.smallvertx.core.buffer.Buffer;
+import io.smallvertx.core.file.*;
 import io.smallvertx.core.file.FileSystem;
 import io.smallvertx.core.file.FileSystemException;
 import io.smallvertx.core.impl.Action;

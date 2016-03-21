@@ -18,15 +18,15 @@ package io.smallvertx.core.spi.metrics;
 
 import io.smallvertx.core.Context;
 import io.smallvertx.core.Verticle;
-import io.smallvertx.core.eventbus.EventBus;
-import io.smallvertx.core.http.HttpServerOptions;
-import io.smallvertx.core.metrics.Measured;
-import io.smallvertx.core.net.*;
 import io.smallvertx.core.datagram.DatagramSocket;
 import io.smallvertx.core.datagram.DatagramSocketOptions;
+import io.smallvertx.core.eventbus.EventBus;
 import io.smallvertx.core.http.HttpClient;
 import io.smallvertx.core.http.HttpClientOptions;
 import io.smallvertx.core.http.HttpServer;
+import io.smallvertx.core.http.HttpServerOptions;
+import io.smallvertx.core.metrics.Measured;
+import io.smallvertx.core.net.*;
 
 /**
  * The main Vert.x metrics SPI which Vert.x will use internally. This interface serves two purposes, one

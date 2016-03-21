@@ -51,14 +51,14 @@ public interface Message<T> {
      *
      * @return the body, or null.
      */
-         T body();
+    T body();
 
     /**
      * The reply address. Can be null.
      *
      * @return the reply address, or null, if message was sent without a reply handler.
      */
-     String replyAddress();
+    String replyAddress();
 
     /**
      * Reply to this message.

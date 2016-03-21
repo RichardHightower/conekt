@@ -16,10 +16,10 @@
 
 package io.smallvertx.core.spi;
 
+import io.smallvertx.core.DeploymentOptions;
 import io.smallvertx.core.Future;
 import io.smallvertx.core.Verticle;
 import io.smallvertx.core.Vertx;
-import io.smallvertx.core.DeploymentOptions;
 
 /**
  * Has responsibility for creating verticle instances.

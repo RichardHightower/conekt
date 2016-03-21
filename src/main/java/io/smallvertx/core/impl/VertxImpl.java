@@ -22,15 +22,10 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.util.ResourceLeakDetector;
 import io.netty.util.concurrent.GenericFutureListener;
 import io.smallvertx.core.*;
-import io.smallvertx.core.dns.DnsClient;
-import io.smallvertx.core.net.impl.NetClientImpl;
-import io.smallvertx.core.net.impl.ServerID;
-import io.smallvertx.core.spi.VertxMetricsFactory;
-import io.smallvertx.core.spi.metrics.Metrics;
-import io.smallvertx.core.spi.metrics.MetricsProvider;
 import io.smallvertx.core.datagram.DatagramSocket;
 import io.smallvertx.core.datagram.DatagramSocketOptions;
 import io.smallvertx.core.datagram.impl.DatagramSocketImpl;
+import io.smallvertx.core.dns.DnsClient;
 import io.smallvertx.core.dns.impl.DnsClientImpl;
 import io.smallvertx.core.eventbus.EventBus;
 import io.smallvertx.core.eventbus.impl.EventBusImpl;
@@ -49,8 +44,13 @@ import io.smallvertx.core.net.NetClient;
 import io.smallvertx.core.net.NetClientOptions;
 import io.smallvertx.core.net.NetServer;
 import io.smallvertx.core.net.NetServerOptions;
+import io.smallvertx.core.net.impl.NetClientImpl;
 import io.smallvertx.core.net.impl.NetServerImpl;
+import io.smallvertx.core.net.impl.ServerID;
 import io.smallvertx.core.spi.VerticleFactory;
+import io.smallvertx.core.spi.VertxMetricsFactory;
+import io.smallvertx.core.spi.metrics.Metrics;
+import io.smallvertx.core.spi.metrics.MetricsProvider;
 import io.smallvertx.core.spi.metrics.VertxMetrics;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -527,7 +527,6 @@ public class VertxImpl implements VertxInternal, MetricsProvider {
     public Deployment getDeployment(String deploymentID) {
         return deploymentManager.getDeployment(deploymentID);
     }
-
 
 
     @Override

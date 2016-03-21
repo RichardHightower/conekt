@@ -16,12 +16,12 @@
 
 package io.smallvertx.core.http;
 
-import io.smallvertx.core.streams.Pump;
-import io.smallvertx.core.streams.WriteStream;
 import io.smallvertx.core.Handler;
 import io.smallvertx.core.buffer.Buffer;
 import io.smallvertx.core.net.SocketAddress;
+import io.smallvertx.core.streams.Pump;
 import io.smallvertx.core.streams.ReadStream;
+import io.smallvertx.core.streams.WriteStream;
 
 /**
  * Base WebSocket implementation.
@@ -118,7 +118,7 @@ public interface WebSocketBase extends ReadStream<Buffer>, WriteStream<Buffer> {
      * @param handler the handler
      * @return a reference to this, so the API can be used fluently
      */
-    WebSocketBase closeHandler( Handler<Void> handler);
+    WebSocketBase closeHandler(Handler<Void> handler);
 
     /**
      * Set a frame handler on the connection. This handler will be called when frames are read on the connection.
@@ -126,7 +126,7 @@ public interface WebSocketBase extends ReadStream<Buffer>, WriteStream<Buffer> {
      * @param handler the handler
      * @return a reference to this, so the API can be used fluently
      */
-    WebSocketBase frameHandler( Handler<WebSocketFrame> handler);
+    WebSocketBase frameHandler(Handler<WebSocketFrame> handler);
 
     /**
      * Calls {@link #close()}
@@ -142,11 +142,11 @@ public interface WebSocketBase extends ReadStream<Buffer>, WriteStream<Buffer> {
     /**
      * @return the remote address for this socket
      */
-         SocketAddress remoteAddress();
+    SocketAddress remoteAddress();
 
     /**
      * @return the local address for this socket
      */
-         SocketAddress localAddress();
+    SocketAddress localAddress();
 
 }

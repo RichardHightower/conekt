@@ -17,8 +17,8 @@
 package io.smallvertx.core.eventbus.impl.codecs;
 
 import io.netty.util.CharsetUtil;
-import io.smallvertx.core.eventbus.MessageCodec;
 import io.smallvertx.core.buffer.Buffer;
+import io.smallvertx.core.eventbus.MessageCodec;
 import io.smallvertx.core.json.JsonObject;
 
 /**

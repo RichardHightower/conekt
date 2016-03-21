@@ -16,8 +16,8 @@
 
 package io.smallvertx.core.http.impl;
 
-import io.smallvertx.core.MultiMap;
 import io.smallvertx.core.Handler;
+import io.smallvertx.core.MultiMap;
 import io.smallvertx.core.buffer.Buffer;
 import io.smallvertx.core.http.ServerWebSocket;
 import io.smallvertx.core.http.WebSocketFrame;

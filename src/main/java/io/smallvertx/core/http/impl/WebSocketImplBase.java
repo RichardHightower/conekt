@@ -22,12 +22,12 @@ import io.smallvertx.core.buffer.Buffer;
 import io.smallvertx.core.eventbus.Message;
 import io.smallvertx.core.eventbus.MessageConsumer;
 import io.smallvertx.core.http.WebSocketBase;
+import io.smallvertx.core.http.WebSocketFrame;
 import io.smallvertx.core.http.impl.ws.WebSocketFrameImpl;
 import io.smallvertx.core.http.impl.ws.WebSocketFrameInternal;
 import io.smallvertx.core.impl.VertxInternal;
 import io.smallvertx.core.net.SocketAddress;
 import io.smallvertx.core.net.impl.ConnectionBase;
-import io.smallvertx.core.http.WebSocketFrame;
 
 import java.util.UUID;
 

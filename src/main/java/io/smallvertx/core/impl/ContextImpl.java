@@ -19,7 +19,6 @@ package io.smallvertx.core.impl;
 import io.netty.channel.EventLoop;
 import io.netty.channel.EventLoopGroup;
 import io.smallvertx.core.*;
-
 import io.smallvertx.core.json.JsonObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -15,8 +15,8 @@
  */
 package io.smallvertx.core.datagram;
 
-import io.smallvertx.core.net.SocketAddress;
 import io.smallvertx.core.buffer.Buffer;
+import io.smallvertx.core.net.SocketAddress;
 
 /**
  * A received datagram packet (UDP) which contains the data and information about the sender of the data itself.

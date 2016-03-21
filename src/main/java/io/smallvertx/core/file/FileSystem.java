@@ -166,7 +166,7 @@ public interface FileSystem {
     /**
      * Blocking version of {@link #chown(String, String, String, Handler)}
      */
-    FileSystem chownBlocking(String path,  String user,  String group);
+    FileSystem chownBlocking(String path, String user, String group);
 
     /**
      * Obtain properties for the file represented by {@code path}, asynchronously.

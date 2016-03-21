@@ -20,17 +20,14 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.CompositeByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.*;
-import io.netty.handler.codec.http.HttpHeaders;
-import io.netty.handler.codec.http.HttpMethod;
-import io.netty.handler.codec.http.HttpVersion;
-import io.smallvertx.core.MultiMap;
-import io.smallvertx.core.net.NetSocket;
-import io.smallvertx.core.spi.metrics.HttpClientMetrics;
 import io.smallvertx.core.Handler;
+import io.smallvertx.core.MultiMap;
 import io.smallvertx.core.buffer.Buffer;
 import io.smallvertx.core.http.HttpClientRequest;
 import io.smallvertx.core.http.HttpClientResponse;
 import io.smallvertx.core.impl.VertxInternal;
+import io.smallvertx.core.net.NetSocket;
+import io.smallvertx.core.spi.metrics.HttpClientMetrics;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -541,7 +538,7 @@ public class HttpClientRequestImpl implements HttpClientRequest {
     }
 
     private Handler<Throwable> getExceptionHandler() {
-        return exceptionHandler != null ? exceptionHandler :  error -> log.error("", error);
+        return exceptionHandler != null ? exceptionHandler : error -> log.error("", error);
     }
 
     private void cancelOutstandingTimeoutTimer() {

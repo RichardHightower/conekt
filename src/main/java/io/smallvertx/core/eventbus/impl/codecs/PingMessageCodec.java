@@ -16,8 +16,8 @@
 
 package io.smallvertx.core.eventbus.impl.codecs;
 
-import io.smallvertx.core.eventbus.MessageCodec;
 import io.smallvertx.core.buffer.Buffer;
+import io.smallvertx.core.eventbus.MessageCodec;
 
 /**
  * @author <a href="http://tfox.org">Tim Fox</a>

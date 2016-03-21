@@ -16,9 +16,9 @@
 
 package io.smallvertx.core.spi;
 
-import io.smallvertx.core.streams.WriteStream;
 import io.smallvertx.core.streams.Pump;
 import io.smallvertx.core.streams.ReadStream;
+import io.smallvertx.core.streams.WriteStream;
 
 /**
  * @author <a href="http://tfox.org">Tim Fox</a>

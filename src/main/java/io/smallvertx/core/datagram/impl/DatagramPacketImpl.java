@@ -15,10 +15,10 @@
  */
 package io.smallvertx.core.datagram.impl;
 
-import io.smallvertx.core.net.SocketAddress;
-import io.smallvertx.core.net.impl.SocketAddressImpl;
 import io.smallvertx.core.buffer.Buffer;
 import io.smallvertx.core.datagram.DatagramPacket;
+import io.smallvertx.core.net.SocketAddress;
+import io.smallvertx.core.net.impl.SocketAddressImpl;
 
 import java.net.InetSocketAddress;
 

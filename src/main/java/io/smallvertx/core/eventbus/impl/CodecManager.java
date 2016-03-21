@@ -1,10 +1,10 @@
 package io.smallvertx.core.eventbus.impl;
 
+import io.smallvertx.core.buffer.Buffer;
 import io.smallvertx.core.eventbus.MessageCodec;
 import io.smallvertx.core.eventbus.ReplyException;
 import io.smallvertx.core.eventbus.impl.codecs.*;
 import io.smallvertx.core.json.JsonArray;
-import io.smallvertx.core.buffer.Buffer;
 import io.smallvertx.core.json.JsonObject;
 
 import java.util.Objects;

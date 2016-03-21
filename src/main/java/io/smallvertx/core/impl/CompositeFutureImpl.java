@@ -16,9 +16,9 @@
 
 package io.smallvertx.core.impl;
 
-import io.smallvertx.core.Future;
 import io.smallvertx.core.AsyncResult;
 import io.smallvertx.core.CompositeFuture;
+import io.smallvertx.core.Future;
 import io.smallvertx.core.Handler;
 
 /**
@@ -31,6 +31,7 @@ public class CompositeFutureImpl implements CompositeFuture, Handler<AsyncResult
     private boolean completed;
     private Throwable cause;
     private Handler<AsyncResult<CompositeFuture>> handler;
+
     private CompositeFutureImpl(Future<?>... results) {
         this.results = results;
     }

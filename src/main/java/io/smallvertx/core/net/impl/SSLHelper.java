@@ -17,9 +17,9 @@
 package io.smallvertx.core.net.impl;
 
 import io.netty.handler.ssl.SslHandler;
-import io.smallvertx.core.http.ClientAuth;
 import io.smallvertx.core.VertxException;
 import io.smallvertx.core.buffer.Buffer;
+import io.smallvertx.core.http.ClientAuth;
 import io.smallvertx.core.http.HttpClientOptions;
 import io.smallvertx.core.http.HttpServerOptions;
 import io.smallvertx.core.impl.VertxInternal;

@@ -192,7 +192,7 @@ public interface Future<T> extends AsyncResult<T> {
     /**
      * @return an handler completing this future
      */
-         default Handler<AsyncResult<T>> completer() {
+    default Handler<AsyncResult<T>> completer() {
         return ar -> {
             if (ar.succeeded()) {
                 complete(ar.result());

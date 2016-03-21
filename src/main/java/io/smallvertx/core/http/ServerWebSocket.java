@@ -88,12 +88,12 @@ public interface ServerWebSocket extends WebSocketBase {
     /**
      * @return the WebSocket handshake query string.
      */
-     String query();
+    String query();
 
     /**
      * @return the headers in the WebSocket handshake
      */
-         MultiMap headers();
+    MultiMap headers();
 
     /**
      * Reject the WebSocket.

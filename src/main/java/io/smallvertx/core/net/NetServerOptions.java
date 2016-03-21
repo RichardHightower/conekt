@@ -16,8 +16,8 @@
 
 package io.smallvertx.core.net;
 
-import io.smallvertx.core.http.ClientAuth;
 import io.smallvertx.core.buffer.Buffer;
+import io.smallvertx.core.http.ClientAuth;
 
 /**
  * Options for configuring a {@link NetServer}.
