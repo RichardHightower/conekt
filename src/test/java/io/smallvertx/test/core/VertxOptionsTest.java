@@ -224,7 +224,6 @@ public class VertxOptionsTest extends VertxTestBase {
         options.setClusterPingReplyInterval(clusterPingReplyInterval);
         options.setMaxEventLoopExecuteTime(maxEventLoopExecuteTime);
         options.setMaxWorkerExecuteTime(maxWorkerExecuteTime);
-        options.setHAEnabled(haEnabled);
         options.setQuorumSize(quorumSize);
         options.setHAGroup(haGroup);
         options.setMetricsOptions(
@@ -244,7 +243,6 @@ public class VertxOptionsTest extends VertxTestBase {
         assertEquals(clusterPublicHost, options.getClusterPublicHost());
         assertEquals(maxEventLoopExecuteTime, options.getMaxEventLoopExecuteTime());
         assertEquals(maxWorkerExecuteTime, options.getMaxWorkerExecuteTime());
-        assertEquals(haEnabled, options.isHAEnabled());
         assertEquals(quorumSize, options.getQuorumSize());
         assertEquals(haGroup, options.getHAGroup());
         MetricsOptions metricsOptions = options.getMetricsOptions();

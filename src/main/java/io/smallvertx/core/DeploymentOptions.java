@@ -33,14 +33,12 @@ public class DeploymentOptions {
     public static final boolean DEFAULT_WORKER = false;
     public static final boolean DEFAULT_MULTI_THREADED = false;
     public static final String DEFAULT_ISOLATION_GROUP = null;
-    public static final boolean DEFAULT_HA = false;
     public static final int DEFAULT_INSTANCES = 1;
 
     private JsonObject config;
     private boolean worker;
     private boolean multiThreaded;
     private String isolationGroup;
-    private boolean ha;
     private List<String> extraClasspath;
     private int instances;
     private List<String> isolatedClasses;
@@ -53,7 +51,6 @@ public class DeploymentOptions {
         this.config = null;
         this.multiThreaded = DEFAULT_MULTI_THREADED;
         this.isolationGroup = DEFAULT_ISOLATION_GROUP;
-        this.ha = DEFAULT_HA;
         this.instances = DEFAULT_INSTANCES;
     }
 
@@ -67,7 +64,6 @@ public class DeploymentOptions {
         this.worker = other.isWorker();
         this.multiThreaded = other.isMultiThreaded();
         this.isolationGroup = other.getIsolationGroup();
-        this.ha = other.isHa();
         this.extraClasspath = other.getExtraClasspath() == null ? null : new ArrayList<>(other.getExtraClasspath());
         this.instances = other.instances;
         this.isolatedClasses = other.getIsolatedClasses() == null ? null : new ArrayList<>(other.getIsolatedClasses());
@@ -84,7 +80,6 @@ public class DeploymentOptions {
         this.worker = json.getBoolean("worker", DEFAULT_WORKER);
         this.multiThreaded = json.getBoolean("multiThreaded", DEFAULT_MULTI_THREADED);
         this.isolationGroup = json.getString("isolationGroup", DEFAULT_ISOLATION_GROUP);
-        this.ha = json.getBoolean("ha", DEFAULT_HA);
         JsonArray arr = json.getJsonArray("extraClasspath", null);
         if (arr != null) {
             this.extraClasspath = arr.getList();
@@ -178,25 +173,6 @@ public class DeploymentOptions {
         return this;
     }
 
-    /**
-     * Will the verticle(s) be deployed as HA (highly available) ?
-     *
-     * @return true if HA, false otherwise
-     */
-    public boolean isHa() {
-        return ha;
-    }
-
-    /**
-     * Set whether the verticle(s) will be deployed as HA.
-     *
-     * @param ha true if to be deployed as HA, false otherwise
-     * @return a reference to this, so the API can be used fluently
-     */
-    public DeploymentOptions setHa(boolean ha) {
-        this.ha = ha;
-        return this;
-    }
 
     /**
      * Get any extra classpath to be used when deploying the verticle.
@@ -272,7 +248,6 @@ public class DeploymentOptions {
         if (worker) json.put("worker", true);
         if (multiThreaded) json.put("multiThreaded", true);
         if (isolationGroup != null) json.put("isolationGroup", isolationGroup);
-        if (ha) json.put("ha", true);
         if (config != null) json.put("config", config);
         if (extraClasspath != null) json.put("extraClasspath", new JsonArray(extraClasspath));
         if (instances != DEFAULT_INSTANCES) {
@@ -291,7 +266,6 @@ public class DeploymentOptions {
 
         if (worker != that.worker) return false;
         if (multiThreaded != that.multiThreaded) return false;
-        if (ha != that.ha) return false;
         if (instances != that.instances) return false;
         if (config != null ? !config.equals(that.config) : that.config != null) return false;
         if (isolationGroup != null ? !isolationGroup.equals(that.isolationGroup) : that.isolationGroup != null)
@@ -308,7 +282,6 @@ public class DeploymentOptions {
         result = 31 * result + (worker ? 1 : 0);
         result = 31 * result + (multiThreaded ? 1 : 0);
         result = 31 * result + (isolationGroup != null ? isolationGroup.hashCode() : 0);
-        result = 31 * result + (ha ? 1 : 0);
         result = 31 * result + (extraClasspath != null ? extraClasspath.hashCode() : 0);
         result = 31 * result + instances;
         result = 31 * result + (isolatedClasses != null ? isolatedClasses.hashCode() : 0);

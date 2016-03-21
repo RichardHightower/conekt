@@ -103,11 +103,6 @@ public class VertxOptions {
     public static final String DEFAULT_HA_GROUP = "__DEFAULT__";
 
     /**
-     * The default value of HA enabled = false
-     */
-    public static final boolean DEFAULT_HA_ENABLED = false;
-
-    /**
      * The default value of warning exception time 5000000000 ns (5 seconds)
      * If a thread is blocked longer than this threshold, the warning log
      * contains a stack trace
@@ -127,7 +122,6 @@ public class VertxOptions {
     private long blockedThreadCheckInterval = DEFAULT_BLOCKED_THREAD_CHECK_INTERVAL;
     private long maxEventLoopExecuteTime = DEFAULT_MAX_EVENT_LOOP_EXECUTE_TIME;
     private long maxWorkerExecuteTime = DEFAULT_MAX_WORKER_EXECUTE_TIME;
-    private boolean haEnabled = DEFAULT_HA_ENABLED;
     private int quorumSize = DEFAULT_QUORUM_SIZE;
     private String haGroup = DEFAULT_HA_GROUP;
     private MetricsOptions metrics = new MetricsOptions();
@@ -158,7 +152,6 @@ public class VertxOptions {
         this.maxEventLoopExecuteTime = other.getMaxEventLoopExecuteTime();
         this.maxWorkerExecuteTime = other.getMaxWorkerExecuteTime();
         this.internalBlockingPoolSize = other.getInternalBlockingPoolSize();
-        this.haEnabled = other.isHAEnabled();
         this.quorumSize = other.getQuorumSize();
         this.haGroup = other.getHAGroup();
         this.metrics = other.getMetricsOptions() != null ? new MetricsOptions(other.getMetricsOptions()) : null;
@@ -481,25 +474,6 @@ public class VertxOptions {
         return this;
     }
 
-    /**
-     * Will HA be enabled on the Vert.x instance?
-     *
-     * @return true if HA enabled, false otherwise
-     */
-    public boolean isHAEnabled() {
-        return haEnabled;
-    }
-
-    /**
-     * Set whether HA will be enabled on the Vert.x instance.
-     *
-     * @param haEnabled true if enabled, false if not.
-     * @return a reference to this, so the API can be used fluently
-     */
-    public VertxOptions setHAEnabled(boolean haEnabled) {
-        this.haEnabled = haEnabled;
-        return this;
-    }
 
     /**
      * Get the quorum size to be used when HA is enabled.
@@ -575,7 +549,7 @@ public class VertxOptions {
     /**
      * Set the threshold value above this, the blocked warning contains a stack trace.
      *
-     * @param warningExceptionTime
+     * @param warningExceptionTime warningExceptionTime
      * @return a reference to this, so the API can be used fluently
      */
     public VertxOptions setWarningExceptionTime(long warningExceptionTime) {
@@ -604,7 +578,6 @@ public class VertxOptions {
         if (blockedThreadCheckInterval != that.blockedThreadCheckInterval) return false;
         if (maxEventLoopExecuteTime != that.maxEventLoopExecuteTime) return false;
         if (maxWorkerExecuteTime != that.maxWorkerExecuteTime) return false;
-        if (haEnabled != that.haEnabled) return false;
         if (quorumSize != that.quorumSize) return false;
         if (warningExceptionTime != that.warningExceptionTime) return false;
         if (clusterHost != null ? !clusterHost.equals(that.clusterHost) : that.clusterHost != null) return false;
@@ -630,7 +603,6 @@ public class VertxOptions {
         result = 31 * result + (int) (blockedThreadCheckInterval ^ (blockedThreadCheckInterval >>> 32));
         result = 31 * result + (int) (maxEventLoopExecuteTime ^ (maxEventLoopExecuteTime >>> 32));
         result = 31 * result + (int) (maxWorkerExecuteTime ^ (maxWorkerExecuteTime >>> 32));
-        result = 31 * result + (haEnabled ? 1 : 0);
         result = 31 * result + quorumSize;
         result = 31 * result + (haGroup != null ? haGroup.hashCode() : 0);
         result = 31 * result + (metrics != null ? metrics.hashCode() : 0);
@@ -654,7 +626,6 @@ public class VertxOptions {
                 ", blockedThreadCheckInterval=" + blockedThreadCheckInterval +
                 ", maxEventLoopExecuteTime=" + maxEventLoopExecuteTime +
                 ", maxWorkerExecuteTime=" + maxWorkerExecuteTime +
-                ", haEnabled=" + haEnabled +
                 ", quorumSize=" + quorumSize +
                 ", haGroup='" + haGroup + '\'' +
                 ", metrics=" + metrics +

@@ -95,7 +95,6 @@ public class VertxImpl implements VertxInternal, MetricsProvider {
     private final NioEventLoopGroup eventLoopGroup;
     private final NioEventLoopGroup acceptorEventLoopGroup;
     private final BlockedThreadChecker checker;
-    private final boolean haEnabled;
     private EventBus eventBus;
     private boolean closed;
 
@@ -131,7 +130,6 @@ public class VertxImpl implements VertxInternal, MetricsProvider {
         this.fileResolver = new FileResolver(this);
         this.deploymentManager = new DeploymentManager(this);
         this.metrics = initialiseMetrics(options);
-        this.haEnabled = options.isClustered() && options.isHAEnabled();
         createAndStartEventBus(options, resultHandler);
     }
 
