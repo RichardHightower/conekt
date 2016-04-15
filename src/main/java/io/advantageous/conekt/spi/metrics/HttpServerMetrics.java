@@ -38,7 +38,7 @@ import io.advantageous.conekt.http.ServerWebSocket;
  * <p>
  * Unless specified otherwise, all the methods on this object including the methods inherited from the super interfaces are invoked
  * with the thread of the http server and therefore are the same than the
- * {@link VertxMetrics} {@code createMetrics} method that created and returned
+ * {@link ConektMetrics} {@code createMetrics} method that created and returned
  * this metrics object.
  * <p>
  * <h3>Worker context</h3>

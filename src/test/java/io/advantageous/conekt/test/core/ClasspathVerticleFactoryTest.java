@@ -25,7 +25,7 @@
 
 package io.advantageous.conekt.test.core;
 
-import io.advantageous.conekt.spi.VerticleFactory;
+import io.advantageous.conekt.spi.IoActorFactory;
 import org.junit.Test;
 
 /**
@@ -35,8 +35,8 @@ public class ClasspathVerticleFactoryTest extends VertxTestBase {
 
     @Test
     public void testLoadedFromClasspath() {
-        assertEquals(1, vertx.verticleFactories().size());
-        VerticleFactory fact = vertx.verticleFactories().iterator().next();
+        assertEquals(1, conekt.verticleFactories().size());
+        IoActorFactory fact = conekt.verticleFactories().iterator().next();
         assertTrue(fact instanceof ClasspathVerticleFactory);
     }
 }

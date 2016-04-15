@@ -25,14 +25,14 @@
 
 package io.advantageous.conekt.file;
 
-import io.advantageous.conekt.VertxException;
+import io.advantageous.conekt.ConektException;
 
 /**
  * Exception thrown by the FileSystem class
  *
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
-public class FileSystemException extends VertxException {
+public class FileSystemException extends ConektException {
 
     public FileSystemException(String message) {
         super(message);

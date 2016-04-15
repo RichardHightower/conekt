@@ -25,7 +25,7 @@
 
 package io.advantageous.conekt.test.core;
 
-import io.advantageous.conekt.VertxOptions;
+import io.advantageous.conekt.ConektOptions;
 import io.advantageous.conekt.datagram.DatagramSocket;
 import io.advantageous.conekt.datagram.DatagramSocketOptions;
 import io.advantageous.conekt.http.HttpClient;
@@ -45,47 +45,47 @@ import org.junit.Test;
 public class DummyMetricsTest extends VertxTestBase {
 
     @Override
-    protected VertxOptions getOptions() {
-        return new VertxOptions().setMetricsOptions(new MetricsOptions().setEnabled(false)); // Just to be explicit
+    protected ConektOptions getOptions() {
+        return new ConektOptions().setMetricsOptions(new MetricsOptions().setEnabled(false)); // Just to be explicit
     }
 
     @Test
     public void testDummyVertxMetrics() {
-        assertFalse(vertx.isMetricsEnabled());
+        assertFalse(conekt.isMetricsEnabled());
     }
 
     @Test
     public void testDummyNetServerMetrics() {
-        NetServer server = vertx.createNetServer(new NetServerOptions());
+        NetServer server = conekt.createNetServer(new NetServerOptions());
         assertFalse(server.isMetricsEnabled());
     }
 
     @Test
     public void testDummyNetClientMetrics() {
-        NetClient client = vertx.createNetClient(new NetClientOptions());
+        NetClient client = conekt.createNetClient(new NetClientOptions());
         assertFalse(client.isMetricsEnabled());
     }
 
     @Test
     public void testDummyHttpServerMetrics() {
-        HttpServer server = vertx.createHttpServer(new HttpServerOptions());
+        HttpServer server = conekt.createHttpServer(new HttpServerOptions());
         assertFalse(server.isMetricsEnabled());
     }
 
     @Test
     public void testDummyHttpClientMetrics() {
-        HttpClient client = vertx.createHttpClient(new HttpClientOptions());
+        HttpClient client = conekt.createHttpClient(new HttpClientOptions());
         assertFalse(client.isMetricsEnabled());
     }
 
     @Test
     public void testDummyEventBusMetrics() {
-        assertFalse(vertx.eventBus().isMetricsEnabled());
+        assertFalse(conekt.eventBus().isMetricsEnabled());
     }
 
     @Test
     public void testDummyDatagramSocketMetrics() {
-        DatagramSocket sock = vertx.createDatagramSocket(new DatagramSocketOptions());
+        DatagramSocket sock = conekt.createDatagramSocket(new DatagramSocketOptions());
         assertFalse(sock.isMetricsEnabled());
     }
 }

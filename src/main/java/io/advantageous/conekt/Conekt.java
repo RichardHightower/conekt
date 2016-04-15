@@ -28,6 +28,7 @@ package io.advantageous.conekt;
 import io.advantageous.conekt.datagram.DatagramSocketOptions;
 import io.advantageous.conekt.http.HttpClientOptions;
 import io.advantageous.conekt.http.HttpServer;
+import io.advantageous.conekt.spi.IoActorFactory;
 import io.netty.channel.EventLoopGroup;
 import io.advantageous.conekt.datagram.DatagramSocket;
 import io.advantageous.conekt.dns.DnsClient;
@@ -40,8 +41,7 @@ import io.advantageous.conekt.net.NetClient;
 import io.advantageous.conekt.net.NetClientOptions;
 import io.advantageous.conekt.net.NetServer;
 import io.advantageous.conekt.net.NetServerOptions;
-import io.advantageous.conekt.spi.VerticleFactory;
-import io.advantageous.conekt.spi.VertxFactory;
+import io.advantageous.conekt.spi.ConektFactory;
 import io.advantageous.conekt.streams.ReadStream;
 
 import java.util.Set;
@@ -65,22 +65,22 @@ import java.util.Set;
  * Most functionality in Vert.x core is fairly low level.
  * <p>
  * To create an instance of this class you can use the static factory methods: {@link #vertx},
- * {@link #vertx(VertxOptions)} and {@link #clusteredVertx(VertxOptions, Handler)}.
+ * {@link #vertx(ConektOptions)} and {@link #clusteredVertx(ConektOptions, Handler)}.
  * <p>
  * Please see the user manual for more detailed usage information.
  *
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
-public interface Vertx extends Measured {
+public interface Conekt extends Measured {
 
-    VertxFactory factory = ServiceHelper.loadFactory(VertxFactory.class);
+    ConektFactory factory = ServiceHelper.loadFactory(ConektFactory.class);
 
     /**
      * Creates a non clustered instance using default options.
      *
      * @return the instance
      */
-    static Vertx vertx() {
+    static Conekt vertx() {
         return factory.vertx();
     }
 
@@ -90,7 +90,7 @@ public interface Vertx extends Measured {
      * @param options the options to use
      * @return the instance
      */
-    static Vertx vertx(VertxOptions options) {
+    static Conekt vertx(ConektOptions options) {
         return factory.vertx(options);
     }
 
@@ -102,7 +102,7 @@ public interface Vertx extends Measured {
      * @param options       the options to use
      * @param resultHandler the result handler that will receive the result
      */
-    static void clusteredVertx(VertxOptions options, Handler<AsyncResult<Vertx>> resultHandler) {
+    static void clusteredVertx(ConektOptions options, Handler<AsyncResult<Conekt>> resultHandler) {
         factory.clusteredVertx(options, resultHandler);
     }
 
@@ -198,14 +198,14 @@ public interface Vertx extends Measured {
     DatagramSocket createDatagramSocket();
 
     /**
-     * Get the filesystem object. There is a single instance of FileSystem per Vertx instance.
+     * Get the filesystem object. There is a single instance of FileSystem per Conekt instance.
      *
      * @return the filesystem object
      */
     FileSystem fileSystem();
 
     /**
-     * Get the event bus object. There is a single instance of EventBus per Vertx instance.
+     * Get the event bus object. There is a single instance of EventBus per Conekt instance.
      *
      * @return the event bus object
      */
@@ -276,7 +276,7 @@ public interface Vertx extends Measured {
     void runOnContext(Handler<Void> action);
 
     /**
-     * Stop the the Vertx instance and release any resources held by it.
+     * Stop the the Conekt instance and release any resources held by it.
      * <p>
      * The instance cannot be used after it has been closed.
      * <p>
@@ -292,52 +292,52 @@ public interface Vertx extends Measured {
     void close(Handler<AsyncResult<Void>> completionHandler);
 
     /**
-     * Deploy a verticle instance that you have created yourself.
+     * Deploy a ioActor instance that you have created yourself.
      * <p>
-     * Vert.x will assign the verticle a context and start the verticle.
+     * Vert.x will assign the ioActor a context and start the ioActor.
      * <p>
      * The actual deploy happens asynchronously and may not complete until after the call has returned.
      *
-     * @param verticle the verticle instance to deploy.
+     * @param ioActor the ioActor instance to deploy.
      */
-    void deployVerticle(Verticle verticle);
+    void deployVerticle(IoActor ioActor);
 
     /**
-     * Like {@link #deployVerticle(Verticle)} but the completionHandler will be notified when the deployment is complete.
+     * Like {@link #deployVerticle(IoActor)} but the completionHandler will be notified when the deployment is complete.
      * <p>
      * If the deployment is successful the result will contain a string representing the unique deployment ID of the
      * deployment.
      * <p>
-     * This deployment ID can subsequently be used to undeploy the verticle.
+     * This deployment ID can subsequently be used to undeploy the ioActor.
      *
-     * @param verticle          the verticle instance to deploy
+     * @param ioActor          the verticle instance to deploy
      * @param completionHandler a handler which will be notified when the deployment is complete
      */
-    void deployVerticle(Verticle verticle, Handler<AsyncResult<String>> completionHandler);
+    void deployVerticle(IoActor ioActor, Handler<AsyncResult<String>> completionHandler);
 
     /**
-     * Like {@link #deployVerticle(Verticle)} but {@link DeploymentOptions} are provided to configure the
+     * Like {@link #deployVerticle(IoActor)} but {@link DeploymentOptions} are provided to configure the
      * deployment.
      *
-     * @param verticle the verticle instance to deploy
+     * @param ioActor the verticle instance to deploy
      * @param options  the deployment options.
      */
-    void deployVerticle(Verticle verticle, DeploymentOptions options);
+    void deployVerticle(IoActor ioActor, DeploymentOptions options);
 
     /**
-     * Like {@link #deployVerticle(Verticle, Handler)} but {@link DeploymentOptions} are provided to configure the
+     * Like {@link #deployVerticle(IoActor, Handler)} but {@link DeploymentOptions} are provided to configure the
      * deployment.
      *
-     * @param verticle          the verticle instance to deploy
+     * @param ioActor          the verticle instance to deploy
      * @param options           the deployment options.
      * @param completionHandler a handler which will be notified when the deployment is complete
      */
-    void deployVerticle(Verticle verticle, DeploymentOptions options, Handler<AsyncResult<String>> completionHandler);
+    void deployVerticle(IoActor ioActor, DeploymentOptions options, Handler<AsyncResult<String>> completionHandler);
 
     /**
      * Deploy a verticle instance given a name.
      * <p>
-     * Given the name, Vert.x selects a {@link VerticleFactory} instance to use to instantiate the verticle.
+     * Given the name, Vert.x selects a {@link IoActorFactory} instance to use to instantiate the verticle.
      * <p>
      * For the rules on how factories are selected please consult the user manual.
      *
@@ -359,7 +359,7 @@ public interface Vertx extends Measured {
     void deployVerticle(String name, Handler<AsyncResult<String>> completionHandler);
 
     /**
-     * Like {@link #deployVerticle(Verticle)} but {@link DeploymentOptions} are provided to configure the
+     * Like {@link #deployVerticle(IoActor)} but {@link DeploymentOptions} are provided to configure the
      * deployment.
      *
      * @param name    the name
@@ -402,25 +402,25 @@ public interface Vertx extends Measured {
     Set<String> deploymentIDs();
 
     /**
-     * Register a {@code VerticleFactory} that can be used for deploying Verticles based on an identifier.
+     * Register a {@code IoActorFactory} that can be used for deploying Verticles based on an identifier.
      *
      * @param factory the factory to register
      */
-    void registerVerticleFactory(VerticleFactory factory);
+    void registerVerticleFactory(IoActorFactory factory);
 
     /**
-     * Unregister a {@code VerticleFactory}
+     * Unregister a {@code IoActorFactory}
      *
      * @param factory the factory to unregister
      */
-    void unregisterVerticleFactory(VerticleFactory factory);
+    void unregisterVerticleFactory(IoActorFactory factory);
 
     /**
      * Return the Set of currently registered verticle factories.
      *
      * @return the set of verticle factories
      */
-    Set<VerticleFactory> verticleFactories();
+    Set<IoActorFactory> verticleFactories();
 
 
     /**

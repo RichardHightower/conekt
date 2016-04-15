@@ -68,7 +68,7 @@ public final class FakeDNSServer extends DnsServer {
 
                 ResourceRecordModifier rm = new ResourceRecordModifier();
                 rm.setDnsClass(RecordClass.IN);
-                rm.setDnsName("dns.vertx.io");
+                rm.setDnsName("dns.conekt.io");
                 rm.setDnsTtl(100);
                 rm.setDnsType(RecordType.A);
                 rm.put(DnsAttribute.IP_ADDRESS, ipAddress);
@@ -86,7 +86,7 @@ public final class FakeDNSServer extends DnsServer {
 
                 ResourceRecordModifier rm = new ResourceRecordModifier();
                 rm.setDnsClass(RecordClass.IN);
-                rm.setDnsName("dns.vertx.io");
+                rm.setDnsName("dns.conekt.io");
                 rm.setDnsTtl(100);
                 rm.setDnsType(RecordType.AAAA);
                 rm.put(DnsAttribute.IP_ADDRESS, ipAddress);
@@ -105,7 +105,7 @@ public final class FakeDNSServer extends DnsServer {
 
                 ResourceRecordModifier rm = new ResourceRecordModifier();
                 rm.setDnsClass(RecordClass.IN);
-                rm.setDnsName("dns.vertx.io");
+                rm.setDnsName("dns.conekt.io");
                 rm.setDnsTtl(100);
                 rm.setDnsType(RecordType.MX);
                 rm.put(DnsAttribute.MX_PREFERENCE, String.valueOf(prio));
@@ -124,7 +124,7 @@ public final class FakeDNSServer extends DnsServer {
 
                 ResourceRecordModifier rm = new ResourceRecordModifier();
                 rm.setDnsClass(RecordClass.IN);
-                rm.setDnsName("dns.vertx.io");
+                rm.setDnsName("dns.conekt.io");
                 rm.setDnsTtl(100);
                 rm.setDnsType(RecordType.TXT);
                 rm.put(DnsAttribute.CHARACTER_STRING, txt);
@@ -142,7 +142,7 @@ public final class FakeDNSServer extends DnsServer {
 
                 ResourceRecordModifier rm = new ResourceRecordModifier();
                 rm.setDnsClass(RecordClass.IN);
-                rm.setDnsName("dns.vertx.io");
+                rm.setDnsName("dns.conekt.io");
                 rm.setDnsTtl(100);
                 rm.setDnsType(RecordType.NS);
                 rm.put(DnsAttribute.DOMAIN_NAME, ns);
@@ -160,7 +160,7 @@ public final class FakeDNSServer extends DnsServer {
 
                 ResourceRecordModifier rm = new ResourceRecordModifier();
                 rm.setDnsClass(RecordClass.IN);
-                rm.setDnsName("dns.vertx.io");
+                rm.setDnsName("dns.conekt.io");
                 rm.setDnsTtl(100);
                 rm.setDnsType(RecordType.CNAME);
                 rm.put(DnsAttribute.DOMAIN_NAME, cname);
@@ -178,7 +178,7 @@ public final class FakeDNSServer extends DnsServer {
 
                 ResourceRecordModifier rm = new ResourceRecordModifier();
                 rm.setDnsClass(RecordClass.IN);
-                rm.setDnsName("dns.vertx.io");
+                rm.setDnsName("dns.conekt.io");
                 rm.setDnsTtl(100);
                 rm.setDnsType(RecordType.PTR);
                 rm.put(DnsAttribute.DOMAIN_NAME, ptr);
@@ -196,7 +196,7 @@ public final class FakeDNSServer extends DnsServer {
 
                 ResourceRecordModifier rm = new ResourceRecordModifier();
                 rm.setDnsClass(RecordClass.IN);
-                rm.setDnsName("dns.vertx.io");
+                rm.setDnsName("dns.conekt.io");
                 rm.setDnsTtl(100);
                 rm.setDnsType(RecordType.SRV);
                 rm.put(DnsAttribute.SERVICE_PRIORITY, String.valueOf(priority));
@@ -217,7 +217,7 @@ public final class FakeDNSServer extends DnsServer {
 
                 ResourceRecordModifier rm = new ResourceRecordModifier();
                 rm.setDnsClass(RecordClass.IN);
-                rm.setDnsName("dns.vertx.io");
+                rm.setDnsName("dns.conekt.io");
                 rm.setDnsTtl(100);
                 rm.setDnsType(RecordType.A);
                 rm.put(DnsAttribute.IP_ADDRESS, ip);
@@ -236,7 +236,7 @@ public final class FakeDNSServer extends DnsServer {
 
                 ResourceRecordModifier rm = new ResourceRecordModifier();
                 rm.setDnsClass(RecordClass.IN);
-                rm.setDnsName("dns.vertx.io");
+                rm.setDnsName("dns.conekt.io");
                 rm.setDnsTtl(100);
                 rm.setDnsType(RecordType.AAAA);
                 rm.put(DnsAttribute.IP_ADDRESS, "::1");
@@ -268,7 +268,7 @@ public final class FakeDNSServer extends DnsServer {
 
                 ResourceRecordModifier rm = new ResourceRecordModifier();
                 rm.setDnsClass(RecordClass.IN);
-                rm.setDnsName("dns.vertx.io");
+                rm.setDnsName("dns.conekt.io");
                 rm.setDnsTtl(100);
                 rm.setDnsType(RecordType.PTR);
                 rm.put(DnsAttribute.DOMAIN_NAME, ptr);

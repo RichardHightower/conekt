@@ -22,21 +22,39 @@
  *  * You may elect to redistribute this code under either of these licenses.
  *
  */
+package io.advantageous.conekt.impl;
 
-package io.advantageous.conekt.test.core;
-
-import io.advantageous.conekt.AbstractVerticle;
-import io.advantageous.conekt.impl.IsolatingClassLoader;
-import org.junit.Assert;
+import io.advantageous.conekt.*;
+import io.advantageous.conekt.spi.ConektFactory;
 
 /**
- * @author <a href="mailto:julien@julienviet.com">Julien Viet</a>
+ * @author pidster
+ * @author <a href="http://tfox.org">Tim Fox</a>
  */
-public class ExtraCPVerticleAlreadyInParentLoader extends AbstractVerticle {
+public class ConektFactoryImpl implements ConektFactory {
+
     @Override
-    public void start() throws Exception {
-        IsolatingClassLoader cl = (IsolatingClassLoader) Thread.currentThread().getContextClassLoader();
-        Class extraCPClass = cl.loadClass("MyVerticle");
-        Assert.assertSame(extraCPClass.getClassLoader(), cl.getParent());
+    public Conekt vertx() {
+        return new ConektImpl();
+    }
+
+    @Override
+    public Conekt vertx(ConektOptions options) {
+        if (options.isClustered()) {
+            throw new IllegalArgumentException("Please use Conekt.clusteredVertx() to create a clustered Vert.x instance");
+        }
+        return new ConektImpl(options);
+    }
+
+    @Override
+    public void clusteredVertx(ConektOptions options, final Handler<AsyncResult<Conekt>> resultHandler) {
+        // We don't require the user to set clustered to true if they use this method
+        options.setClustered(true);
+        new ConektImpl(options, resultHandler);
+    }
+
+    @Override
+    public Context context() {
+        return ConektImpl.context();
     }
 }

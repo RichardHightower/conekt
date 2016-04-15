@@ -30,11 +30,11 @@ import io.advantageous.conekt.metrics.MetricsOptions;
 import java.util.Objects;
 
 /**
- * Instances of this class are used to configure {@link Vertx} instances.
+ * Instances of this class are used to configure {@link Conekt} instances.
  *
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
-public class VertxOptions {
+public class ConektOptions {
 
     /**
      * The default number of event loop threads to be used  = 2 * number of cores on the machine
@@ -139,15 +139,15 @@ public class VertxOptions {
     /**
      * Default constructor
      */
-    public VertxOptions() {
+    public ConektOptions() {
     }
 
     /**
      * Copy constructor
      *
-     * @param other The other {@code VertxOptions} to copy when creating this
+     * @param other The other {@code ConektOptions} to copy when creating this
      */
-    public VertxOptions(VertxOptions other) {
+    public ConektOptions(ConektOptions other) {
         this.eventLoopPoolSize = other.getEventLoopPoolSize();
         this.workerPoolSize = other.getWorkerPoolSize();
         this.clustered = other.isClustered();
@@ -183,7 +183,7 @@ public class VertxOptions {
      * @param eventLoopPoolSize the number of threads
      * @return a reference to this, so the API can be used fluently
      */
-    public VertxOptions setEventLoopPoolSize(int eventLoopPoolSize) {
+    public ConektOptions setEventLoopPoolSize(int eventLoopPoolSize) {
         if (eventLoopPoolSize < 1) {
             throw new IllegalArgumentException("eventLoopPoolSize must be > 0");
         }
@@ -208,7 +208,7 @@ public class VertxOptions {
      * @param workerPoolSize the number of threads
      * @return a reference to this, so the API can be used fluently
      */
-    public VertxOptions setWorkerPoolSize(int workerPoolSize) {
+    public ConektOptions setWorkerPoolSize(int workerPoolSize) {
         if (workerPoolSize < 1) {
             throw new IllegalArgumentException("workerPoolSize must be > 0");
         }
@@ -231,7 +231,7 @@ public class VertxOptions {
      * @param clustered if true, the Vert.x instance will be clustered, otherwise not
      * @return a reference to this, so the API can be used fluently
      */
-    public VertxOptions setClustered(boolean clustered) {
+    public ConektOptions setClustered(boolean clustered) {
         this.clustered = clustered;
         return this;
     }
@@ -251,7 +251,7 @@ public class VertxOptions {
      * @param clusterHost the host name to use
      * @return a reference to this, so the API can be used fluently
      */
-    public VertxOptions setClusterHost(String clusterHost) {
+    public ConektOptions setClusterHost(String clusterHost) {
         this.clusterHost = clusterHost;
         return this;
     }
@@ -275,7 +275,7 @@ public class VertxOptions {
      * @param clusterPublicHost the public host name to use
      * @return a reference to this, so the API can be used fluently
      */
-    public VertxOptions setClusterPublicHost(String clusterPublicHost) {
+    public ConektOptions setClusterPublicHost(String clusterPublicHost) {
         this.clusterPublicHost = clusterPublicHost;
         return this;
     }
@@ -295,7 +295,7 @@ public class VertxOptions {
      * @param clusterPort the port
      * @return a reference to this, so the API can be used fluently
      */
-    public VertxOptions setClusterPort(int clusterPort) {
+    public ConektOptions setClusterPort(int clusterPort) {
         if (clusterPort < 0 || clusterPort > 65535) {
             throw new IllegalArgumentException("clusterPort p must be in range 0 <= p <= 65535");
         }
@@ -318,7 +318,7 @@ public class VertxOptions {
      * @param clusterPublicPort the public port to use
      * @return a reference to this, so the API can be used fluently
      */
-    public VertxOptions setClusterPublicPort(int clusterPublicPort) {
+    public ConektOptions setClusterPublicPort(int clusterPublicPort) {
         if (clusterPublicPort < 0 || clusterPublicPort > 65535) {
             throw new IllegalArgumentException("clusterPublicPort p must be in range 0 <= p <= 65535");
         }
@@ -343,7 +343,7 @@ public class VertxOptions {
      * @param clusterPingInterval The value of cluster ping interval, in ms.
      * @return a reference to this, so the API can be used fluently
      */
-    public VertxOptions setClusterPingInterval(long clusterPingInterval) {
+    public ConektOptions setClusterPingInterval(long clusterPingInterval) {
         if (clusterPingInterval < 1) {
             throw new IllegalArgumentException("clusterPingInterval must be greater than 0");
         }
@@ -368,7 +368,7 @@ public class VertxOptions {
      * @param clusterPingReplyInterval The value of cluster ping reply interval, in ms.
      * @return a reference to this, so the API can be used fluently
      */
-    public VertxOptions setClusterPingReplyInterval(long clusterPingReplyInterval) {
+    public ConektOptions setClusterPingReplyInterval(long clusterPingReplyInterval) {
         if (clusterPingReplyInterval < 1) {
             throw new IllegalArgumentException("clusterPingReplyInterval must be greater than 0");
         }
@@ -393,7 +393,7 @@ public class VertxOptions {
      * @param blockedThreadCheckInterval the value of blocked thread check period, in ms.
      * @return a reference to this, so the API can be used fluently
      */
-    public VertxOptions setBlockedThreadCheckInterval(long blockedThreadCheckInterval) {
+    public ConektOptions setBlockedThreadCheckInterval(long blockedThreadCheckInterval) {
         if (blockedThreadCheckInterval < 1) {
             throw new IllegalArgumentException("blockedThreadCheckInterval must be > 0");
         }
@@ -421,7 +421,7 @@ public class VertxOptions {
      * @param maxEventLoopExecuteTime the value of max event loop execute time, in ms.
      * @return a reference to this, so the API can be used fluently
      */
-    public VertxOptions setMaxEventLoopExecuteTime(long maxEventLoopExecuteTime) {
+    public ConektOptions setMaxEventLoopExecuteTime(long maxEventLoopExecuteTime) {
         if (maxEventLoopExecuteTime < 1) {
             throw new IllegalArgumentException("maxEventLoopExecuteTime must be > 0");
         }
@@ -449,7 +449,7 @@ public class VertxOptions {
      * @param maxWorkerExecuteTime the value of max worker execute time, in ms.
      * @return a reference to this, so the API can be used fluently
      */
-    public VertxOptions setMaxWorkerExecuteTime(long maxWorkerExecuteTime) {
+    public ConektOptions setMaxWorkerExecuteTime(long maxWorkerExecuteTime) {
         if (maxWorkerExecuteTime < 1) {
             throw new IllegalArgumentException("maxWorkerpExecuteTime must be > 0");
         }
@@ -475,7 +475,7 @@ public class VertxOptions {
      * @param internalBlockingPoolSize the maximumn number of threads in the internal blocking pool
      * @return a reference to this, so the API can be used fluently
      */
-    public VertxOptions setInternalBlockingPoolSize(int internalBlockingPoolSize) {
+    public ConektOptions setInternalBlockingPoolSize(int internalBlockingPoolSize) {
         if (internalBlockingPoolSize < 1) {
             throw new IllegalArgumentException("internalBlockingPoolSize must be > 0");
         }
@@ -499,7 +499,7 @@ public class VertxOptions {
      * @param quorumSize the quorum size
      * @return a reference to this, so the API can be used fluently
      */
-    public VertxOptions setQuorumSize(int quorumSize) {
+    public ConektOptions setQuorumSize(int quorumSize) {
         if (quorumSize < 1) {
             throw new IllegalArgumentException("quorumSize should be >= 1");
         }
@@ -522,7 +522,7 @@ public class VertxOptions {
      * @param haGroup the HA group to use
      * @return a reference to this, so the API can be used fluently
      */
-    public VertxOptions setHAGroup(String haGroup) {
+    public ConektOptions setHAGroup(String haGroup) {
         Objects.requireNonNull(haGroup, "ha group cannot be null");
         this.haGroup = haGroup;
         return this;
@@ -541,7 +541,7 @@ public class VertxOptions {
      * @param metrics the options
      * @return a reference to this, so the API can be used fluently
      */
-    public VertxOptions setMetricsOptions(MetricsOptions metrics) {
+    public ConektOptions setMetricsOptions(MetricsOptions metrics) {
         this.metrics = metrics;
         return this;
     }
@@ -561,7 +561,7 @@ public class VertxOptions {
      * @param warningExceptionTime warningExceptionTime
      * @return a reference to this, so the API can be used fluently
      */
-    public VertxOptions setWarningExceptionTime(long warningExceptionTime) {
+    public ConektOptions setWarningExceptionTime(long warningExceptionTime) {
         if (warningExceptionTime < 1) {
             throw new IllegalArgumentException("warningExceptionTime must be > 0");
         }
@@ -574,7 +574,7 @@ public class VertxOptions {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        VertxOptions that = (VertxOptions) o;
+        ConektOptions that = (ConektOptions) o;
 
         if (eventLoopPoolSize != that.eventLoopPoolSize) return false;
         if (workerPoolSize != that.workerPoolSize) return false;
@@ -621,7 +621,7 @@ public class VertxOptions {
 
     @Override
     public String toString() {
-        return "VertxOptions{" +
+        return "ConektOptions{" +
                 "eventLoopPoolSize=" + eventLoopPoolSize +
                 ", workerPoolSize=" + workerPoolSize +
                 ", internalBlockingPoolSize=" + internalBlockingPoolSize +

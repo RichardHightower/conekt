@@ -26,7 +26,7 @@
 package io.advantageous.conekt.spi.metrics;
 
 import io.advantageous.conekt.Context;
-import io.advantageous.conekt.Verticle;
+import io.advantageous.conekt.IoActor;
 import io.advantageous.conekt.datagram.DatagramSocket;
 import io.advantageous.conekt.datagram.DatagramSocketOptions;
 import io.advantageous.conekt.eventbus.EventBus;
@@ -45,27 +45,27 @@ import io.advantageous.conekt.http.HttpServerOptions;
  *
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-public interface VertxMetrics extends Metrics, Measured {
+public interface ConektMetrics extends Metrics, Measured {
 
     /**
-     * Called when a verticle is deployed in Vert.x .<p/>
+     * Called when a ioActor is deployed in Vert.x .<p/>
      * <p>
-     * This method is invoked with {@link Context} and thread of the deployed verticle and therefore
+     * This method is invoked with {@link Context} and thread of the deployed ioActor and therefore
      * might be  different on every invocation.
      *
-     * @param verticle the verticle which was deployed
+     * @param ioActor the ioActor which was deployed
      */
-    void verticleDeployed(Verticle verticle);
+    void verticleDeployed(IoActor ioActor);
 
     /**
-     * Called when a verticle is undeployed in Vert.x .<p/>
+     * Called when a ioActor is undeployed in Vert.x .<p/>
      * <p>
-     * This method is invoked with {@link Context} and thread of the deployed verticle and therefore
+     * This method is invoked with {@link Context} and thread of the deployed ioActor and therefore
      * might be  different on every invocation, however these are the same than the {@link #verticleDeployed} invocation.
      *
-     * @param verticle the verticle which was undeployed
+     * @param ioActor the ioActor which was undeployed
      */
-    void verticleUndeployed(Verticle verticle);
+    void verticleUndeployed(IoActor ioActor);
 
     /**
      * Called when a timer is created

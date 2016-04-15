@@ -25,11 +25,12 @@
 
 package io.advantageous.conekt.http.impl;
 
-import io.advantageous.conekt.VertxException;
+import io.advantageous.conekt.ConektException;
+import io.advantageous.conekt.impl.ConektInternal;
 import io.advantageous.conekt.impl.ContextImpl;
 import io.advantageous.conekt.net.NetSocket;
 import io.advantageous.conekt.net.impl.NetSocketImpl;
-import io.advantageous.conekt.net.impl.VertxNetHandler;
+import io.advantageous.conekt.net.impl.ConektNetHandler;
 import io.advantageous.conekt.spi.metrics.HttpClientMetrics;
 import io.netty.channel.*;
 import io.netty.handler.codec.http.*;
@@ -41,7 +42,6 @@ import io.advantageous.conekt.buffer.Buffer;
 import io.advantageous.conekt.http.WebSocket;
 import io.advantageous.conekt.http.WebsocketVersion;
 import io.advantageous.conekt.http.impl.ws.WebSocketFrameInternal;
-import io.advantageous.conekt.impl.VertxInternal;
 import io.advantageous.conekt.net.impl.ConnectionBase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -83,7 +83,7 @@ class ClientConnection extends ConnectionBase {
     private HttpClientRequestImpl requestForResponse;
     private WebSocketImpl ws;
 
-    ClientConnection(VertxInternal vertx, HttpClientImpl client, Handler<Throwable> exceptionHandler, Channel channel, boolean ssl, String host,
+    ClientConnection(ConektInternal vertx, HttpClientImpl client, Handler<Throwable> exceptionHandler, Channel channel, boolean ssl, String host,
                      int port, ContextImpl context, ConnectionLifeCycleListener listener, HttpClientMetrics metrics) {
         super(vertx, channel, context, metrics);
         this.client = client;
@@ -220,7 +220,7 @@ class ClientConnection extends ConnectionBase {
                 close = true;
             } else if (protocolVersion == HttpVersion.HTTP_1_0 && !HttpHeaders.Values.KEEP_ALIVE.equalsIgnoreCase(responseConnectionHeader)) {
                 // In the HTTP/1.0 case both request/response need a keep-alive connection header the connection to be persistent
-                // currently Vertx forces the Connection header if keepalive is enabled for 1.0
+                // currently Conekt forces the Connection header if keepalive is enabled for 1.0
                 close = true;
             }
             listener.responseEnded(this, close);
@@ -240,7 +240,7 @@ class ClientConnection extends ConnectionBase {
             ws.handleClosed();
         }
         // Connection was closed - call exception handlers for any requests in the pipeline or one being currently written
-        Exception e = new VertxException("Connection was closed");
+        Exception e = new ConektException("Connection was closed");
         for (HttpClientRequestImpl req : requests) {
             req.handleException(e);
         }
@@ -305,7 +305,7 @@ class ClientConnection extends ConnectionBase {
             pipeline.remove(inflater);
         }
         pipeline.remove("codec");
-        pipeline.replace("handler", "handler", new VertxNetHandler(connectionMap) {
+        pipeline.replace("handler", "handler", new ConektNetHandler(connectionMap) {
             @Override
             public void exceptionCaught(ChannelHandlerContext chctx, Throwable t) throws Exception {
                 // remove from the real mapping

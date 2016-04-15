@@ -30,7 +30,7 @@
  * Unfortunally this is not possible with the API that is shipped with the Java Virtual Machine itself. Because of
  * this Vert.x offers it's own API for DNS resolution which is fully asynchronous.
  * <p>
- * To obtain a DnsClient instance you will create a new via the Vertx instance.
+ * To obtain a DnsClient instance you will create a new via the Conekt instance.
  * <p>
  * [source,$lang]
  * ----
@@ -46,7 +46,7 @@
  * Try to lookup the A (ipv4) or AAAA (ipv6) record for a given name. The first which is returned will be used,
  * so it behaves the same way as you may be used from when using "nslookup" on your operation system.
  * <p>
- * To lookup the A / AAAA record for "vertx.io" you would typically use it like:
+ * To lookup the A / AAAA record for "conekt.io" you would typically use it like:
  * <p>
  * [source,$lang]
  * ----
@@ -58,7 +58,7 @@
  * Try to lookup the A (ipv4) record for a given name. The first which is returned will be used, so it behaves
  * the same way as you may be used from when using "nslookup" on your operation system.
  * <p>
- * To lookup the A record for "vertx.io" you would typically use it like:
+ * To lookup the A record for "conekt.io" you would typically use it like:
  * <p>
  * [source,$lang]
  * ----
@@ -70,7 +70,7 @@
  * Try to lookup the AAAA (ipv6) record for a given name. The first which is returned will be used, so it behaves the
  * same way as you may be used from when using "nslookup" on your operation system.
  * <p>
- * To lookup the A record for "vertx.io" you would typically use it like:
+ * To lookup the A record for "conekt.io" you would typically use it like:
  * <p>
  * [source,$lang]
  * ----
@@ -82,7 +82,7 @@
  * Try to resolve all A (ipv4) records for a given name. This is quite similar to using "dig" on unix like operation
  * systems.
  * <p>
- * To lookup all the A records for "vertx.io" you would typically do:
+ * To lookup all the A records for "conekt.io" you would typically do:
  * <p>
  * [source,$lang]
  * ----
@@ -94,7 +94,7 @@
  * Try to resolve all AAAA (ipv6) records for a given name. This is quite similar to using "dig" on unix like
  * operation systems.
  * <p>
- * To lookup all the AAAAA records for "vertx.io" you would typically do:
+ * To lookup all the AAAAA records for "conekt.io" you would typically do:
  * <p>
  * [source,$lang]
  * ----
@@ -106,7 +106,7 @@
  * Try to resolve all CNAME records for a given name. This is quite similar to using "dig" on unix like operation
  * systems.
  * <p>
- * To lookup all the CNAME records for "vertx.io" you would typically do:
+ * To lookup all the CNAME records for "conekt.io" you would typically do:
  * <p>
  * [source,$lang]
  * ----
@@ -118,7 +118,7 @@
  * Try to resolve all MX records for a given name. The MX records are used to define which Mail-Server accepts
  * emails for a given domain.
  * <p>
- * To lookup all the MX records for "vertx.io" you would typically do:
+ * To lookup all the MX records for "conekt.io" you would typically do:
  * <p>
  * [source,$lang]
  * ----
@@ -139,7 +139,7 @@
  * <p>
  * Try to resolve all TXT records for a given name. TXT records are often used to define extra informations for a domain.
  * <p>
- * To resolve all the TXT records for "vertx.io" you could use something along these lines:
+ * To resolve all the TXT records for "conekt.io" you could use something along these lines:
  * <p>
  * [source,$lang]
  * ----
@@ -151,7 +151,7 @@
  * Try to resolve all NS records for a given name. The NS records specify which DNS Server hosts the DNS informations
  * for a given domain.
  * <p>
- * To resolve all the NS records for "vertx.io" you could use something along these lines:
+ * To resolve all the NS records for "conekt.io" you could use something along these lines:
  * <p>
  * [source,$lang]
  * ----
@@ -163,7 +163,7 @@
  * Try to resolve all SRV records for a given name. The SRV records are used to define extra informations like port and
  * hostname of services. Some protocols need this extra informations.
  * <p>
- * To lookup all the SRV records for "vertx.io" you would typically do:
+ * To lookup all the SRV records for "conekt.io" you would typically do:
  * <p>
  * [source,$lang]
  * ----

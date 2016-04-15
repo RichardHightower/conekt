@@ -37,12 +37,13 @@ import io.advantageous.conekt.http.HttpClient;
 import io.advantageous.conekt.http.HttpClientOptions;
 import io.advantageous.conekt.http.HttpServer;
 import io.advantageous.conekt.http.impl.HttpServerImpl;
-import io.advantageous.conekt.metrics.impl.DummyVertxMetrics;
+import io.advantageous.conekt.metrics.impl.DummyConektMetrics;
 import io.advantageous.conekt.net.NetServerOptions;
 import io.advantageous.conekt.net.impl.NetClientImpl;
 import io.advantageous.conekt.net.impl.NetServerImpl;
 import io.advantageous.conekt.net.impl.ServerID;
-import io.advantageous.conekt.spi.VertxMetricsFactory;
+import io.advantageous.conekt.spi.IoActorFactory;
+import io.advantageous.conekt.spi.MetricsFactory;
 import io.advantageous.conekt.spi.metrics.Metrics;
 import io.netty.channel.EventLoop;
 import io.netty.channel.EventLoopGroup;
@@ -57,9 +58,8 @@ import io.advantageous.conekt.http.impl.HttpClientImpl;
 import io.advantageous.conekt.net.NetClient;
 import io.advantageous.conekt.net.NetClientOptions;
 import io.advantageous.conekt.net.NetServer;
-import io.advantageous.conekt.spi.VerticleFactory;
 import io.advantageous.conekt.spi.metrics.MetricsProvider;
-import io.advantageous.conekt.spi.metrics.VertxMetrics;
+import io.advantageous.conekt.spi.metrics.ConektMetrics;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -72,12 +72,12 @@ import java.util.concurrent.atomic.AtomicLong;
 /**
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
-public class VertxImpl implements VertxInternal, MetricsProvider {
+public class ConektImpl implements ConektInternal, MetricsProvider {
 
 
-    private static final Logger log = LoggerFactory.getLogger(VertxImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(ConektImpl.class);
 
-    private static final String NETTY_IO_RATIO_PROPERTY_NAME = "vertx.nettyIORatio";
+    private static final String NETTY_IO_RATIO_PROPERTY_NAME = "conekt.nettyIORatio";
     private static final int NETTY_IO_RATIO = Integer.getInteger(NETTY_IO_RATIO_PROPERTY_NAME, 50);
 
     static {
@@ -88,7 +88,7 @@ public class VertxImpl implements VertxInternal, MetricsProvider {
     }
 
     private final FileSystem fileSystem = getFileSystem();
-    private final VertxMetrics metrics;
+    private final ConektMetrics metrics;
     private final ConcurrentMap<Long, InternalTimerHandler> timeouts = new ConcurrentHashMap<>();
     private final AtomicLong timeoutCounter = new AtomicLong(0);
     private final DeploymentManager deploymentManager;
@@ -106,33 +106,33 @@ public class VertxImpl implements VertxInternal, MetricsProvider {
     private EventBus eventBus;
     private boolean closed;
 
-    VertxImpl() {
-        this(new VertxOptions());
+    ConektImpl() {
+        this(new ConektOptions());
     }
 
-    VertxImpl(VertxOptions options) {
+    ConektImpl(ConektOptions options) {
         this(options, null);
     }
 
-    VertxImpl(VertxOptions options, Handler<AsyncResult<Vertx>> resultHandler) {
+    ConektImpl(ConektOptions options, Handler<AsyncResult<Conekt>> resultHandler) {
         // Sanity check
-        if (Vertx.currentContext() != null) {
-            log.warn("You're already on a Vert.x context, are you sure you want to create a new Vertx instance?");
+        if (Conekt.currentContext() != null) {
+            log.warn("You're already on a Vert.x context, are you sure you want to create a new Conekt instance?");
         }
         checker = new BlockedThreadChecker(options.getBlockedThreadCheckInterval(), options.getMaxEventLoopExecuteTime(),
                 options.getMaxWorkerExecuteTime(), options.getWarningExceptionTime());
-        eventLoopThreadFactory = new VertxThreadFactory("vert.x-eventloop-thread-", checker, false);
+        eventLoopThreadFactory = new ConektThreadFactory("vert.x-eventloop-thread-", checker, false);
         eventLoopGroup = new NioEventLoopGroup(options.getEventLoopPoolSize(), eventLoopThreadFactory);
         eventLoopGroup.setIoRatio(NETTY_IO_RATIO);
-        ThreadFactory acceptorEventLoopThreadFactory = new VertxThreadFactory("vert.x-acceptor-thread-", checker, false);
+        ThreadFactory acceptorEventLoopThreadFactory = new ConektThreadFactory("vert.x-acceptor-thread-", checker, false);
         // The acceptor event loop thread needs to be from a different pool otherwise can get lags in accepted connections
         // under a lot of load
         acceptorEventLoopGroup = new NioEventLoopGroup(1, acceptorEventLoopThreadFactory);
         acceptorEventLoopGroup.setIoRatio(100);
         workerPool = Executors.newFixedThreadPool(options.getWorkerPoolSize(),
-                new VertxThreadFactory("vert.x-worker-thread-", checker, true));
+                new ConektThreadFactory("vert.x-worker-thread-", checker, true));
         internalBlockingPool = Executors.newFixedThreadPool(options.getInternalBlockingPoolSize(),
-                new VertxThreadFactory("vert.x-internal-blocking-", checker, true));
+                new ConektThreadFactory("vert.x-internal-blocking-", checker, true));
         workerOrderedFact = new OrderedExecutorFactory(workerPool);
         internalOrderedFact = new OrderedExecutorFactory(internalBlockingPool);
         this.fileResolver = new FileResolver(this);
@@ -143,13 +143,13 @@ public class VertxImpl implements VertxInternal, MetricsProvider {
 
     public static Context context() {
         Thread current = Thread.currentThread();
-        if (current instanceof VertxThread) {
-            return ((VertxThread) current).getContext();
+        if (current instanceof ConektThread) {
+            return ((ConektThread) current).getContext();
         }
         return null;
     }
 
-    private void createAndStartEventBus(VertxOptions options, Handler<AsyncResult<Vertx>> resultHandler) {
+    private void createAndStartEventBus(ConektOptions options, Handler<AsyncResult<Conekt>> resultHandler) {
         eventBus = new EventBusImpl(this);
 
         eventBus.start(ar2 -> {
@@ -319,19 +319,19 @@ public class VertxImpl implements VertxInternal, MetricsProvider {
         return new DnsClientImpl(this, port, host);
     }
 
-    private VertxMetrics initialiseMetrics(VertxOptions options) {
+    private ConektMetrics initialiseMetrics(ConektOptions options) {
         if (options.getMetricsOptions() != null && options.getMetricsOptions().isEnabled()) {
-            ServiceLoader<VertxMetricsFactory> factories = ServiceLoader.load(VertxMetricsFactory.class);
+            ServiceLoader<MetricsFactory> factories = ServiceLoader.load(MetricsFactory.class);
             if (factories.iterator().hasNext()) {
-                VertxMetricsFactory factory = factories.iterator().next();
-                VertxMetrics metrics = factory.metrics(this, options);
+                MetricsFactory factory = factories.iterator().next();
+                ConektMetrics metrics = factory.metrics(this, options);
                 Objects.requireNonNull(metrics, "The metric instance created from " + factory + " cannot be null");
                 return metrics;
             } else {
-                log.warn("Metrics has been set to enabled but no VertxMetricsFactory found on classpath");
+                log.warn("Metrics has been set to enabled but no MetricsFactory found on classpath");
             }
         }
-        return new DummyVertxMetrics();
+        return new DummyConektMetrics();
     }
 
 
@@ -424,13 +424,13 @@ public class VertxImpl implements VertxInternal, MetricsProvider {
     }
 
     @Override
-    public void deployVerticle(Verticle verticle) {
-        deployVerticle(verticle, new DeploymentOptions(), null);
+    public void deployVerticle(IoActor ioActor) {
+        deployVerticle(ioActor, new DeploymentOptions(), null);
     }
 
     @Override
-    public void deployVerticle(Verticle verticle, Handler<AsyncResult<String>> completionHandler) {
-        deployVerticle(verticle, new DeploymentOptions(), completionHandler);
+    public void deployVerticle(IoActor ioActor, Handler<AsyncResult<String>> completionHandler) {
+        deployVerticle(ioActor, new DeploymentOptions(), completionHandler);
     }
 
     @Override
@@ -439,12 +439,12 @@ public class VertxImpl implements VertxInternal, MetricsProvider {
     }
 
     @Override
-    public void deployVerticle(Verticle verticle, DeploymentOptions options) {
-        deployVerticle(verticle, options, null);
+    public void deployVerticle(IoActor ioActor, DeploymentOptions options) {
+        deployVerticle(ioActor, options, null);
     }
 
     @Override
-    public void deployVerticle(Verticle verticle, DeploymentOptions options, Handler<AsyncResult<String>> completionHandler) {
+    public void deployVerticle(IoActor ioActor, DeploymentOptions options, Handler<AsyncResult<String>> completionHandler) {
         boolean closed;
         synchronized (this) {
             closed = this.closed;
@@ -452,7 +452,7 @@ public class VertxImpl implements VertxInternal, MetricsProvider {
         if (closed) {
             completionHandler.handle(io.advantageous.conekt.Future.failedFuture("Vert.x closed"));
         } else {
-            deploymentManager.deployVerticle(verticle, options, completionHandler);
+            deploymentManager.deployVerticle(ioActor, options, completionHandler);
         }
     }
 
@@ -489,17 +489,17 @@ public class VertxImpl implements VertxInternal, MetricsProvider {
     }
 
     @Override
-    public void registerVerticleFactory(VerticleFactory factory) {
+    public void registerVerticleFactory(IoActorFactory factory) {
         deploymentManager.registerVerticleFactory(factory);
     }
 
     @Override
-    public void unregisterVerticleFactory(VerticleFactory factory) {
+    public void unregisterVerticleFactory(IoActorFactory factory) {
         deploymentManager.unregisterVerticleFactory(factory);
     }
 
     @Override
-    public Set<VerticleFactory> verticleFactories() {
+    public Set<IoActorFactory> verticleFactories() {
         return deploymentManager.verticleFactories();
     }
 
@@ -537,7 +537,7 @@ public class VertxImpl implements VertxInternal, MetricsProvider {
 
 
     @Override
-    public VertxMetrics metricsSPI() {
+    public ConektMetrics metricsSPI() {
         return metrics;
     }
 
@@ -623,7 +623,7 @@ public class VertxImpl implements VertxInternal, MetricsProvider {
         }
 
         private void cleanupNonPeriodic() {
-            VertxImpl.this.timeouts.remove(timerID);
+            ConektImpl.this.timeouts.remove(timerID);
             metrics.timerEnded(timerID, false);
             ContextImpl context = getContext();
             if (context != null) {
@@ -631,9 +631,9 @@ public class VertxImpl implements VertxInternal, MetricsProvider {
             }
         }
 
-        // Called via Context close hook when Verticle is undeployed
+        // Called via Context close hook when IoActor is undeployed
         public void close(Handler<AsyncResult<Void>> completionHandler) {
-            VertxImpl.this.timeouts.remove(timerID);
+            ConektImpl.this.timeouts.remove(timerID);
             cancel();
             completionHandler.handle(io.advantageous.conekt.Future.succeededFuture());
         }
@@ -685,7 +685,7 @@ public class VertxImpl implements VertxInternal, MetricsProvider {
         @Override
         public void cancel() {
             if (id != null) {
-                VertxImpl.this.cancelTimer(id);
+                ConektImpl.this.cancelTimer(id);
             }
         }
 

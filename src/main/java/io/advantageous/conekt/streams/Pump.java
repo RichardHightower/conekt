@@ -57,7 +57,7 @@ import io.advantageous.conekt.net.NetSocket;
  */
 public interface Pump {
 
-    static final PumpFactory factory = ServiceHelper.loadFactory(PumpFactory.class);
+    PumpFactory factory = ServiceHelper.loadFactory(PumpFactory.class);
 
     /**
      * Create a new {@code Pump} with the given {@code ReadStream} and {@code WriteStream}

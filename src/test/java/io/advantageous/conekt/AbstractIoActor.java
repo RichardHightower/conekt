@@ -27,28 +27,28 @@ package io.advantageous.conekt;
 
 
 /**
- * An abstract base class that you can extend to write your own Verticle classes.
+ * An abstract base class that you can extend to write your own IoActor classes.
  * <p>
- * Instead of implementing {@link Verticle} directly it it often simpler to just extend this class.
+ * Instead of implementing {@link IoActor} directly it it often simpler to just extend this class.
  * <p>
  * In the simplest case, just override the {@link #start} method. If you have verticle clean-up to do you can
  * optionally override the {@link #stop} method too.
  * <p>If you're verticle does extra start-up or clean-up which takes some time (e.g. it deploys other verticles) then
  * you should override the asynchronous {@link #start(Future) start} and {@link #stop(Future) stop} methods.
  * <p>
- * This class also provides maintains references to the {@link Vertx} and {@link Context}
+ * This class also provides maintains references to the {@link Conekt} and {@link Context}
  * instances of the verticle for easy access.<p>
  * and {@link #deploymentID deployment ID}.
  *
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
-public abstract class AbstractVerticle implements Verticle {
+public abstract class AbstractIoActor implements IoActor {
 
 
     /**
      * Reference to the Vert.x instance that deployed this verticle
      */
-    protected Vertx vertx;
+    protected Conekt conekt;
 
     /**
      * Reference to the context of the verticle
@@ -60,21 +60,20 @@ public abstract class AbstractVerticle implements Verticle {
      *
      * @return the Vert.x instance
      */
-    @Override
-    public Vertx getVertx() {
-        return vertx;
+    public Conekt getConekt() {
+        return conekt;
     }
 
     /**
      * Initialise the verticle.<p>
      * This is called by Vert.x when the verticle instance is deployed. Don't call it yourself.
      *
-     * @param vertx   the deploying Vert.x instance
+     * @param conekt   the deploying Vert.x instance
      * @param context the context of the verticle
      */
     @Override
-    public void init(Vertx vertx, Context context) {
-        this.vertx = vertx;
+    public void init(Conekt conekt, Context context) {
+        this.conekt = conekt;
         this.context = context;
     }
 

@@ -31,20 +31,20 @@ import io.advantageous.conekt.eventbus.EventBus;
 import io.advantageous.conekt.http.*;
 import io.advantageous.conekt.net.*;
 import io.advantageous.conekt.spi.metrics.*;
-import io.advantageous.conekt.Verticle;
+import io.advantageous.conekt.IoActor;
 import io.advantageous.conekt.eventbus.ReplyFailure;
 
 /**
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
-public class DummyVertxMetrics implements VertxMetrics {
+public class DummyConektMetrics implements ConektMetrics {
 
     @Override
-    public void verticleDeployed(Verticle verticle) {
+    public void verticleDeployed(IoActor ioActor) {
     }
 
     @Override
-    public void verticleUndeployed(Verticle verticle) {
+    public void verticleUndeployed(IoActor ioActor) {
     }
 
     @Override

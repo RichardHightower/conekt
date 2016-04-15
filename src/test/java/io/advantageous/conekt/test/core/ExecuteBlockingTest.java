@@ -39,7 +39,7 @@ public class ExecuteBlockingTest extends VertxTestBase {
     @Test
     public void testExecuteBlockingSuccess() {
 
-        vertx.executeBlocking(future -> {
+        conekt.executeBlocking(future -> {
             try {
                 Thread.sleep(1000);
             } catch (Exception ignore) {
@@ -55,7 +55,7 @@ public class ExecuteBlockingTest extends VertxTestBase {
     @Test
     public void testExecuteBlockingFailed() {
 
-        vertx.executeBlocking(future -> {
+        conekt.executeBlocking(future -> {
             try {
                 Thread.sleep(1000);
             } catch (Exception ignore) {
@@ -71,7 +71,7 @@ public class ExecuteBlockingTest extends VertxTestBase {
     @Test
     public void testExecuteBlockingThrowsRTE() {
 
-        vertx.executeBlocking(future -> {
+        conekt.executeBlocking(future -> {
             throw new RuntimeException("rte");
         }, onFailure(t -> {
             assertEquals("rte", t.getMessage());
@@ -83,11 +83,11 @@ public class ExecuteBlockingTest extends VertxTestBase {
     @Test
     public void testExecuteBlockingContext() {
 
-        vertx.runOnContext(v -> {
-            Context ctx = vertx.getOrCreateContext();
+        conekt.runOnContext(v -> {
+            Context ctx = conekt.getOrCreateContext();
             assertTrue(ctx.isEventLoopContext());
-            vertx.executeBlocking(future -> {
-                assertSame(ctx, vertx.getOrCreateContext());
+            conekt.executeBlocking(future -> {
+                assertSame(ctx, conekt.getOrCreateContext());
                 assertTrue(Thread.currentThread().getName().startsWith("vert.x-worker-thread"));
                 assertTrue(Context.isOnWorkerThread());
                 assertFalse(Context.isOnEventLoopThread());
@@ -95,15 +95,15 @@ public class ExecuteBlockingTest extends VertxTestBase {
                     Thread.sleep(1000);
                 } catch (Exception ignore) {
                 }
-                vertx.runOnContext(v2 -> {
-                    assertSame(ctx, vertx.getOrCreateContext());
+                conekt.runOnContext(v2 -> {
+                    assertSame(ctx, conekt.getOrCreateContext());
                     assertTrue(Thread.currentThread().getName().startsWith("vert.x-eventloop-thread"));
                     assertFalse(Context.isOnWorkerThread());
                     assertTrue(Context.isOnEventLoopThread());
                     future.complete("done!");
                 });
             }, onSuccess(res -> {
-                assertSame(ctx, vertx.getOrCreateContext());
+                assertSame(ctx, conekt.getOrCreateContext());
                 assertTrue(Thread.currentThread().getName().startsWith("vert.x-eventloop-thread"));
                 assertFalse(Context.isOnWorkerThread());
                 assertTrue(Context.isOnEventLoopThread());
@@ -121,7 +121,7 @@ public class ExecuteBlockingTest extends VertxTestBase {
         assertNotNull(cl);
         CountDownLatch latch = new CountDownLatch(1);
         AtomicReference<ClassLoader> blockingTCCL = new AtomicReference<>();
-        vertx.<String>executeBlocking(future -> {
+        conekt.<String>executeBlocking(future -> {
             future.complete("whatever");
             blockingTCCL.set(Thread.currentThread().getContextClassLoader());
         }, ar -> {
@@ -142,13 +142,13 @@ public class ExecuteBlockingTest extends VertxTestBase {
         long pause = 1000;
         CountDownLatch latch = new CountDownLatch(numExecBlocking);
 
-        vertx.runOnContext(v -> {
-            Context ctx = vertx.getOrCreateContext();
+        conekt.runOnContext(v -> {
+            Context ctx = conekt.getOrCreateContext();
             assertTrue(ctx.isEventLoopContext());
 
             for (int i = 0; i < numExecBlocking; i++) {
-                vertx.executeBlocking(future -> {
-                    assertSame(ctx, vertx.getOrCreateContext());
+                conekt.executeBlocking(future -> {
+                    assertSame(ctx, conekt.getOrCreateContext());
                     assertTrue(Thread.currentThread().getName().startsWith("vert.x-worker-thread"));
                     assertTrue(Context.isOnWorkerThread());
                     assertFalse(Context.isOnEventLoopThread());
@@ -158,7 +158,7 @@ public class ExecuteBlockingTest extends VertxTestBase {
                     }
                     future.complete("done!");
                 }, false, onSuccess(res -> {
-                    assertSame(ctx, vertx.getOrCreateContext());
+                    assertSame(ctx, conekt.getOrCreateContext());
                     assertTrue(Thread.currentThread().getName().startsWith("vert.x-eventloop-thread"));
                     assertFalse(Context.isOnWorkerThread());
                     assertTrue(Context.isOnEventLoopThread());

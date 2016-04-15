@@ -25,7 +25,7 @@
 package io.advantageous.conekt.test.core;
 
 import io.advantageous.conekt.buffer.Buffer;
-import io.advantageous.conekt.impl.VertxInternal;
+import io.advantageous.conekt.impl.ConektInternal;
 import io.advantageous.conekt.net.*;
 import io.advantageous.conekt.net.impl.KeyStoreHelper;
 import org.junit.Test;
@@ -149,7 +149,7 @@ public class KeyStoreTest extends VertxTestBase {
     @Test
     public void testJKSValue() throws Exception {
         JksOptions options = (JksOptions) getServerCertOptions(KeyCert.JKS);
-        Buffer store = vertx.fileSystem().readFileBlocking(options.getPath());
+        Buffer store = conekt.fileSystem().readFileBlocking(options.getPath());
         options.setPath(null).setValue(store);
         testKeyStore(options);
     }
@@ -162,7 +162,7 @@ public class KeyStoreTest extends VertxTestBase {
     @Test
     public void testPKCS12Value() throws Exception {
         PfxOptions options = (PfxOptions) getServerCertOptions(KeyCert.PKCS12);
-        Buffer store = vertx.fileSystem().readFileBlocking(options.getPath());
+        Buffer store = conekt.fileSystem().readFileBlocking(options.getPath());
         options.setPath(null).setValue(store);
         testKeyStore(options);
     }
@@ -175,9 +175,9 @@ public class KeyStoreTest extends VertxTestBase {
     @Test
     public void testKeyCertValue() throws Exception {
         PemKeyCertOptions options = (PemKeyCertOptions) getServerCertOptions(KeyCert.PEM);
-        Buffer key = vertx.fileSystem().readFileBlocking(options.getKeyPath());
+        Buffer key = conekt.fileSystem().readFileBlocking(options.getKeyPath());
         options.setKeyValue(null).setKeyValue(key);
-        Buffer cert = vertx.fileSystem().readFileBlocking(options.getCertPath());
+        Buffer cert = conekt.fileSystem().readFileBlocking(options.getCertPath());
         options.setCertValue(null).setCertValue(cert);
         testKeyStore(options);
     }
@@ -192,7 +192,7 @@ public class KeyStoreTest extends VertxTestBase {
         PemTrustOptions options = (PemTrustOptions) getServerTrustOptions(Trust.PEM);
         options.getCertPaths().
                 stream().
-                map(vertx.fileSystem()::readFileBlocking).
+                map(conekt.fileSystem()::readFileBlocking).
                 forEach(options::addCertValue);
         options.getCertPaths().clear();
         testTrustStore(options);
@@ -220,17 +220,17 @@ public class KeyStoreTest extends VertxTestBase {
     }
 
     private void testKeyStore(KeyCertOptions options) throws Exception {
-        KeyStoreHelper helper = KeyStoreHelper.create((VertxInternal) vertx, options);
-        KeyStore keyStore = helper.loadStore((VertxInternal) vertx);
+        KeyStoreHelper helper = KeyStoreHelper.create((ConektInternal) conekt, options);
+        KeyStore keyStore = helper.loadStore((ConektInternal) conekt);
         Enumeration<String> aliases = keyStore.aliases();
         assertTrue(aliases.hasMoreElements());
-        KeyManager[] keyManagers = helper.getKeyMgrs((VertxInternal) vertx);
+        KeyManager[] keyManagers = helper.getKeyMgrs((ConektInternal) conekt);
         assertTrue(keyManagers.length > 0);
     }
 
     private void testTrustStore(TrustOptions options) throws Exception {
-        KeyStoreHelper helper = KeyStoreHelper.create((VertxInternal) vertx, options);
-        TrustManager[] keyManagers = helper.getTrustMgrs((VertxInternal) vertx);
+        KeyStoreHelper helper = KeyStoreHelper.create((ConektInternal) conekt, options);
+        TrustManager[] keyManagers = helper.getTrustMgrs((ConektInternal) conekt);
         assertTrue(keyManagers.length > 0);
     }
 }

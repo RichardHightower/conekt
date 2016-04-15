@@ -39,7 +39,7 @@ public class EventLoopContext extends ContextImpl {
 
     private static final Logger log = LoggerFactory.getLogger(EventLoopContext.class);
 
-    public EventLoopContext(VertxInternal vertx, Executor internalBlockingExec, Executor workerExec, String deploymentID,
+    public EventLoopContext(ConektInternal vertx, Executor internalBlockingExec, Executor workerExec, String deploymentID,
                             ClassLoader tccl) {
         super(vertx, internalBlockingExec, workerExec, deploymentID, tccl);
     }
@@ -61,7 +61,7 @@ public class EventLoopContext extends ContextImpl {
     @Override
     protected void checkCorrectThread() {
         Thread current = Thread.currentThread();
-        if (!(current instanceof VertxThread)) {
+        if (!(current instanceof ConektThread)) {
             throw new IllegalStateException("Expected to be on Vert.x thread, but actually on: " + current);
         } else if (contextThread != null && current != contextThread) {
             throw new IllegalStateException("Event delivered on unexpected thread " + current + " expected: " + contextThread);

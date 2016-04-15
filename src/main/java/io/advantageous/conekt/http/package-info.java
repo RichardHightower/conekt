@@ -947,9 +947,9 @@
  * <p>
  * === HttpClient usage
  * <p>
- * The HttpClient can be used in a Verticle or embedded.
+ * The HttpClient can be used in a IoActor or embedded.
  * <p>
- * When used in a Verticle, the Verticle *should use its own client instance*.
+ * When used in a IoActor, the IoActor *should use its own client instance*.
  * <p>
  * More generally a client should not be shared between different Vert.x contexts as it can lead to unexpected behavior.
  * <p>
@@ -976,11 +976,11 @@
  * .io.vertx.examples.http.sharing.HttpServerVerticle
  * [source,$lang]
  * ----
- * {@link examples.HTTPExamples#serversharing(Vertx)}
+ * {@link examples.HTTPExamples#serversharing(Conekt)}
  * ----
  * <p>
  * This service is listening on the port 8080. So, when this verticle is instantiated multiple times as with:
- * `vertx run io.vertx.examples.http.sharing.HttpServerVerticle -instances 2`, what's happening ? If both
+ * `conekt run io.conekt.examples.http.sharing.HttpServerVerticle -instances 2`, what's happening ? If both
  * verticles would bind to the same port, you would receive a socket exception. Fortunately, vert.x is handling
  * this case for you. When you deploy another server on the same host and port as an existing server it doesn't
  * actually try and create a new server listening on the same host/port. It binds only once to the socket. When
@@ -989,7 +989,7 @@
  * Let's now imagine a client such as:
  * [source,$lang]
  * ----
- * {@link examples.HTTPExamples#serversharingclient(Vertx)}
+ * {@link examples.HTTPExamples#serversharingclient(Conekt)}
  * ----
  * <p>
  * Vert.x delegates the requests to one of the server sequentially:
@@ -1150,7 +1150,7 @@
  */
 package io.advantageous.conekt.http;
 
+import io.advantageous.conekt.Conekt;
 import io.advantageous.conekt.Handler;
-import io.advantageous.conekt.Vertx;
 import io.advantageous.conekt.buffer.Buffer;
 

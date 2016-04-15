@@ -25,7 +25,7 @@
 
 package io.advantageous.conekt.test.core;
 
-import io.advantageous.conekt.AbstractVerticle;
+import io.advantageous.conekt.AbstractIoActor;
 import io.advantageous.conekt.Context;
 import io.advantageous.conekt.Future;
 
@@ -35,7 +35,7 @@ import java.util.Set;
 /**
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
-public class TestVerticle2 extends AbstractVerticle {
+public class TestIoActor2 extends AbstractIoActor {
 
     private static Set<Context> contexts = new HashSet<>();
 
@@ -46,14 +46,14 @@ public class TestVerticle2 extends AbstractVerticle {
                 throw new IllegalStateException("Same context!");
             } else {
                 contexts.add(context);
-                vertx.eventBus().send("tvstarted", "started");
+                conekt.eventBus().send("tvstarted", "started");
             }
         }
     }
 
     @Override
     public void stop(Future<Void> stopFuture) throws Exception {
-        vertx.eventBus().send("tvstopped", "stopped", reply -> {
+        conekt.eventBus().send("tvstopped", "stopped", reply -> {
             stopFuture.complete(null);
         });
     }

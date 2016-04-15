@@ -29,6 +29,7 @@ import io.advantageous.conekt.dns.DnsResponseCode;
 import io.advantageous.conekt.dns.impl.netty.*;
 import io.advantageous.conekt.dns.impl.netty.decoder.RecordDecoderFactory;
 import io.advantageous.conekt.dns.impl.netty.decoder.record.MailExchangerRecord;
+import io.advantageous.conekt.impl.ConektInternal;
 import io.advantageous.conekt.impl.ContextImpl;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
@@ -38,7 +39,6 @@ import io.advantageous.conekt.AsyncResult;
 import io.advantageous.conekt.Future;
 import io.advantageous.conekt.Handler;
 import io.advantageous.conekt.dns.impl.netty.decoder.record.ServiceRecord;
-import io.advantageous.conekt.impl.VertxInternal;
 import io.advantageous.conekt.net.impl.PartialPooledByteBufAllocator;
 
 import java.net.Inet4Address;
@@ -59,7 +59,7 @@ public final class DnsClientImpl implements DnsClient {
     private final InetSocketAddress dnsServer;
     private final ContextImpl actualCtx;
 
-    public DnsClientImpl(VertxInternal vertx, int port, String host) {
+    public DnsClientImpl(ConektInternal vertx, int port, String host) {
 
         ContextImpl creatingContext = vertx.getContext();
         if (creatingContext != null && creatingContext.isMultiThreadedWorkerContext()) {

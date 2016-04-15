@@ -43,14 +43,14 @@ public class HandlerManager<T> {
 
     private static final Logger log = LoggerFactory.getLogger(HandlerManager.class);
 
-    private final VertxEventLoopGroup availableWorkers;
+    private final ConektEventLoopGroup availableWorkers;
     private final ConcurrentMap<EventLoop, Handlers<T>> handlerMap = new ConcurrentHashMap<>();
 
     // We maintain a separate hasHandlers variable so we can implement hasHandlers() efficiently
     // As it is called for every HTTP message received
     private volatile boolean hasHandlers;
 
-    public HandlerManager(VertxEventLoopGroup availableWorkers) {
+    public HandlerManager(ConektEventLoopGroup availableWorkers) {
         this.availableWorkers = availableWorkers;
     }
 

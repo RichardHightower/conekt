@@ -26,7 +26,7 @@ package io.advantageous.conekt.datagram.impl;
 
 import io.advantageous.conekt.buffer.Buffer;
 import io.advantageous.conekt.impl.ContextImpl;
-import io.advantageous.conekt.net.impl.VertxHandler;
+import io.advantageous.conekt.net.impl.ConektHandler;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 import io.netty.channel.Channel;
@@ -36,7 +36,7 @@ import io.netty.channel.socket.DatagramPacket;
 /**
  * @author <a href="mailto:nmaurer@redhat.com">Norman Maurer</a>
  */
-final class DatagramServerHandler extends VertxHandler<DatagramSocketImpl> {
+final class DatagramServerHandler extends ConektHandler<DatagramSocketImpl> {
 
     private final DatagramSocketImpl socket;
 

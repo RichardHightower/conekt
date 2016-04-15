@@ -25,34 +25,34 @@
 
 package io.advantageous.conekt.test.core;
 
-import io.advantageous.conekt.Vertx;
-import io.advantageous.conekt.VertxOptions;
+import io.advantageous.conekt.Conekt;
+import io.advantageous.conekt.ConektOptions;
 import org.junit.Test;
 
 /**
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
-public class CreateVertxTest extends AsyncTestBase {
+public class CreateConektTest extends AsyncTestBase {
 
     @Test
     public void testCreateSimpleVertx() {
-        Vertx vertx = Vertx.vertx();
-        assertNotNull(vertx);
+        Conekt conekt = Conekt.vertx();
+        assertNotNull(conekt);
     }
 
     @Test
     public void testCreateVertxWithOptions() {
-        VertxOptions options = new VertxOptions();
-        Vertx vertx = Vertx.vertx(options);
-        assertNotNull(vertx);
+        ConektOptions options = new ConektOptions();
+        Conekt conekt = Conekt.vertx(options);
+        assertNotNull(conekt);
     }
 
     @Test
     public void testFailCreateClusteredVertxSynchronously() {
-        VertxOptions options = new VertxOptions();
+        ConektOptions options = new ConektOptions();
         options.setClustered(true);
         try {
-            Vertx.vertx(options);
+            Conekt.vertx(options);
             fail("Should throw exception");
         } catch (IllegalArgumentException e) {
             // OK
@@ -61,12 +61,12 @@ public class CreateVertxTest extends AsyncTestBase {
 
     @Test
     public void testCreateClusteredVertxAsync() {
-        VertxOptions options = new VertxOptions();
+        ConektOptions options = new ConektOptions();
         options.setClustered(true);
-        Vertx.clusteredVertx(options, ar -> {
+        Conekt.clusteredVertx(options, ar -> {
             assertTrue(ar.succeeded());
             assertNotNull(ar.result());
-            Vertx v = ar.result();
+            Conekt v = ar.result();
             v.close(ar2 -> {
                 assertTrue(ar2.succeeded());
                 testComplete();
@@ -80,12 +80,12 @@ public class CreateVertxTest extends AsyncTestBase {
      */
     @Test
     public void testCreateClusteredVertxAsyncDontSetClustered() {
-        VertxOptions options = new VertxOptions();
-        Vertx.clusteredVertx(options, ar -> {
+        ConektOptions options = new ConektOptions();
+        Conekt.clusteredVertx(options, ar -> {
             assertTrue(ar.succeeded());
             assertNotNull(ar.result());
             assertTrue(options.isClustered());
-            Vertx v = ar.result();
+            Conekt v = ar.result();
             v.close(ar2 -> {
                 assertTrue(ar2.succeeded());
                 testComplete();

@@ -42,24 +42,24 @@ import io.advantageous.conekt.eventbus.EventBus;
  *
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
-public interface Verticle {
+public interface IoActor {
 
     /**
      * Get a reference to the Vert.x instance that deployed this verticle
      *
      * @return A reference to the Vert.x instance
      */
-    Vertx getVertx();
+    Conekt getConekt();
 
     /**
      * Initialise the verticle with the Vert.x instance and the context.
      * <p>
      * This method is called by Vert.x when the instance is deployed. You do not call it yourself.
      *
-     * @param vertx   the Vert.x instance
+     * @param conekt   the Vert.x instance
      * @param context the context
      */
-    void init(Vertx vertx, Context context);
+    void init(Conekt conekt, Context context);
 
     /**
      * Start the verticle instance.

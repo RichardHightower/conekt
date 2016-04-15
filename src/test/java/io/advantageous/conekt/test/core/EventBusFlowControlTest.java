@@ -96,7 +96,7 @@ public class EventBusFlowControlTest extends VertxTestBase {
             if (c % 100 == 0) {
                 consumer.pause();
                 paused.set(true);
-                vertx.setTimer(100, tid -> {
+                conekt.setTimer(100, tid -> {
                     paused.set(false);
                     consumer.resume();
                 });
@@ -125,13 +125,13 @@ public class EventBusFlowControlTest extends VertxTestBase {
             }
         }
         assertTrue(drainHandlerSet);
-        vertx.setTimer(500, tid -> testComplete());
+        conekt.setTimer(500, tid -> testComplete());
         await();
     }
 
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        eb = vertx.eventBus();
+        eb = conekt.eventBus();
     }
 }

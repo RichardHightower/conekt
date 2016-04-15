@@ -27,7 +27,7 @@ package io.advantageous.conekt.eventbus.impl;
 
 import io.advantageous.conekt.*;
 import io.advantageous.conekt.eventbus.*;
-import io.advantageous.conekt.impl.VertxInternal;
+import io.advantageous.conekt.impl.ConektInternal;
 import io.advantageous.conekt.spi.metrics.EventBusMetrics;
 import io.advantageous.conekt.spi.metrics.MetricsProvider;
 import org.slf4j.Logger;
@@ -50,7 +50,7 @@ public class EventBusImpl implements EventBus, MetricsProvider {
 
 
     private static final Logger log = LoggerFactory.getLogger(EventBusImpl.class);
-    protected final VertxInternal vertx;
+    protected final ConektInternal vertx;
     protected final EventBusMetrics metrics;
     protected final ConcurrentMap<String, Handlers> handlerMap = new ConcurrentHashMap<>();
     protected final CodecManager codecManager = new CodecManager();
@@ -58,7 +58,7 @@ public class EventBusImpl implements EventBus, MetricsProvider {
     private final AtomicLong replySequence = new AtomicLong(0);
     protected volatile boolean started;
 
-    public EventBusImpl(VertxInternal vertx) {
+    public EventBusImpl(ConektInternal vertx) {
         this.vertx = vertx;
         this.metrics = vertx.metricsSPI().createMetrics(this);
     }
@@ -242,7 +242,7 @@ public class EventBusImpl implements EventBus, MetricsProvider {
                                                boolean replyHandler, boolean localOnly) {
         Objects.requireNonNull(address, "address");
 
-        Context context = Vertx.currentContext();
+        Context context = Conekt.currentContext();
         boolean hasContext = context != null;
         if (!hasContext) {
             // Embedded

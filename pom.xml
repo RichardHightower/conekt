@@ -22,12 +22,12 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>io.vertx</groupId>
-    <artifactId>vertx-parent</artifactId>
+    <groupId>io.conekt</groupId>
+    <artifactId>conekt-parent</artifactId>
     <version>9</version>
   </parent>
 
-  <artifactId>vertx-core</artifactId>
+  <artifactId>conekt-core</artifactId>
   <version>3.3.0-SNAPSHOT</version>
 
   <name>Vert.x Core</name>
@@ -69,8 +69,8 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
-        <groupId>io.vertx</groupId>
-        <artifactId>vertx-dependencies</artifactId>
+        <groupId>io.conekt</groupId>
+        <artifactId>conekt-dependencies</artifactId>
         <version>${stack.version}</version>
         <type>pom</type>
         <scope>import</scope>
@@ -177,7 +177,7 @@
               <io.netty.leakDetectionLevel>PARANOID</io.netty.leakDetectionLevel>
               <buildDirectory>${project.build.directory}</buildDirectory>
               <vertxVersion>${project.version}</vertxVersion>
-              <vertx.handle100Continue>true</vertx.handle100Continue>
+              <conekt.handle100Continue>true</conekt.handle100Continue>
             </systemPropertyVariables>
             <!-- Needs to be small enough to run in a EC2 1.7GB small instance -->
             <argLine>-Xmx1200M</argLine>
@@ -238,14 +238,14 @@
         <directory>src/main/resources</directory>
         <filtering>true</filtering>
         <includes>
-          <include>**/vertx-version.txt</include>
+          <include>**/conekt-version.txt</include>
         </includes>
       </resource>
       <resource>
         <directory>src/main/resources</directory>
         <filtering>false</filtering>
         <excludes>
-          <exclude>**/vertx-version.txt</exclude>
+          <exclude>**/conekt-version.txt</exclude>
         </excludes>
       </resource>
     </resources>

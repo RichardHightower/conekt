@@ -25,10 +25,10 @@
 
 package io.advantageous.conekt.test.core;
 
-import io.advantageous.conekt.AbstractVerticle;
+import io.advantageous.conekt.AbstractIoActor;
 import io.advantageous.conekt.Context;
 import io.advantageous.conekt.DeploymentOptions;
-import io.advantageous.conekt.Vertx;
+import io.advantageous.conekt.Conekt;
 import io.advantageous.conekt.impl.ContextInternal;
 import org.junit.Test;
 
@@ -43,14 +43,14 @@ public class ContextTest extends VertxTestBase {
 
     @Test
     public void testRunOnContext() throws Exception {
-        vertx.runOnContext(v -> {
+        conekt.runOnContext(v -> {
             Thread th = Thread.currentThread();
-            Context ctx = Vertx.currentContext();
+            Context ctx = Conekt.currentContext();
             ctx.runOnContext(v2 -> {
                 assertEquals(th, Thread.currentThread());
                 // Execute it a few times to make sure it returns same context
                 for (int i = 0; i < 10; i++) {
-                    Context c = Vertx.currentContext();
+                    Context c = Conekt.currentContext();
                     assertEquals(ctx, c);
                 }
                 // And simulate a third party thread - e.g. a 3rd party async library wishing to return a result on the
@@ -59,7 +59,7 @@ public class ContextTest extends VertxTestBase {
                     public void run() {
                         ctx.runOnContext(v3 -> {
                             assertEquals(th, Thread.currentThread());
-                            assertEquals(ctx, Vertx.currentContext());
+                            assertEquals(ctx, Conekt.currentContext());
                             testComplete();
                         });
                     }
@@ -71,14 +71,14 @@ public class ContextTest extends VertxTestBase {
 
     @Test
     public void testNoContext() throws Exception {
-        assertNull(Vertx.currentContext());
+        assertNull(Conekt.currentContext());
     }
 
     @Test
     public void testPutGetRemoveData() throws Exception {
         SomeObject obj = new SomeObject();
-        vertx.runOnContext(v -> {
-            Context ctx = Vertx.currentContext();
+        conekt.runOnContext(v -> {
+            Context ctx = Conekt.currentContext();
             ctx.put("foo", obj);
             ctx.runOnContext(v2 -> {
                 assertEquals(obj, ctx.get("foo"));
@@ -94,8 +94,8 @@ public class ContextTest extends VertxTestBase {
 
     @Test
     public void testGettingContextContextUnderContextAnotherInstanceShouldReturnDifferentContext() throws Exception {
-        Vertx other = Vertx.vertx();
-        Context context = vertx.getOrCreateContext();
+        Conekt other = Conekt.vertx();
+        Context context = conekt.getOrCreateContext();
         context.runOnContext(v -> {
             Context otherContext = other.getOrCreateContext();
             assertNotSame(otherContext, context);
@@ -106,7 +106,7 @@ public class ContextTest extends VertxTestBase {
 
     @Test
     public void testExecuteOrderedBlocking() throws Exception {
-        Context context = vertx.getOrCreateContext();
+        Context context = conekt.getOrCreateContext();
         context.executeBlocking(f -> {
             assertTrue(Context.isOnWorkerThread());
             f.complete(1 + 2);
@@ -120,7 +120,7 @@ public class ContextTest extends VertxTestBase {
 
     @Test
     public void testExecuteUnorderedBlocking() throws Exception {
-        Context context = vertx.getOrCreateContext();
+        Context context = conekt.getOrCreateContext();
         context.executeBlocking(f -> {
             assertTrue(Context.isOnWorkerThread());
             f.complete(1 + 2);
@@ -134,7 +134,7 @@ public class ContextTest extends VertxTestBase {
 
     @Test
     public void testEventLoopExecuteFromIo() throws Exception {
-        ContextInternal eventLoopContext = (ContextInternal) vertx.getOrCreateContext();
+        ContextInternal eventLoopContext = (ContextInternal) conekt.getOrCreateContext();
 
         // Check from other thread
         try {
@@ -146,12 +146,12 @@ public class ContextTest extends VertxTestBase {
         // Check from event loop thread
         eventLoopContext.nettyEventLoop().execute(() -> {
             // Should not be set yet
-            assertNull(Vertx.currentContext());
+            assertNull(Conekt.currentContext());
             Thread vertxThread = Thread.currentThread();
             AtomicBoolean nested = new AtomicBoolean(true);
             eventLoopContext.executeFromIO(() -> {
                 assertTrue(nested.get());
-                assertSame(eventLoopContext, Vertx.currentContext());
+                assertSame(eventLoopContext, Conekt.currentContext());
                 assertSame(vertxThread, Thread.currentThread());
             });
             nested.set(false);
@@ -164,7 +164,7 @@ public class ContextTest extends VertxTestBase {
     public void testWorkerExecuteFromIo() throws Exception {
         AtomicReference<ContextInternal> workerContext = new AtomicReference<>();
         CountDownLatch latch = new CountDownLatch(1);
-        vertx.deployVerticle(new AbstractVerticle() {
+        conekt.deployVerticle(new AbstractIoActor() {
             @Override
             public void start() throws Exception {
                 workerContext.set((ContextInternal) context);
@@ -173,9 +173,9 @@ public class ContextTest extends VertxTestBase {
         }, new DeploymentOptions().setWorker(true));
         awaitLatch(latch);
         workerContext.get().nettyEventLoop().execute(() -> {
-            assertNull(Vertx.currentContext());
+            assertNull(Conekt.currentContext());
             workerContext.get().executeFromIO(() -> {
-                assertSame(workerContext.get(), Vertx.currentContext());
+                assertSame(workerContext.get(), Conekt.currentContext());
                 assertTrue(Context.isOnWorkerThread());
                 testComplete();
             });

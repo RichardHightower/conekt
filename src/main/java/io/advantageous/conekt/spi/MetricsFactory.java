@@ -25,32 +25,32 @@
 
 package io.advantageous.conekt.spi;
 
-import io.advantageous.conekt.Vertx;
-import io.advantageous.conekt.VertxOptions;
+import io.advantageous.conekt.Conekt;
+import io.advantageous.conekt.ConektOptions;
 import io.advantageous.conekt.metrics.MetricsOptions;
-import io.advantageous.conekt.spi.metrics.VertxMetrics;
+import io.advantageous.conekt.spi.metrics.ConektMetrics;
 
 /**
  * A factory for the plugable metrics SPI.
  *
  * @author <a href="mailto:nscavell@redhat.com">Nick Scavelli</a>
  */
-public interface VertxMetricsFactory {
+public interface MetricsFactory {
 
     /**
-     * Create a new {@link VertxMetrics} object.<p/>
+     * Create a new {@link ConektMetrics} object.<p/>
      * <p>
      * No specific thread and context can be expected when this method is called.
      *
-     * @param vertx   the vertx instance
+     * @param conekt   the conekt instance
      * @param options the metrics configuration option
      * @return the metrics implementation
      */
-    VertxMetrics metrics(Vertx vertx, VertxOptions options);
+    ConektMetrics metrics(Conekt conekt, ConektOptions options);
 
     /**
      * Create an empty metrics options. Providers can override this method to provide a custom metrics options subclass
-     * that exposes custom configuration. It is used by the {@link io.vertx.core.Starter} class when
+     * that exposes custom configuration. It is used by the ...
      * creating new options when building a CLI vert.x
      *
      * @return new metrics options

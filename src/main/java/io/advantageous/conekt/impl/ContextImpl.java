@@ -48,26 +48,26 @@ public abstract class ContextImpl implements ContextInternal {
 
     private static final Logger log = LoggerFactory.getLogger(ContextImpl.class);
 
-    private static final String THREAD_CHECKS_PROP_NAME = "vertx.threadChecks";
-    private static final String DISABLE_TIMINGS_PROP_NAME = "vertx.disableContextTimings";
-    private static final String DISABLE_TCCL_PROP_NAME = "vertx.disableTCCL";
+    private static final String THREAD_CHECKS_PROP_NAME = "conekt.threadChecks";
+    private static final String DISABLE_TIMINGS_PROP_NAME = "conekt.disableContextTimings";
+    private static final String DISABLE_TCCL_PROP_NAME = "conekt.disableTCCL";
     private static final boolean THREAD_CHECKS = Boolean.getBoolean(THREAD_CHECKS_PROP_NAME);
     private static final boolean DISABLE_TIMINGS = Boolean.getBoolean(DISABLE_TIMINGS_PROP_NAME);
     private static final boolean DISABLE_TCCL = Boolean.getBoolean(DISABLE_TCCL_PROP_NAME);
 
-    protected final VertxInternal owner;
+    protected final ConektInternal owner;
     protected final String deploymentID;
     protected final Executor orderedInternalPoolExec;
     protected final Executor workerExec;
     private final ClassLoader tccl;
     private final EventLoop eventLoop;
-    protected VertxThread contextThread;
+    protected ConektThread contextThread;
     private Deployment deployment;
     private Set<Closeable> closeHooks;
     private volatile boolean closeHooksRun;
     private Map<String, Object> contextData;
 
-    protected ContextImpl(VertxInternal vertx, Executor orderedInternalPoolExec, Executor workerExec, String deploymentID,
+    protected ContextImpl(ConektInternal vertx, Executor orderedInternalPoolExec, Executor workerExec, String deploymentID,
                           ClassLoader tccl) {
         if (DISABLE_TCCL && !tccl.getClass().getName().equals("sun.misc.Launcher$AppClassLoader")) {
             log.warn("You have disabled TCCL checks but you have a custom TCCL to set.");
@@ -87,14 +87,14 @@ public abstract class ContextImpl implements ContextInternal {
 
     public static void setContext(ContextImpl context) {
         Thread current = Thread.currentThread();
-        if (current instanceof VertxThread) {
-            setContext((VertxThread) current, context);
+        if (current instanceof ConektThread) {
+            setContext((ConektThread) current, context);
         } else {
             throw new IllegalStateException("Attempt to setContext on non Vert.x thread " + Thread.currentThread());
         }
     }
 
-    private static void setContext(VertxThread thread, ContextImpl context) {
+    private static void setContext(ConektThread thread, ContextImpl context) {
         thread.setContext(context);
         if (!DISABLE_TCCL) {
             if (context != null) {
@@ -115,13 +115,13 @@ public abstract class ContextImpl implements ContextInternal {
 
     public static boolean isOnVertxThread() {
         Thread t = Thread.currentThread();
-        return (t instanceof VertxThread);
+        return (t instanceof ConektThread);
     }
 
     private static boolean isOnVertxThread(boolean worker) {
         Thread t = Thread.currentThread();
-        if (t instanceof VertxThread) {
-            VertxThread vt = (VertxThread) t;
+        if (t instanceof ConektThread) {
+            ConektThread vt = (ConektThread) t;
             return vt.isWorker() == worker;
         }
         return false;
@@ -188,7 +188,7 @@ public abstract class ContextImpl implements ContextInternal {
             completionHandler.handle(Future.succeededFuture());
         }
         // Now remove context references from threads
-        VertxThreadFactory.unsetContext(this);
+        ConektThreadFactory.unsetContext(this);
     }
 
     protected abstract void executeAsync(Handler<Void> task);
@@ -252,7 +252,7 @@ public abstract class ContextImpl implements ContextInternal {
         return eventLoop;
     }
 
-    public Vertx owner() {
+    public Conekt owner() {
         return owner;
     }
 
@@ -307,10 +307,10 @@ public abstract class ContextImpl implements ContextInternal {
     protected Runnable wrapTask(ContextTask cTask, Handler<Void> hTask, boolean checkThread) {
         return () -> {
             Thread th = Thread.currentThread();
-            if (!(th instanceof VertxThread)) {
+            if (!(th instanceof ConektThread)) {
                 throw new IllegalStateException("Uh oh! Event loop context executing with wrong thread! Expected " + contextThread + " got " + th);
             }
-            VertxThread current = (VertxThread) th;
+            ConektThread current = (ConektThread) th;
             if (THREAD_CHECKS && checkThread) {
                 if (contextThread == null) {
                     contextThread = current;
@@ -332,7 +332,7 @@ public abstract class ContextImpl implements ContextInternal {
                 log.error("Unhandled exception", t);
             } finally {
                 // We don't unset the context after execution - this is done later when the context is closed via
-                // VertxThreadFactory
+                // ConektThreadFactory
                 if (!DISABLE_TIMINGS) {
                     current.executeEnd();
                 }
@@ -345,12 +345,12 @@ public abstract class ContextImpl implements ContextInternal {
     }
 
     public int getInstanceCount() {
-        // the no verticle case
+        // the no ioActor case
         if (deployment == null) {
             return 0;
         }
 
-        // the single verticle without an instance flag explicitly defined
+        // the single ioActor without an instance flag explicitly defined
         if (deployment.deploymentOptions() == null) {
             return 1;
         }

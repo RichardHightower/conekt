@@ -39,7 +39,7 @@ import io.netty.handler.stream.ChunkedWriteHandler;
 import io.netty.handler.timeout.IdleStateHandler;
 import io.advantageous.conekt.Closeable;
 import io.advantageous.conekt.Handler;
-import io.advantageous.conekt.impl.VertxInternal;
+import io.advantageous.conekt.impl.ConektInternal;
 import io.advantageous.conekt.net.NetClient;
 import io.advantageous.conekt.net.NetClientOptions;
 import io.advantageous.conekt.spi.metrics.MetricsProvider;
@@ -60,7 +60,7 @@ public class NetClientImpl implements NetClient, MetricsProvider {
 
     private static final Logger log = LoggerFactory.getLogger(NetClientImpl.class);
 
-    private final VertxInternal vertx;
+    private final ConektInternal vertx;
     private final NetClientOptions options;
     private final SSLHelper sslHelper;
     private final Map<Channel, NetSocketImpl> socketMap = new ConcurrentHashMap<>();
@@ -69,11 +69,11 @@ public class NetClientImpl implements NetClient, MetricsProvider {
     private final TCPMetrics metrics;
     private volatile boolean closed;
 
-    public NetClientImpl(VertxInternal vertx, NetClientOptions options) {
+    public NetClientImpl(ConektInternal vertx, NetClientOptions options) {
         this(vertx, options, true);
     }
 
-    public NetClientImpl(VertxInternal vertx, NetClientOptions options, boolean useCreatingContext) {
+    public NetClientImpl(ConektInternal vertx, NetClientOptions options, boolean useCreatingContext) {
         this.vertx = vertx;
         this.options = new NetClientOptions(options);
         this.sslHelper = new SSLHelper(options, KeyStoreHelper.create(vertx, options.getKeyCertOptions()), KeyStoreHelper.create(vertx, options.getTrustOptions()));
@@ -179,7 +179,7 @@ public class NetClientImpl implements NetClient, MetricsProvider {
                 if (options.getIdleTimeout() > 0) {
                     pipeline.addLast("idle", new IdleStateHandler(0, 0, options.getIdleTimeout()));
                 }
-                pipeline.addLast("handler", new VertxNetHandler(socketMap));
+                pipeline.addLast("handler", new ConektNetHandler(socketMap));
             }
         });
 

@@ -141,7 +141,7 @@ public class IsolatingClassLoader extends URLClassLoader {
                         name.startsWith("javax.") ||
                         name.startsWith("sun.*") ||
                         name.startsWith("com.sun.") ||
-                        name.startsWith("io.vertx.core") ||
+                        name.startsWith("io.conekt.core") ||
                         name.startsWith("io.netty.") ||
                         name.startsWith("com.fasterxml.jackson");
     }

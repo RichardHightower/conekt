@@ -25,10 +25,10 @@
 
 package io.advantageous.conekt.spi;
 
+import io.advantageous.conekt.Conekt;
 import io.advantageous.conekt.DeploymentOptions;
 import io.advantageous.conekt.Future;
-import io.advantageous.conekt.Vertx;
-import io.advantageous.conekt.Verticle;
+import io.advantageous.conekt.IoActor;
 
 /**
  * Has responsibility for creating verticle instances.
@@ -38,7 +38,7 @@ import io.advantageous.conekt.Verticle;
  *
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
-public interface VerticleFactory {
+public interface IoActorFactory {
 
     /**
      * Helper method to remove a prefix from an identifier string
@@ -104,9 +104,9 @@ public interface VerticleFactory {
     /**
      * Initialise the factory
      *
-     * @param vertx The Vert.x instance
+     * @param conekt The Vert.x instance
      */
-    default void init(Vertx vertx) {
+    default void init(Conekt conekt) {
     }
 
     /**
@@ -130,6 +130,6 @@ public interface VerticleFactory {
      * @return The instance
      * @throws Exception
      */
-    Verticle createVerticle(String verticleName, ClassLoader classLoader) throws Exception;
+    IoActor createVerticle(String verticleName, ClassLoader classLoader) throws Exception;
 
 }

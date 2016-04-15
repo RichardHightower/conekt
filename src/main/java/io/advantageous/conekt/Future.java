@@ -35,7 +35,7 @@ import io.advantageous.conekt.spi.FutureFactory;
  */
 public interface Future<T> extends AsyncResult<T> {
 
-    static FutureFactory factory = ServiceHelper.loadFactory(FutureFactory.class);
+    FutureFactory factory = ServiceHelper.loadFactory(FutureFactory.class);
 
     /**
      * Create a future that hasn't completed yet

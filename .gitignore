@@ -12,11 +12,12 @@ out
 *.iml
 *.ipr
 *.iws
-.vertx
+.conekt
 test-output
 src/scratchpad
 test-results
 test-tmp
 *.class
 *.swp
+.conekt
 .vertx

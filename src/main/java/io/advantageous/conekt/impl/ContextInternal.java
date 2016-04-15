@@ -27,7 +27,7 @@ package io.advantageous.conekt.impl;
 
 import io.netty.channel.EventLoop;
 import io.advantageous.conekt.Context;
-import io.advantageous.conekt.Vertx;
+import io.advantageous.conekt.Conekt;
 
 /**
  * This interface provides an api for vert.x core internal use only
@@ -48,7 +48,7 @@ public interface ContextInternal extends Context {
 
     /**
      * Execute the context task and switch on this context if necessary, this also associates the
-     * current thread with the current context so {@link Vertx#currentContext()} returns this context.<p/>
+     * current thread with the current context so {@link Conekt#currentContext()} returns this context.<p/>
      * <p>
      * The caller thread should be the the event loop thread of this context.
      *

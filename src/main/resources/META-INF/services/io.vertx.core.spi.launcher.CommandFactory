@@ -15,11 +15,11 @@
 #
 
 # Core commands
-io.vertx.core.impl.launcher.commands.RunCommandFactory
-io.vertx.core.impl.launcher.commands.VersionCommandFactory
-io.vertx.core.impl.launcher.commands.BareCommandFactory
+io.conekt.core.impl.launcher.commands.RunCommandFactory
+io.conekt.core.impl.launcher.commands.VersionCommandFactory
+io.conekt.core.impl.launcher.commands.BareCommandFactory
 
 # Background application control
-io.vertx.core.impl.launcher.commands.ListCommandFactory
-io.vertx.core.impl.launcher.commands.StartCommandFactory
-io.vertx.core.impl.launcher.commands.StopCommandFactory
+io.conekt.core.impl.launcher.commands.ListCommandFactory
+io.conekt.core.impl.launcher.commands.StartCommandFactory
+io.conekt.core.impl.launcher.commands.StopCommandFactory

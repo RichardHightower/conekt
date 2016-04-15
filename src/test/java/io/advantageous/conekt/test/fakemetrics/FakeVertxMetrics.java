@@ -25,8 +25,8 @@
 
 package io.advantageous.conekt.test.fakemetrics;
 
-import io.advantageous.conekt.Verticle;
-import io.advantageous.conekt.Vertx;
+import io.advantageous.conekt.Conekt;
+import io.advantageous.conekt.IoActor;
 import io.advantageous.conekt.datagram.DatagramSocket;
 import io.advantageous.conekt.datagram.DatagramSocketOptions;
 import io.advantageous.conekt.eventbus.EventBus;
@@ -42,12 +42,12 @@ import java.util.concurrent.atomic.AtomicReference;
 /**
  * @author <a href="mailto:julien@julienviet.com">Julien Viet</a>
  */
-public class FakeVertxMetrics extends FakeMetricsBase implements VertxMetrics {
+public class FakeVertxMetrics extends FakeMetricsBase implements ConektMetrics {
 
     public static AtomicReference<EventBus> eventBus = new AtomicReference<>();
 
-    public FakeVertxMetrics(Vertx vertx) {
-        super(vertx);
+    public FakeVertxMetrics(Conekt conekt) {
+        super(conekt);
     }
 
     @Override
@@ -55,10 +55,10 @@ public class FakeVertxMetrics extends FakeMetricsBase implements VertxMetrics {
         return true;
     }
 
-    public void verticleDeployed(Verticle verticle) {
+    public void verticleDeployed(IoActor ioActor) {
     }
 
-    public void verticleUndeployed(Verticle verticle) {
+    public void verticleUndeployed(IoActor ioActor) {
     }
 
     public void timerCreated(long id) {

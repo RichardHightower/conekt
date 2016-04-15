@@ -53,14 +53,14 @@ import java.util.function.Consumer;
  */
 public class LocalEventBusTest extends EventBusTestBase {
 
-    private Vertx vertx;
+    private Conekt conekt;
     private EventBus eb;
     private boolean running;
 
     public void setUp() throws Exception {
         super.setUp();
-        vertx = Vertx.vertx();
-        eb = vertx.eventBus();
+        conekt = Conekt.vertx();
+        eb = conekt.eventBus();
         running = true;
     }
 
@@ -72,7 +72,7 @@ public class LocalEventBusTest extends EventBusTestBase {
     private void closeVertx() throws Exception {
         if (running) {
             CountDownLatch latch = new CountDownLatch(1);
-            vertx.close(ar -> {
+            conekt.close(ar -> {
                 assertTrue(ar.succeeded());
                 latch.countDown();
             });
@@ -132,7 +132,7 @@ public class LocalEventBusTest extends EventBusTestBase {
         assertEquals(ADDRESS1, reg.address());
         reg.unregister();
         eb.send(ADDRESS1, str);
-        vertx.setTimer(1000, id -> testComplete());
+        conekt.setTimer(1000, id -> testComplete());
         await();
     }
 
@@ -271,7 +271,7 @@ public class LocalEventBusTest extends EventBusTestBase {
     @Test
     public void testSendWithNoHandler() {
         eb.send(ADDRESS1, TestUtils.randomUnicodeString(100));
-        vertx.setTimer(1000, id -> testComplete());
+        conekt.setTimer(1000, id -> testComplete());
         await();
     }
 
@@ -472,7 +472,7 @@ public class LocalEventBusTest extends EventBusTestBase {
         long timeout = 1000;
         eb.<String>consumer(ADDRESS1).handler((Message<String> msg) -> {
             assertEquals(str, msg.body());
-            vertx.setTimer((int) (timeout * 1.5), id -> {
+            conekt.setTimer((int) (timeout * 1.5), id -> {
                 msg.reply("too late!");
             });
         });
@@ -502,7 +502,7 @@ public class LocalEventBusTest extends EventBusTestBase {
             assertTrue(ar.succeeded());
             received.set(true);
             // Now wait longer than timeout and make sure we don't receive any other reply
-            vertx.setTimer(timeout * 2, tid -> {
+            conekt.setTimer(timeout * 2, tid -> {
                 testComplete();
             });
         });
@@ -674,7 +674,7 @@ public class LocalEventBusTest extends EventBusTestBase {
     }
 
     private void testInVerticle(boolean worker, boolean multiThreaded) throws Exception {
-        class MyVerticle extends AbstractVerticle {
+        class MyIoActor extends AbstractIoActor {
             Context ctx;
 
             @Override
@@ -690,7 +690,7 @@ public class LocalEventBusTest extends EventBusTestBase {
                     assertTrue(ctx instanceof EventLoopContext);
                 }
                 Thread thr = Thread.currentThread();
-                MessageConsumer<?> reg = vertx.eventBus().consumer(ADDRESS1).handler(msg -> {
+                MessageConsumer<?> reg = conekt.eventBus().consumer(ADDRESS1).handler(msg -> {
                     assertSame(ctx, context);
                     if (!worker) {
                         assertSame(thr, Thread.currentThread());
@@ -703,7 +703,7 @@ public class LocalEventBusTest extends EventBusTestBase {
                     if (!worker) {
                         assertSame(thr, Thread.currentThread());
                     }
-                    vertx.eventBus().send(ADDRESS1, "foo", onSuccess((Message<Object> reply) -> {
+                    conekt.eventBus().send(ADDRESS1, "foo", onSuccess((Message<Object> reply) -> {
                         assertSame(ctx, context);
                         if (!worker) {
                             assertSame(thr, Thread.currentThread());
@@ -714,8 +714,8 @@ public class LocalEventBusTest extends EventBusTestBase {
                 });
             }
         }
-        MyVerticle verticle = new MyVerticle();
-        vertx.deployVerticle(verticle, new DeploymentOptions().setWorker(worker).setMultiThreaded(multiThreaded));
+        MyIoActor verticle = new MyIoActor();
+        conekt.deployVerticle(verticle, new DeploymentOptions().setWorker(worker).setMultiThreaded(multiThreaded));
         await();
     }
 
@@ -723,14 +723,14 @@ public class LocalEventBusTest extends EventBusTestBase {
     public void testContextsSend() throws Exception {
         Set<ContextImpl> contexts = new ConcurrentHashSet<>();
         CountDownLatch latch = new CountDownLatch(2);
-        vertx.eventBus().consumer(ADDRESS1).handler(msg -> {
+        conekt.eventBus().consumer(ADDRESS1).handler(msg -> {
             msg.reply("bar");
-            contexts.add(((VertxInternal) vertx).getContext());
+            contexts.add(((ConektInternal) conekt).getContext());
             latch.countDown();
         });
-        vertx.eventBus().send(ADDRESS1, "foo", onSuccess((Message<Object> reply) -> {
+        conekt.eventBus().send(ADDRESS1, "foo", onSuccess((Message<Object> reply) -> {
             assertEquals("bar", reply.body());
-            contexts.add(((VertxInternal) vertx).getContext());
+            contexts.add(((ConektInternal) conekt).getContext());
             latch.countDown();
         }));
         awaitLatch(latch);
@@ -743,15 +743,15 @@ public class LocalEventBusTest extends EventBusTestBase {
         AtomicInteger cnt = new AtomicInteger();
         int numHandlers = 10;
         for (int i = 0; i < numHandlers; i++) {
-            vertx.eventBus().consumer(ADDRESS1).handler(msg -> {
-                contexts.add(((VertxInternal) vertx).getContext());
+            conekt.eventBus().consumer(ADDRESS1).handler(msg -> {
+                contexts.add(((ConektInternal) conekt).getContext());
                 if (cnt.incrementAndGet() == numHandlers) {
                     assertEquals(numHandlers, contexts.size());
                     testComplete();
                 }
             });
         }
-        vertx.eventBus().publish(ADDRESS1, "foo");
+        conekt.eventBus().publish(ADDRESS1, "foo");
         await();
     }
 
@@ -759,12 +759,12 @@ public class LocalEventBusTest extends EventBusTestBase {
     public void testHeadersCopiedAfterSend() throws Exception {
         MultiMap headers = new CaseInsensitiveHeaders();
         headers.add("foo", "bar");
-        vertx.eventBus().consumer(ADDRESS1).handler(msg -> {
+        conekt.eventBus().consumer(ADDRESS1).handler(msg -> {
             assertNotSame(headers, msg.headers());
             assertEquals("bar", msg.headers().get("foo"));
             testComplete();
         });
-        vertx.eventBus().send(ADDRESS1, "foo", new DeliveryOptions().setHeaders(headers));
+        conekt.eventBus().send(ADDRESS1, "foo", new DeliveryOptions().setHeaders(headers));
         headers.remove("foo");
         await();
     }
@@ -772,7 +772,7 @@ public class LocalEventBusTest extends EventBusTestBase {
     @Test
     public void testDecoderSendAsymmetric() throws Exception {
         MessageCodec codec = new MyPOJOEncoder1();
-        vertx.eventBus().registerCodec(codec);
+        conekt.eventBus().registerCodec(codec);
         String str = TestUtils.randomAlphaString(100);
         testSend(new MyPOJO(str), str, null, new DeliveryOptions().setCodecName(codec.name()));
     }
@@ -780,7 +780,7 @@ public class LocalEventBusTest extends EventBusTestBase {
     @Test
     public void testDecoderReplyAsymmetric() throws Exception {
         MessageCodec codec = new MyPOJOEncoder1();
-        vertx.eventBus().registerCodec(codec);
+        conekt.eventBus().registerCodec(codec);
         String str = TestUtils.randomAlphaString(100);
         testReply(new MyPOJO(str), str, null, new DeliveryOptions().setCodecName(codec.name()));
     }
@@ -788,7 +788,7 @@ public class LocalEventBusTest extends EventBusTestBase {
     @Test
     public void testDecoderSendSymmetric() throws Exception {
         MessageCodec codec = new MyPOJOEncoder2();
-        vertx.eventBus().registerCodec(codec);
+        conekt.eventBus().registerCodec(codec);
         String str = TestUtils.randomAlphaString(100);
         MyPOJO pojo = new MyPOJO(str);
         testSend(pojo, pojo, null, new DeliveryOptions().setCodecName(codec.name()));
@@ -797,7 +797,7 @@ public class LocalEventBusTest extends EventBusTestBase {
     @Test
     public void testDecoderReplySymmetric() throws Exception {
         MessageCodec codec = new MyPOJOEncoder2();
-        vertx.eventBus().registerCodec(codec);
+        conekt.eventBus().registerCodec(codec);
         String str = TestUtils.randomAlphaString(100);
         MyPOJO pojo = new MyPOJO(str);
         testReply(pojo, pojo, null, new DeliveryOptions().setCodecName(codec.name()));
@@ -806,7 +806,7 @@ public class LocalEventBusTest extends EventBusTestBase {
     @Test
     public void testNoRegisteredDecoder() throws Exception {
         try {
-            vertx.eventBus().send(ADDRESS1, "foo", new DeliveryOptions().setCodecName("iqwjdoqiwd"));
+            conekt.eventBus().send(ADDRESS1, "foo", new DeliveryOptions().setCodecName("iqwjdoqiwd"));
             fail("Should throw exception");
         } catch (IllegalArgumentException e) {
             // OK
@@ -816,7 +816,7 @@ public class LocalEventBusTest extends EventBusTestBase {
     @Test
     public void testRegisterSystemDecoder() throws Exception {
         try {
-            vertx.eventBus().registerCodec(new MySystemDecoder());
+            conekt.eventBus().registerCodec(new MySystemDecoder());
             fail("Should throw exception");
         } catch (IllegalArgumentException e) {
             // OK
@@ -826,10 +826,10 @@ public class LocalEventBusTest extends EventBusTestBase {
     @Test
     public void testUnregisterDecoder() throws Exception {
         MessageCodec codec = new MyPOJOEncoder1();
-        vertx.eventBus().registerCodec(codec);
-        vertx.eventBus().unregisterCodec(codec.name());
+        conekt.eventBus().registerCodec(codec);
+        conekt.eventBus().unregisterCodec(codec.name());
         try {
-            vertx.eventBus().send(ADDRESS1, new MyPOJO("foo"), new DeliveryOptions().setCodecName(codec.name()));
+            conekt.eventBus().send(ADDRESS1, new MyPOJO("foo"), new DeliveryOptions().setCodecName(codec.name()));
             fail("Should throw exception");
         } catch (IllegalArgumentException e) {
             // OK
@@ -839,9 +839,9 @@ public class LocalEventBusTest extends EventBusTestBase {
     @Test
     public void testRegisterTwice() throws Exception {
         MessageCodec codec = new MyPOJOEncoder1();
-        vertx.eventBus().registerCodec(codec);
+        conekt.eventBus().registerCodec(codec);
         try {
-            vertx.eventBus().registerCodec(codec);
+            conekt.eventBus().registerCodec(codec);
             fail("Should throw exception");
         } catch (IllegalStateException e) {
             // OK
@@ -851,7 +851,7 @@ public class LocalEventBusTest extends EventBusTestBase {
     @Test
     public void testCodecNullName() throws Exception {
         try {
-            vertx.eventBus().registerCodec(new NullNameCodec());
+            conekt.eventBus().registerCodec(new NullNameCodec());
             fail("Should throw exception");
         } catch (NullPointerException e) {
             // OK
@@ -861,7 +861,7 @@ public class LocalEventBusTest extends EventBusTestBase {
     @Test
     public void testDefaultDecoderSendAsymmetric() throws Exception {
         MessageCodec codec = new MyPOJOEncoder1();
-        vertx.eventBus().registerDefaultCodec(MyPOJO.class, codec);
+        conekt.eventBus().registerDefaultCodec(MyPOJO.class, codec);
         String str = TestUtils.randomAlphaString(100);
         testSend(new MyPOJO(str), str, null, null);
     }
@@ -869,7 +869,7 @@ public class LocalEventBusTest extends EventBusTestBase {
     @Test
     public void testDefaultDecoderReplyAsymmetric() throws Exception {
         MessageCodec codec = new MyPOJOEncoder1();
-        vertx.eventBus().registerDefaultCodec(MyPOJO.class, codec);
+        conekt.eventBus().registerDefaultCodec(MyPOJO.class, codec);
         String str = TestUtils.randomAlphaString(100);
         testReply(new MyPOJO(str), str, null, null);
     }
@@ -877,7 +877,7 @@ public class LocalEventBusTest extends EventBusTestBase {
     @Test
     public void testDefaultDecoderSendSymetric() throws Exception {
         MessageCodec codec = new MyPOJOEncoder2();
-        vertx.eventBus().registerDefaultCodec(MyPOJO.class, codec);
+        conekt.eventBus().registerDefaultCodec(MyPOJO.class, codec);
         String str = TestUtils.randomAlphaString(100);
         MyPOJO pojo = new MyPOJO(str);
         testSend(pojo, pojo, null, null);
@@ -886,7 +886,7 @@ public class LocalEventBusTest extends EventBusTestBase {
     @Test
     public void testDefaultDecoderReplySymetric() throws Exception {
         MessageCodec codec = new MyPOJOEncoder2();
-        vertx.eventBus().registerDefaultCodec(MyPOJO.class, codec);
+        conekt.eventBus().registerDefaultCodec(MyPOJO.class, codec);
         String str = TestUtils.randomAlphaString(100);
         MyPOJO pojo = new MyPOJO(str);
         testReply(pojo, pojo, null, null);
@@ -894,32 +894,32 @@ public class LocalEventBusTest extends EventBusTestBase {
 
     @Test
     public void testNoRegisteredDefaultDecoder() throws Exception {
-        TestUtils.assertIllegalArgumentException(() -> vertx.eventBus().send(ADDRESS1, new MyPOJO("foo")));
+        TestUtils.assertIllegalArgumentException(() -> conekt.eventBus().send(ADDRESS1, new MyPOJO("foo")));
     }
 
     @Test
     public void testRegisterDefaultSystemDecoder() throws Exception {
-        TestUtils.assertIllegalArgumentException(() -> vertx.eventBus().registerDefaultCodec(MyPOJO.class, new MySystemDecoder()));
+        TestUtils.assertIllegalArgumentException(() -> conekt.eventBus().registerDefaultCodec(MyPOJO.class, new MySystemDecoder()));
     }
 
     @Test
     public void testUnregisterDefaultDecoder() throws Exception {
         MessageCodec codec = new MyPOJOEncoder1();
-        vertx.eventBus().registerDefaultCodec(MyPOJO.class, codec);
-        vertx.eventBus().unregisterDefaultCodec(MyPOJO.class);
-        TestUtils.assertIllegalArgumentException(() -> vertx.eventBus().send(ADDRESS1, new MyPOJO("foo")));
+        conekt.eventBus().registerDefaultCodec(MyPOJO.class, codec);
+        conekt.eventBus().unregisterDefaultCodec(MyPOJO.class);
+        TestUtils.assertIllegalArgumentException(() -> conekt.eventBus().send(ADDRESS1, new MyPOJO("foo")));
     }
 
     @Test
     public void testRegisterDefaultTwice() throws Exception {
         MessageCodec codec = new MyPOJOEncoder1();
-        vertx.eventBus().registerDefaultCodec(MyPOJO.class, codec);
-        TestUtils.assertIllegalStateException(() -> vertx.eventBus().registerDefaultCodec(MyPOJO.class, codec));
+        conekt.eventBus().registerDefaultCodec(MyPOJO.class, codec);
+        TestUtils.assertIllegalStateException(() -> conekt.eventBus().registerDefaultCodec(MyPOJO.class, codec));
     }
 
     @Test
     public void testDefaultCodecNullName() throws Exception {
-        TestUtils.assertNullPointerException(() -> vertx.eventBus().registerDefaultCodec(String.class, new NullNameCodec()));
+        TestUtils.assertNullPointerException(() -> conekt.eventBus().registerDefaultCodec(String.class, new NullNameCodec()));
     }
 
 
@@ -1103,7 +1103,7 @@ public class LocalEventBusTest extends EventBusTestBase {
             fail();
         });
         consumer.unregister();
-        vertx.runOnContext(d -> {
+        conekt.runOnContext(d -> {
             testComplete();
         });
         await();
@@ -1224,7 +1224,7 @@ public class LocalEventBusTest extends EventBusTestBase {
         stack.set(true);
         consumer.completionHandler(v -> {
             assertNull(stack.get());
-            assertTrue(Vertx.currentContext().isEventLoopContext());
+            assertTrue(Conekt.currentContext().isEventLoopContext());
             testComplete();
         });
         consumer.handler(msg -> {
@@ -1241,7 +1241,7 @@ public class LocalEventBusTest extends EventBusTestBase {
         stack.set(true);
         consumer.completionHandler(v -> {
             assertNull(stack.get());
-            assertTrue(Vertx.currentContext().isEventLoopContext());
+            assertTrue(Conekt.currentContext().isEventLoopContext());
             testComplete();
         });
         await();
@@ -1277,12 +1277,12 @@ public class LocalEventBusTest extends EventBusTestBase {
 
     @Test
     public void testCloseCallsEndHandlerWithRegistrationContext() throws Exception {
-        Context ctx = vertx.getOrCreateContext();
+        Context ctx = conekt.getOrCreateContext();
         CountDownLatch registered = new CountDownLatch(1);
         ctx.runOnContext(v1 -> {
             MessageConsumer<String> consumer = eb.consumer(ADDRESS1);
             consumer.endHandler(v2 -> {
-                assertSame(Vertx.currentContext(), ctx);
+                assertSame(Conekt.currentContext(), ctx);
                 testComplete();
             });
             consumer.handler(msg -> {
@@ -1299,10 +1299,10 @@ public class LocalEventBusTest extends EventBusTestBase {
 
     @Test
     public void testConsumerUnregisterDoesNotCancelTimer0() throws Exception {
-        Context ctx = vertx.getOrCreateContext();
+        Context ctx = conekt.getOrCreateContext();
         ctx.runOnContext(v -> {
             // The delay does not matter so much, it will always be executed after this task anyway
-            vertx.setTimer(50, id -> {
+            conekt.setTimer(50, id -> {
                 assertEquals(0, (long) id);
                 testComplete();
             });

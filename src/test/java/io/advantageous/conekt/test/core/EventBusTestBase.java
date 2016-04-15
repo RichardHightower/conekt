@@ -25,8 +25,8 @@
 
 package io.advantageous.conekt.test.core;
 
+import io.advantageous.conekt.AbstractIoActor;
 import io.netty.util.CharsetUtil;
-import io.advantageous.conekt.AbstractVerticle;
 import io.advantageous.conekt.DeploymentOptions;
 import io.advantageous.conekt.buffer.Buffer;
 import io.advantageous.conekt.eventbus.DeliveryOptions;
@@ -291,7 +291,7 @@ public abstract class EventBusTestBase extends VertxTestBase {
             testComplete();
         }).completionHandler(ar -> {
             assertTrue(ar.succeeded());
-            vertices[0].deployVerticle(new AbstractVerticle() {
+            vertices[0].deployVerticle(new AbstractIoActor() {
                 @Override
                 public void start() throws Exception {
                     vertices[0].eventBus().send(ADDRESS1, expectedBody);
@@ -306,7 +306,7 @@ public abstract class EventBusTestBase extends VertxTestBase {
         String expectedBody = TestUtils.randomAlphaString(20);
         startNodes(2);
         final CountDownLatch latch = new CountDownLatch(1);
-        vertices[0].deployVerticle(new AbstractVerticle() {
+        vertices[0].deployVerticle(new AbstractIoActor() {
             @Override
             public void start() throws Exception {
                 vertices[0].eventBus().<String>consumer(ADDRESS1, msg -> {

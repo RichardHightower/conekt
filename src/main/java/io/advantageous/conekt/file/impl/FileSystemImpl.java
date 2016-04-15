@@ -30,8 +30,8 @@ import io.advantageous.conekt.Handler;
 import io.advantageous.conekt.buffer.Buffer;
 import io.advantageous.conekt.file.*;
 import io.advantageous.conekt.impl.Action;
+import io.advantageous.conekt.impl.ConektInternal;
 import io.advantageous.conekt.impl.ContextImpl;
-import io.advantageous.conekt.impl.VertxInternal;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -49,9 +49,9 @@ import java.util.regex.Pattern;
  */
 public class FileSystemImpl implements io.advantageous.conekt.file.FileSystem {
 
-    protected final VertxInternal vertx;
+    protected final ConektInternal vertx;
 
-    public FileSystemImpl(VertxInternal vertx) {
+    public FileSystemImpl(ConektInternal vertx) {
         this.vertx = vertx;
     }
 

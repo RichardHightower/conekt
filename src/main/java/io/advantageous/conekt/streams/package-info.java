@@ -54,7 +54,7 @@
  * <p>
  * [source,$lang]
  * ----
- * {@link examples.StreamsExamples#pump1(Vertx)}
+ * {@link examples.StreamsExamples#pump1(Conekt)}
  * ----
  * <p>
  * There is a problem with the example above: if data is read from the socket faster than it can be
@@ -67,7 +67,7 @@
  * <p>
  * [source,$lang]
  * ----
- * {@link examples.StreamsExamples#pump2(Vertx)}
+ * {@link examples.StreamsExamples#pump2(Conekt)}
  * ----
  * <p>
  * This example won't run out of RAM but we'll end up losing data if the write queue gets full. What we
@@ -75,7 +75,7 @@
  * <p>
  * [source,$lang]
  * ----
- * {@link examples.StreamsExamples#pump3(Vertx)}
+ * {@link examples.StreamsExamples#pump3(Conekt)}
  * ----
  * <p>
  * We're almost there, but not quite. The `NetSocket` now gets paused when the file is full, but we also need to unpause
@@ -83,7 +83,7 @@
  * <p>
  * [source,$lang]
  * ----
- * {@link examples.StreamsExamples#pump4(Vertx)}
+ * {@link examples.StreamsExamples#pump4(Conekt)}
  * ----
  * <p>
  * And there we have it. The {@link io.advantageous.conekt.streams.WriteStream#drainHandler} event handler will
@@ -96,7 +96,7 @@
  * <p>
  * [source,$lang]
  * ----
- * {@link examples.StreamsExamples#pump5(Vertx)}
+ * {@link examples.StreamsExamples#pump5(Conekt)}
  * ----
  * <p>
  * This does exactly the same thing as the more verbose example.
@@ -166,4 +166,4 @@
  */
 package io.advantageous.conekt.streams;
 
-import io.advantageous.conekt.Vertx;
+import io.advantageous.conekt.Conekt;

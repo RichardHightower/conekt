@@ -38,7 +38,7 @@ import io.netty.handler.timeout.IdleStateEvent;
 /**
  * @author <a href="mailto:nmaurer@redhat.com">Norman Maurer</a>
  */
-public abstract class VertxHandler<C extends ConnectionBase> extends ChannelDuplexHandler {
+public abstract class ConektHandler<C extends ConnectionBase> extends ChannelDuplexHandler {
 
     protected static ByteBuf safeBuffer(ByteBuf buf, ByteBufAllocator allocator) {
         if (buf == Unpooled.EMPTY_BUFFER) {

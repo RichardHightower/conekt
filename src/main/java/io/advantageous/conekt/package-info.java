@@ -67,7 +67,7 @@
  * <p>
  * NOTE: Much of this is Java specific - need someway of swapping in language specific parts
  * <p>
- * You can't do much in Vert.x-land unless you can commune with a {@link io.advantageous.conekt.Vertx} object!
+ * You can't do much in Vert.x-land unless you can commune with a {@link io.advantageous.conekt.Conekt} object!
  * <p>
  * It's the control centre of Vert.x and is how you do pretty much everything, including creating clients and servers,
  * getting a reference to the event bus, setting timers, as well as many other things.
@@ -86,22 +86,22 @@
  * NOTE: Most applications will only need a single Vert.x instance, but it's possible to create multiple Vert.x instances if you
  * require, for example, isolation between the event bus or different groups of servers and clients.
  * <p>
- * === Specifying options when creating a Vertx object
+ * === Specifying options when creating a Conekt object
  * <p>
- * When creating a Vertx object you can also specify options if the defaults aren't right for you:
+ * When creating a Conekt object you can also specify options if the defaults aren't right for you:
  * <p>
  * [source,$lang]
  * ----
  * {@link examples.CoreExamples#example2}
  * ----
  * <p>
- * The {@link io.advantageous.conekt.VertxOptions} object has many settings and allows you to configure things like clustering,
+ * The {@link io.advantageous.conekt.ConektOptions} object has many settings and allows you to configure things like clustering,
  * high availability, pool sizes and various other settings. The Javadoc describes all the settings in detail.
  * <p>
  * === Creating a clustered Vert.x object
  * <p>
  * If you're creating a *clustered Vert.x* (See the section on the <<event_bus, event bus>> for more information
- * on clustering the event bus), then you will normally use the asynchronous variant to create the Vertx object.
+ * on clustering the event bus), then you will normally use the asynchronous variant to create the Conekt object.
  * <p>
  * This is because it usually takes some time (maybe a few seconds) for the different Vert.x instances in a cluster to
  * group together. During that time, we don't want to block the calling thread, so we give the result to you asynchronously.
@@ -209,14 +209,14 @@
  * reactor application (e.g. your Node.js application) to scale over your multi-core server you have to start up and
  * manage many different processes.
  * <p>
- * Vert.x works differently here. Instead of a single event loop, each Vertx instance maintains *several event loops*.
+ * Vert.x works differently here. Instead of a single event loop, each Conekt instance maintains *several event loops*.
  * By default we choose the number based on the number of available cores on the machine, but this can be overridden.
  * <p>
- * This means a single Vertx process can scale across your server, unlike Node.js.
+ * This means a single Conekt process can scale across your server, unlike Node.js.
  * <p>
  * We call this pattern the *Multi-Reactor Pattern* to distinguish it from the single threaded reactor pattern.
  * <p>
- * NOTE: Even though a Vertx instance maintains multiple event loops, any particular handler will never be executed
+ * NOTE: Even though a Conekt instance maintains multiple event loops, any particular handler will never be executed
  * concurrently, and in most cases (with the exception of <<worker_verticles, worker verticles>>) will always be called
  * using the *exact same event loop*.
  * <p>
@@ -227,7 +227,7 @@
  * you block the event loop *yourself* in a handler.
  * <p>
  * If you do that, then that event loop will not be able to do anything else while it's blocked. If you block all of the
- * event loops in Vertx instance then your application will grind to a complete halt!
+ * event loops in Conekt instance then your application will grind to a complete halt!
  * <p>
  * So don't do it! *You have been warned*.
  * <p>
@@ -256,12 +256,12 @@
  * you diagnose such issues, Vert.x will automatically log warnings if it detects an event loop hasn't returned for
  * some time. If you see warnings like these in your logs, then you should investigate.
  * <p>
- * Thread vertx-eventloop-thread-3 has been blocked for 20458 ms
+ * Thread conekt-eventloop-thread-3 has been blocked for 20458 ms
  * <p>
  * Vert.x will also provide stack traces to pinpoint exactly where the blocking is occurring.
  * <p>
  * If you want to turn of these warnings or change the settings, you can do that in the
- * {@link io.advantageous.conekt.VertxOptions} object before creating the Vertx object.
+ * {@link io.advantageous.conekt.ConektOptions} object before creating the Conekt object.
  * <p>
  * [[blocking_code]]
  * == Running blocking code
@@ -281,7 +281,7 @@
  * As discussed before, you can't call blocking operations directly from an event loop, as that would prevent it
  * from doing any other useful work. So how can you do this?
  * <p>
- * It's done by calling {@link io.advantageous.conekt.Vertx#executeBlocking} specifying both the blocking code to execute and a
+ * It's done by calling {@link io.advantageous.conekt.Conekt#executeBlocking} specifying both the blocking code to execute and a
  * result handler to be called back asynchronous when the blocking code has been executed.
  * <p>
  * [source,$lang]
@@ -292,7 +292,7 @@
  * By default, if executeBlocking is called several times from the same context (e.g. the same verticle instance) then
  * the different executeBlocking are executed _serially_ (i.e. one after another).
  * <p>
- * If you don't care about ordering you can call {@link io.advantageous.conekt.Vertx#executeBlocking(Handler, boolean, Handler)}
+ * If you don't care about ordering you can call {@link io.advantageous.conekt.Conekt#executeBlocking(Handler, boolean, Handler)}
  * specifying `false` as the argument to `ordered`. In this case any executeBlocking may be executed in parallel
  * on the worker pool.
  * <p>
@@ -353,7 +353,7 @@
  * <p>
  * include::override/verticles.adoc[]
  * <p>
- * === Verticle Types
+ * === IoActor Types
  * <p>
  * There are three different types of verticles:
  * <p>
@@ -409,10 +409,10 @@
  * <p>
  * === Deploying verticles programmatically
  * <p>
- * You can deploy a verticle using one of the {@link io.advantageous.conekt.Vertx#deployVerticle} method, specifying a verticle
+ * You can deploy a verticle using one of the {@link io.advantageous.conekt.Conekt#deployVerticle} method, specifying a verticle
  * name or you can pass in a verticle instance you have already created yourself.
  * <p>
- * NOTE: Deploying Verticle *instances* is Java only.
+ * NOTE: Deploying IoActor *instances* is Java only.
  * <p>
  * [source,java]
  * ----
@@ -421,7 +421,7 @@
  * <p>
  * You can also deploy verticles by specifying the verticle *name*.
  * <p>
- * The verticle name is used to look up the specific {@link io.advantageous.conekt.spi.VerticleFactory} that will be used to
+ * The verticle name is used to look up the specific {@link io.advantageous.conekt.spi.IoActorFactory} that will be used to
  * instantiate the actual verticle instance(s).
  * <p>
  * Different verticle factories are available for instantiating verticles in different languages and for various other
@@ -441,7 +441,7 @@
  * When deploying verticle(s) using a name, the name is used to select the actual verticle factory that will instantiate
  * the verticle(s).
  * <p>
- * Verticle names can have a prefix - which is a string followed by a colon, which if present will be used to look-up the factory, e.g.
+ * IoActor names can have a prefix - which is a string followed by a colon, which if present will be used to look-up the factory, e.g.
  * <p>
  * js:foo.js // Use the JavaScript verticle factory
  * groovy:com.mycompany.SomeGroovyCompiledVerticle // Use the Groovy verticle factory
@@ -455,16 +455,16 @@
  * If no prefix or suffix is present, Vert.x will assume it's a Java fully qualified class name (FQCN) and try
  * and instantiate that.
  * <p>
- * === How are Verticle Factories located?
+ * === How are IoActor Factories located?
  * <p>
- * Most Verticle factories are loaded from the classpath and registered at Vert.x startup.
+ * Most IoActor factories are loaded from the classpath and registered at Vert.x startup.
  * <p>
- * You can also programmatically register and unregister verticle factories using {@link io.advantageous.conekt.Vertx#registerVerticleFactory}
- * and {@link io.advantageous.conekt.Vertx#unregisterVerticleFactory} if you wish.
+ * You can also programmatically register and unregister verticle factories using {@link io.advantageous.conekt.Conekt#registerVerticleFactory}
+ * and {@link io.advantageous.conekt.Conekt#unregisterVerticleFactory} if you wish.
  * <p>
  * === Waiting for deployment to complete
  * <p>
- * Verticle deployment is asynchronous and may complete some time after the call to deploy has returned.
+ * IoActor deployment is asynchronous and may complete some time after the call to deploy has returned.
  * <p>
  * If you want to be notified when deployment is complete you can deploy specifying a completion handler:
  * <p>
@@ -479,7 +479,7 @@
  * <p>
  * === Undeploying verticle deployments
  * <p>
- * Deployments can be undeployed with {@link io.advantageous.conekt.Vertx#undeploy}.
+ * Deployments can be undeployed with {@link io.advantageous.conekt.Conekt#undeploy}.
  * <p>
  * Un-deployment is itself asynchronous so if you want to be notified when un-deployment is complete you can deploy specifying a completion handler:
  * <p>
@@ -503,7 +503,7 @@
  * <p>
  * include::override/verticle-configuration.adoc[]
  * <p>
- * === Verticle Isolation Groups
+ * === IoActor Isolation Groups
  * <p>
  * By default, Vert.x has a _flat classpath_. I.e, when Vert.x deploys verticles it does so with the current classloader -
  * it doesn't create a new one. In the majority of cases this is the simplest, clearest and sanest thing to do.
@@ -545,7 +545,7 @@
  * <p>
  * [source]
  * ----
- * vertx run my-verticle.js -ha
+ * conekt run my-verticle.js -ha
  * ----
  * <p>
  * When enabling high availability, no need to add `-cluster`.
@@ -566,36 +566,36 @@
  * <p>
  * NOTE: The JDK is required to support on the fly compilation of Java code.
  * <p>
- * You can now run verticles by using the `vertx run` command. Here are some examples:
+ * You can now run verticles by using the `conekt run` command. Here are some examples:
  * <p>
  * ----
  * # Run a JavaScript verticle
- * vertx run my_verticle.js
+ * conekt run my_verticle.js
  * <p>
  * # Run a Ruby verticle
- * vertx run a_n_other_verticle.rb
+ * conekt run a_n_other_verticle.rb
  * <p>
  * # Run a Groovy script verticle, clustered
- * vertx run FooVerticle.groovy -cluster
+ * conekt run FooVerticle.groovy -cluster
  * ----
  * <p>
  * You can even run Java source verticles without compiling them first!
  * <p>
  * ----
- * vertx run SomeJavaSourceFile.java
+ * conekt run SomeJavaSourceFile.java
  * ----
  * <p>
  * Vert.x will compile the Java source file on the fly before running it. This is really useful for quickly
  * prototyping verticles and great for demos. No need to set-up a Maven or Gradle build first to get going!
  * <p>
- * For full information on the various options available when executing `vertx` on the command line,
- * type `vertx` at the command line.
+ * For full information on the various options available when executing `conekt` on the command line,
+ * type `conekt` at the command line.
  * <p>
  * === Causing Vert.x to exit
  * <p>
  * Threads maintained by Vert.x instances are not daemon threads so they will prevent the JVM from exiting.
  * <p>
- * If you are embedding Vert.x and you have finished with it, you can call {@link io.advantageous.conekt.Vertx#close} to close it
+ * If you are embedding Vert.x and you have finished with it, you can call {@link io.advantageous.conekt.Conekt#close} to close it
  * down.
  * <p>
  * This will shut-down all internal thread pools and close other resources, and will allow the JVM to exit.
@@ -603,16 +603,16 @@
  * === The Context object
  * <p>
  * When Vert.x provides an event to a handler or calls the start or stop methods of a
- * {@link io.advantageous.conekt.Verticle}, the execution is associated with a `Context`. Usually a context is an
+ * {@link io.advantageous.conekt.IoActor}, the execution is associated with a `Context`. Usually a context is an
  * *event-loop context* and is tied to a specific event loop thread. So executions for that context always occur
  * on that exact same event loop thread. In the case of worker verticles and running inline blocking code a
  * worker context will be associated with the execution which will use a thread from the worker thread pool.
  * <p>
- * To retrieve the context, use the {@link io.advantageous.conekt.Vertx#getOrCreateContext()} method:
+ * To retrieve the context, use the {@link io.advantageous.conekt.Conekt#getOrCreateContext()} method:
  * <p>
  * [source, $lang]
  * ----
- * {@link examples.CoreExamples#retrieveContext(Vertx)}
+ * {@link examples.CoreExamples#retrieveContext(Conekt)}
  * ----
  * <p>
  * If the current thread has a context associated with it, it reuses the context object. If not a new instance of
@@ -620,7 +620,7 @@
  * <p>
  * [source, $lang]
  * ----
- * {@link examples.CoreExamples#retrieveContextType(Vertx)}
+ * {@link examples.CoreExamples#retrieveContextType(Conekt)}
  * ----
  * <p>
  * When you have retrieved the context object, you can run code in this context asynchronously. In other words,
@@ -628,7 +628,7 @@
  * <p>
  * [source, $lang]
  * ----
- * {@link examples.CoreExamples#runInContext(Vertx)}
+ * {@link examples.CoreExamples#runInContext(Conekt)}
  * ----
  * <p>
  * When several handlers run in the same context, they may want to share data. The context object offers methods to
@@ -637,7 +637,7 @@
  * <p>
  * [source, $lang]
  * ----
- * {@link examples.CoreExamples#runInContextWithData(Vertx)}
+ * {@link examples.CoreExamples#runInContextWithData(Conekt)}
  * ----
  * <p>
  * The context object also let you access verticle configuration using the {@link io.advantageous.conekt.Context#config()}
@@ -655,7 +655,7 @@
  * <p>
  * A one shot timer calls an event handler after a certain delay, expressed in milliseconds.
  * <p>
- * To set a timer to fire once you use {@link io.advantageous.conekt.Vertx#setTimer} method passing in the delay and a handler
+ * To set a timer to fire once you use {@link io.advantageous.conekt.Conekt#setTimer} method passing in the delay and a handler
  * <p>
  * [source,$lang]
  * ----
@@ -666,7 +666,7 @@
  * <p>
  * ==== Periodic Timers
  * <p>
- * You can also set a timer to fire periodically by using {@link io.advantageous.conekt.Vertx#setPeriodic}.
+ * You can also set a timer to fire periodically by using {@link io.advantageous.conekt.Conekt#setPeriodic}.
  * <p>
  * There will be an initial delay equal to the period.
  * <p>
@@ -677,7 +677,7 @@
  * Keep in mind that the timer will fire on a periodic basis. If your periodic treatment takes a long amount of time to proceed,
  * your timer events could run continuously or even worse : stack up.
  * <p>
- * In this case, you should consider using {@link io.advantageous.conekt.Vertx#setTimer} instead. Once your treatment has
+ * In this case, you should consider using {@link io.advantageous.conekt.Conekt#setTimer} instead. Once your treatment has
  * finished, you can set the next timer.
  * <p>
  * [source,$lang]
@@ -687,7 +687,7 @@
  * <p>
  * ==== Cancelling timers
  * <p>
- * To cancel a periodic timer, call {@link io.advantageous.conekt.Vertx#cancelTimer} specifying the timer id. For example:
+ * To cancel a periodic timer, call {@link io.advantageous.conekt.Conekt#cancelTimer} specifying the timer id. For example:
  * <p>
  * [source,$lang]
  * ----
@@ -740,12 +740,12 @@
  * By default Vert.x does not record any metrics. Instead it provides an SPI for others to implement which can be added
  * to the classpath. The metrics SPI is an advanced feature which allows implementers to capture events from Vert.x in
  * order to gather metrics. For more information on this, please consult the
- * {@link io.advantageous.conekt.spi.metrics.VertxMetrics API Documentation}.
+ * {@link io.advantageous.conekt.spi.metrics.ConektMetrics API Documentation}.
  * <p>
  * == OSGi
  * <p>
  * Vert.x Core is packaged as an OSGi bundle, so can be used in any OSGi R4.2+ environment such as Apache Felix
- * or Eclipse Equinox. The bundle exports `io.vertx.core*`.
+ * or Eclipse Equinox. The bundle exports `io.conekt.core*`.
  * <p>
  * However, the bundle has some dependencies on Jackson and Netty. To get the vert.x core bundle resolved deploy:
  * <p>
@@ -781,9 +781,9 @@
  * `eclipse.bundle.setTCCL=false`
  * <p>
  * <p>
- * == The 'vertx' command line
+ * == The 'conekt' command line
  * <p>
- * The `vertx` command is used to interact with Vert.x from the command line. It's main use is to run Vert.x verticles.
+ * The `conekt` command is used to interact with Vert.x from the command line. It's main use is to run Vert.x verticles.
  * To do this you need to download and install a Vert.x distribution, and add the `bin` directory of the installation
  * to your `PATH` environment variable. Also make sure you have a Java 8 JDK on your `PATH`.
  * <p>
@@ -791,19 +791,19 @@
  * <p>
  * === Run verticles
  * <p>
- * You can run raw Vert.x verticles directly from the command line using `vertx run`. Here is a couple of examples of
+ * You can run raw Vert.x verticles directly from the command line using `conekt run`. Here is a couple of examples of
  * the `run` _command_:
  * <p>
  * [source]
  * ----
- * vertx run my-verticle.js                                 (1)
- * vertx run my-verticle.groovy                             (2)
- * vertx run my-verticle.rb                                 (3)
+ * conekt run my-verticle.js                                 (1)
+ * conekt run my-verticle.groovy                             (2)
+ * conekt run my-verticle.rb                                 (3)
  * <p>
- * vertx run io.vertx.example.MyVerticle                    (4)
- * vertx run io.vertx.example.MVerticle -cp my-verticle.jar (5)
+ * conekt run io.conekt.example.MyVerticle                    (4)
+ * conekt run io.conekt.example.MVerticle -cp my-verticle.jar (5)
  * <p>
- * vertx run MyVerticle.java                                (6)
+ * conekt run MyVerticle.java                                (6)
  * ----
  * 1. Deploys a JavaScript verticle
  * 2. Deploys a Groovy verticle
@@ -820,10 +820,10 @@
  * <p>
  * [source]
  * ----
- * vertx run groovy:io.vertx.example.MyGroovyVerticle
+ * conekt run groovy:io.conekt.example.MyGroovyVerticle
  * ----
  * <p>
- * The `vertx run` command can take a few optional parameters, they are:
+ * The `conekt run` command can take a few optional parameters, they are:
  * <p>
  * * `-conf <config_file>` - Provides some configuration to the verticle. `config_file` is the name of a text file
  * containing a JSON object that represents the configuration for the verticle. This is optional.
@@ -863,39 +863,39 @@
  * Run a JavaScript verticle server.js with default settings
  * [source]
  * ----
- * vertx run server.js
+ * conekt run server.js
  * ----
  * <p>
  * Run 10 instances of a pre-compiled Java verticle specifying classpath
  * [source]
  * ----
- * vertx run com.acme.MyVerticle -cp "classes:lib/myjar.jar" -instances 10
+ * conekt run com.acme.MyVerticle -cp "classes:lib/myjar.jar" -instances 10
  * ----
  * <p>
  * Run 10 instances of a Java verticle by source _file_
  * [source]
  * ----
- * vertx run MyVerticle.java -instances 10
+ * conekt run MyVerticle.java -instances 10
  * ----
  * <p>
  * Run 20 instances of a ruby worker verticle
  * [source]
  * ----
- * vertx run order_worker.rb -instances 20 -worker
+ * conekt run order_worker.rb -instances 20 -worker
  * ----
  * <p>
  * Run two JavaScript verticles on the same machine and let them cluster together with each other and any other servers
  * on the network
  * [source]
  * ----
- * vertx run handler.js -cluster
- * vertx run sender.js -cluster
+ * conekt run handler.js -cluster
+ * conekt run sender.js -cluster
  * ----
  * <p>
  * Run a Ruby verticle passing it some config
  * [source]
  * ----
- * vertx run my_verticle.rb -conf my_verticle.conf
+ * conekt run my_verticle.rb -conf my_verticle.conf
  * ----
  * Where `my_verticle.conf` might contain something like:
  * <p>
@@ -915,7 +915,7 @@
  * <p>
  * [source]
  * ----
- * vertx -ha
+ * conekt -ha
  * ----
  * <p>
  * Depending on your cluster configuration, you may have to append the `cluster-host` and `cluster-port` parameters.
@@ -933,16 +933,16 @@
  * There is nothing really Vert.x specific about this, you could do this with any Java application
  * <p>
  * You can either create your own main class and specify that in the manifest, but it's recommended that you write your
- * code as verticles and use the Vert.x {@link io.vertx.core.Launcher} class (`io.vertx.core.Launcher`) as your main
+ * code as verticles and use the Vert.x {@link io.vertx.core.Launcher} class (`io.conekt.core.Launcher`) as your main
  * class. This is the same main class used when running Vert.x at the command line and therefore allows you to
  * specify command line arguments, such as `-instances` in order to scale your application more easily.
  * <p>
  * To deploy your verticle in a _fatjar_ like this you must have a _manifest_ with:
  * <p>
- * * `Main-Class` set to `io.vertx.core.Launcher`
- * * `Main-Verticle` specifying the main verticle (fully qualified class name or script file name)
+ * * `Main-Class` set to `io.conekt.core.Launcher`
+ * * `Main-IoActor` specifying the main verticle (fully qualified class name or script file name)
  * <p>
- * You can also provide the usual command line arguments that you would pass to `vertx run`:
+ * You can also provide the usual command line arguments that you would pass to `conekt run`:
  * [source]
  * ----
  * java -jar my-verticle-fat.jar -cluster -conf myconf.json
@@ -959,18 +959,18 @@
  * <p>
  * [source]
  * ----
- * vertx version
+ * conekt version
  * ----
  * <p>
  * === Other commands
  * <p>
- * The `vertx` command line and the `Launcher` also provide other _commands_ in addition to `run` and `version`:
+ * The `conekt` command line and the `Launcher` also provide other _commands_ in addition to `run` and `version`:
  * <p>
  * You can create a `bare` instance using:
  * <p>
  * [source]
  * ----
- * vertx bare
+ * conekt bare
  * # or
  * java -jar my-verticle-fat.jar bare
  * ----
@@ -1004,9 +1004,9 @@
  * java -jar my-verticle-fat.jar list
  * ----
  * <p>
- * The `start`, `stop` and `list` command are also available from the `vertx` tool. The start` command supports a couple of options:
+ * The `start`, `stop` and `list` command are also available from the `conekt` tool. The start` command supports a couple of options:
  * <p>
- * * `vertx-id` : the application id, uses a random UUID if not set
+ * * `conekt-id` : the application id, uses a random UUID if not set
  * * `java-opts` : the Java Virtual Machine options, uses the `JAVA_OPTS` environment variable if not set.
  * * `redirect-output` : redirect the spawned process output and error streams to the parent process streams.
  * <p>
@@ -1016,15 +1016,15 @@
  * <p>
  * === Live Redeploy
  * <p>
- * When developing it may be convenient to automatically redeploy your application upon file changes. The `vertx`
+ * When developing it may be convenient to automatically redeploy your application upon file changes. The `conekt`
  * command line tool and more generally the {@link io.vertx.core.Launcher} class offers this feature. Here are some
  * examples:
  * <p>
  * [source]
  * ----
- * vertx run MyVerticle.groovy --redeploy="**&#47;*.groovy" --launcher-class=io.vertx.core.Launcher
- * vertx run MyVerticle.groovy --redeploy="**&#47;*.groovy,**&#47;*.rb"  --launcher-class=io.vertx.core.Launcher
- * java io.vertx.core.Launcher run org.acme.MyVerticle –redeploy="**&#47;*.class"  --launcher-class=io.vertx.core
+ * conekt run MyVerticle.groovy --redeploy="**&#47;*.groovy" --launcher-class=io.conekt.core.Launcher
+ * conekt run MyVerticle.groovy --redeploy="**&#47;*.groovy,**&#47;*.rb"  --launcher-class=io.conekt.core.Launcher
+ * java io.conekt.core.Launcher run org.acme.MyVerticle –redeploy="**&#47;*.class"  --launcher-class=io.conekt.core
  * .Launcher -cp ...
  * ----
  * <p>
@@ -1044,13 +1044,13 @@
  * <p>
  * The redeploy feature can be used in your IDE:
  * <p>
- * * Eclipse - create a _Run_ configuration, using the `io.vertx.core.Launcher` class a _main class_. In the _Program
+ * * Eclipse - create a _Run_ configuration, using the `io.conekt.core.Launcher` class a _main class_. In the _Program
  * arguments_ area (in the _Arguments_ tab), write `run your-verticle-fully-qualified-name --redeploy=\**&#47;*.java
- * --launcher-class=io.vertx.core.Launcher`. You can also add other parameters. The redeployment works smoothly as
+ * --launcher-class=io.conekt.core.Launcher`. You can also add other parameters. The redeployment works smoothly as
  * Eclipse incrementally compiles your files on save.
- * * IntelliJ - create a _Run_ configuration (_Application_), set the _Main class_ to `io.vertx.core.Launcher`. In
+ * * IntelliJ - create a _Run_ configuration (_Application_), set the _Main class_ to `io.conekt.core.Launcher`. In
  * the Program arguments write: `run your-verticle-fully-qualified-name --redeploy=\**&#47;*.class
- * --launcher-class=io.vertx.core.Launcher`. To trigger the redeployment, you need to _make_ the project or
+ * --launcher-class=io.conekt.core.Launcher`. To trigger the redeployment, you need to _make_ the project or
  * the module explicitly (_Build_ menu -> _Make project_).
  * <p>
  * To debug your application, create your run configuration as a remote application and configure the debugger
@@ -1103,7 +1103,7 @@
  * If you are using Vert.x from a Maven or Gradle project just add the cluster manager jar as a dependency of your project.
  * <p>
  * You can also specify cluster managers programmatically if embedding Vert.x using
- * {@link io.advantageous.conekt.VertxOptions#setClusterManager(io.vertx.core.spi.cluster.ClusterManager)}.
+ * {@link io.advantageous.conekt.ConektOptions#setClusterManager(io.vertx.core.spi.cluster.ClusterManager)}.
  * <p>
  * == Logging
  * <p>
@@ -1117,7 +1117,7 @@
  * the structure of a JUL config file please consult the JUL logging documentation.
  * <p>
  * Vert.x also provides a slightly more convenient way to specify a configuration file without having to set a system
- * property. Just provide a JUL config file with the name `vertx-default-jul-logging.properties` on your classpath (e.g.
+ * property. Just provide a JUL config file with the name `conekt-default-jul-logging.properties` on your classpath (e.g.
  * inside your fatjar) and Vert.x will use that to configure JUL.
  * <p>
  * === Using another logging framework
@@ -1125,9 +1125,9 @@
  * If you don't want Vert.x to use JUL for it's own logging you can configure it to use another logging framework, e.g.
  * Log4J or SLF4J.
  * <p>
- * To do this you should set a system property called `vertx.logger-delegate-factory-class-name` with the name of a Java
+ * To do this you should set a system property called `conekt.logger-delegate-factory-class-name` with the name of a Java
  * class which implements the interface {@link io.vertx.core.spi.logging.LogDelegateFactory}. We provide pre-built implementations for
- * Log4J and SLF4J with the class names `io.vertx.core.logging.Log4jLogDelegateFactory` and `io.vertx.core.logging.SLF4JLogDelegateFactory`
+ * Log4J and SLF4J with the class names `io.conekt.core.logging.Log4jLogDelegateFactory` and `io.conekt.core.logging.SLF4JLogDelegateFactory`
  * respectively. If you want to use these implementations you should also make sure the relevant Log4J or SLF4J jars
  * are on your classpath.
  * <p>
@@ -1150,7 +1150,7 @@
  * == High Availability and Fail-Over
  * <p>
  * Vert.x allows you to run your verticles with high availability (HA) support. In that case, when a vert.x
- * instance running a verticle dies abruptly, the verticle is migrated to another vertx instance. The vert.x
+ * instance running a verticle dies abruptly, the verticle is migrated to another conekt instance. The vert.x
  * instances must be in the same cluster.
  * <p>
  * === Automatic failover
@@ -1162,7 +1162,7 @@
  * <p>
  * [source]
  * ----
- * vertx run my-verticle.js -ha
+ * conekt run my-verticle.js -ha
  * ----
  * <p>
  * Now for HA to work, you need more than one Vert.x instances in the cluster, so let's say you have another
@@ -1170,7 +1170,7 @@
  * <p>
  * [source]
  * ----
- * vertx run my-other-verticle.js -ha
+ * conekt run my-other-verticle.js -ha
  * ----
  * <p>
  * If the Vert.x instance that is running `my-verticle.js` now dies (you can test this by killing the process
@@ -1188,7 +1188,7 @@
  * <p>
  * [source]
  * ----
- * vertx run -ha
+ * conekt run -ha
  * ----
  * <p>
  * When using the `-ha` switch you do not need to provide the `-cluster` switch, as a cluster is assumed if you
@@ -1207,7 +1207,7 @@
  * <p>
  * [source]
  * ----
- * vertx run my-verticle.js -ha -ha-group my-group
+ * conekt run my-verticle.js -ha -ha-group my-group
  * ----
  * <p>
  * Let's look at an example:
@@ -1216,21 +1216,21 @@
  * <p>
  * [source]
  * ----
- * vertx run my-verticle.js -ha -hagroup g1
+ * conekt run my-verticle.js -ha -hagroup g1
  * ----
  * <p>
  * In a second terminal, let's run another verticle using the same group:
  * <p>
  * [source]
  * ----
- * vertx run my-other-verticle.js -ha -hagroup g1
+ * conekt run my-other-verticle.js -ha -hagroup g1
  * ----
  * <p>
  * Finally, in a third terminal, launch another verticle using a different group:
  * <p>
  * [source]
  * ----
- * vertx run yet-another-verticle.js -ha -hagroup g2
+ * conekt run yet-another-verticle.js -ha -hagroup g2
  * ----
  * <p>
  * If we kill the instance in terminal 1, it will fail over to the instance in terminal 2, not the instance in
@@ -1257,7 +1257,7 @@
  * In a first terminal:
  * [source]
  * ----
- * vertx run my-verticle.js -ha -quorum 3
+ * conekt run my-verticle.js -ha -quorum 3
  * ----
  * <p>
  * At this point the Vert.x instance will start but not deploy the module (yet) because there is only one node
@@ -1266,7 +1266,7 @@
  * In a second terminal:
  * [source]
  * ----
- * vertx run my-other-verticle.js -ha -quorum 3
+ * conekt run my-other-verticle.js -ha -quorum 3
  * ----
  * <p>
  * At this point the Vert.x instance will start but not deploy the module (yet) because there are only two nodes
@@ -1276,7 +1276,7 @@
  * <p>
  * [source]
  * ----
- * vertx run yet-another-verticle.js -ha -quorum 3
+ * conekt run yet-another-verticle.js -ha -quorum 3
  * ----
  * <p>
  * Yay! - we have three nodes, that's a quorum. At this point the modules will automatically deploy on all
@@ -1328,7 +1328,7 @@
  * <p>
  * == The vert.x Launcher
  * <p>
- * The vert.x {@link io.vertx.core.Launcher} is used in _fat jar_ as main class, and by the `vertx` command line
+ * The vert.x {@link io.vertx.core.Launcher} is used in _fat jar_ as main class, and by the `conekt` command line
  * utility. It executes a set of _commands_ such as _run_, _bare_, _start_...
  * <p>
  * === Extending the vert.x Launcher
@@ -1366,29 +1366,29 @@
  * }
  * ----
  * <p>
- * Then, create the `src/main/resources/META-INF/services/io.vertx.core.spi.launcher.CommandFactory` and add a line
+ * Then, create the `src/main/resources/META-INF/services/io.conekt.core.spi.launcher.CommandFactory` and add a line
  * indicating the fully qualified name of the factory:
  * <p>
  * ----
- * io.vertx.core.launcher.example.HelloCommandFactory
+ * io.conekt.core.launcher.example.HelloCommandFactory
  * ----
  * <p>
  * Builds the jar containing the command. Be sure to includes the SPI file
- * (`META-INF/services/io.vertx.core.spi.launcher.CommandFactory`).
+ * (`META-INF/services/io.conekt.core.spi.launcher.CommandFactory`).
  * <p>
  * Then, place the jar containing the command into the classpath of your fat-jar (or include it inside) or in the `lib`
  * directory of your vert.x distribution, and you would be able to execute:
  * <p>
  * [source]
  * ----
- * vertx hello vert.x
+ * conekt hello vert.x
  * java -jar my-fat-jar.jar hello vert.x
  * ----
  * <p>
  * === Using the Launcher in fat jars
  * <p>
  * To use the {@link io.vertx.core.Launcher} class in a _fat-jar_ just set the `Main-Class` of the _MANIFEST_ to
- * `io.vertx.core.Launcher`. In addition, set the `Main-Verticle` _MANIFEST_ entry to the name of your main verticle.
+ * `io.conekt.core.Launcher`. In addition, set the `Main-IoActor` _MANIFEST_ entry to the name of your main verticle.
  * <p>
  * By default, it executed the `run` command. However, you can configure the default command by setting the
  * `Main-Command` _MANIFEST_ entry. The default command is used if the _fat jar_ is launched without a command.
@@ -1400,9 +1400,9 @@
  * <p>
  * A {@link io.vertx.core.Launcher} sub-class can:
  * <p>
- * * customize the vert.x configuration in {@link io.vertx.core.Launcher#beforeStartingVertx(VertxOptions)}
+ * * customize the vert.x configuration in {@link io.vertx.core.Launcher#beforeStartingVertx(ConektOptions)}
  * * retrieve the vert.x instance created by the "run" or "bare" command by
- * overriding {@link io.vertx.core.Launcher#afterStartingVertx(Vertx)}
+ * overriding {@link io.vertx.core.Launcher#afterStartingVertx(Conekt)}
  * * configure the default verticle and command with
  * {@link io.vertx.core.impl.launcher.VertxCommandLauncher#getMainVerticle()} and
  * {@link io.vertx.core.impl.launcher.VertxCommandLauncher#getDefaultCommand()}

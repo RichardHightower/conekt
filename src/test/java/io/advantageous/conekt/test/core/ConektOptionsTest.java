@@ -25,7 +25,7 @@
 
 package io.advantageous.conekt.test.core;
 
-import io.advantageous.conekt.VertxOptions;
+import io.advantageous.conekt.ConektOptions;
 import io.advantageous.conekt.metrics.MetricsOptions;
 import org.junit.Test;
 
@@ -34,11 +34,11 @@ import java.util.Random;
 /**
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
-public class VertxOptionsTest extends VertxTestBase {
+public class ConektOptionsTest extends VertxTestBase {
 
     @Test
     public void testOptions() {
-        VertxOptions options = new VertxOptions();
+        ConektOptions options = new ConektOptions();
         assertEquals(2 * Runtime.getRuntime().availableProcessors(), options.getEventLoopPoolSize());
         int rand = TestUtils.randomPositiveInt();
         assertEquals(options, options.setEventLoopPoolSize(rand));
@@ -176,7 +176,7 @@ public class VertxOptionsTest extends VertxTestBase {
         } catch (IllegalArgumentException e) {
             // OK
         }
-        assertEquals(VertxOptions.DEFAULT_HA_GROUP, options.getHAGroup());
+        assertEquals(ConektOptions.DEFAULT_HA_GROUP, options.getHAGroup());
         randString = TestUtils.randomUnicodeString(100);
         assertEquals(options, options.setHAGroup(randString));
         assertEquals(randString, options.getHAGroup());
@@ -201,7 +201,7 @@ public class VertxOptionsTest extends VertxTestBase {
 
     @Test
     public void testCopyOptions() {
-        VertxOptions options = new VertxOptions();
+        ConektOptions options = new ConektOptions();
 
         int clusterPort = TestUtils.randomPortInt();
         int clusterPublicPort = TestUtils.randomPortInt();
@@ -239,7 +239,7 @@ public class VertxOptionsTest extends VertxTestBase {
                 new MetricsOptions().
                         setEnabled(metricsEnabled));
         options.setWarningExceptionTime(warningExceptionTime);
-        options = new VertxOptions(options);
+        options = new ConektOptions(options);
         assertEquals(clusterPort, options.getClusterPort());
         assertEquals(clusterPublicPort, options.getClusterPublicPort());
         assertEquals(clusterPingInterval, options.getClusterPingInterval());

@@ -25,6 +25,7 @@
 
 package io.advantageous.conekt.http.impl;
 
+import io.advantageous.conekt.impl.ConektInternal;
 import io.advantageous.conekt.spi.metrics.HttpClientMetrics;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.CompositeByteBuf;
@@ -38,7 +39,6 @@ import io.advantageous.conekt.MultiMap;
 import io.advantageous.conekt.buffer.Buffer;
 import io.advantageous.conekt.http.HttpClientRequest;
 import io.advantageous.conekt.http.HttpClientResponse;
-import io.advantageous.conekt.impl.VertxInternal;
 import io.advantageous.conekt.net.NetSocket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,7 +64,7 @@ public class HttpClientRequestImpl implements HttpClientRequest {
     private final int port;
     private final HttpClientImpl client;
     private final HttpRequest request;
-    private final VertxInternal vertx;
+    private final ConektInternal vertx;
     private final io.advantageous.conekt.http.HttpMethod method;
     private Handler<HttpClientResponse> respHandler;
     private Handler<Void> endHandler;
@@ -87,7 +87,7 @@ public class HttpClientRequestImpl implements HttpClientRequest {
     private Object metric;
 
     HttpClientRequestImpl(HttpClientImpl client, io.advantageous.conekt.http.HttpMethod method, String host, int port,
-                          String relativeURI, VertxInternal vertx) {
+                          String relativeURI, ConektInternal vertx) {
         this.host = host;
         this.port = port;
         this.client = client;

@@ -39,20 +39,20 @@ public class BlockedThreadCheckerTest extends VertxTestBase {
 
     @Test
     public void testBlockCheckDefault() throws Exception {
-        Verticle verticle = new AbstractVerticle() {
+        IoActor ioActor = new AbstractIoActor() {
             @Override
             public void start() throws InterruptedException {
                 Thread.sleep(6000);
                 testComplete();
             }
         };
-        vertx.deployVerticle(verticle);
+        conekt.deployVerticle(ioActor);
         await();
     }
 
     @Test
     public void testBlockCheckExceptionTimeLimit() throws Exception {
-        Verticle verticle = new AbstractVerticle() {
+        IoActor ioActor = new AbstractIoActor() {
             @Override
             public void start() throws InterruptedException {
                 Thread.sleep(2000);
@@ -60,17 +60,17 @@ public class BlockedThreadCheckerTest extends VertxTestBase {
             }
         };
         // set warning threshold to 1s and the exception threshold as well
-        VertxOptions vertxOptions = new VertxOptions();
-        vertxOptions.setMaxEventLoopExecuteTime(1000000000);
-        vertxOptions.setWarningExceptionTime(1000000000);
-        Vertx newVertx = Vertx.vertx(vertxOptions);
-        newVertx.deployVerticle(verticle);
+        ConektOptions conektOptions = new ConektOptions();
+        conektOptions.setMaxEventLoopExecuteTime(1000000000);
+        conektOptions.setWarningExceptionTime(1000000000);
+        Conekt newConekt = Conekt.vertx(conektOptions);
+        newConekt.deployVerticle(ioActor);
         await();
     }
 
     @Test
     public void testBlockCheckWorker() throws Exception {
-        Verticle verticle = new AbstractVerticle() {
+        IoActor ioActor = new AbstractIoActor() {
             @Override
             public void start() throws InterruptedException {
                 Thread.sleep(2000);
@@ -78,13 +78,13 @@ public class BlockedThreadCheckerTest extends VertxTestBase {
             }
         };
         // set warning threshold to 1s and the exception threshold as well
-        VertxOptions vertxOptions = new VertxOptions();
-        vertxOptions.setMaxWorkerExecuteTime(1000000000);
-        vertxOptions.setWarningExceptionTime(1000000000);
-        Vertx newVertx = Vertx.vertx(vertxOptions);
+        ConektOptions conektOptions = new ConektOptions();
+        conektOptions.setMaxWorkerExecuteTime(1000000000);
+        conektOptions.setWarningExceptionTime(1000000000);
+        Conekt newConekt = Conekt.vertx(conektOptions);
         DeploymentOptions depolymentOptions = new DeploymentOptions();
         depolymentOptions.setWorker(true);
-        newVertx.deployVerticle(verticle, depolymentOptions);
+        newConekt.deployVerticle(ioActor, depolymentOptions);
         await();
     }
 }

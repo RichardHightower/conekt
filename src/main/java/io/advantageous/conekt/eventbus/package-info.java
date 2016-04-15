@@ -29,7 +29,7 @@
  * <p>
  * The {@link io.advantageous.conekt.eventbus.EventBus event bus} is the *nervous system* of Vert.x.
  * <p>
- * There is a single event bus instance for every Vert.x instance and it is obtained using the method {@link io.advantageous.conekt.Vertx#eventBus}.
+ * There is a single event bus instance for every Vert.x instance and it is obtained using the method {@link io.advantageous.conekt.Conekt#eventBus}.
  * <p>
  * The event bus allows different parts of your application to communicate with each other irrespective of what language they are written in,
  * and whether they're in the same Vert.x instance, or in a different Vert.x instance.
@@ -296,7 +296,7 @@
  * <p>
  * You can run Vert.x clustered on the command line with
  * <p>
- * vertx run my-verticle.js -cluster
+ * conekt run my-verticle.js -cluster
  * <p>
  * === Automatic clean-up in verticles
  * <p>

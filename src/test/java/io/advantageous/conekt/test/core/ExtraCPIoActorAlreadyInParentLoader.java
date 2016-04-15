@@ -23,46 +23,20 @@
  *
  */
 
-package io.advantageous.conekt.impl;
+package io.advantageous.conekt.test.core;
 
-import io.netty.util.concurrent.FastThreadLocalThread;
+import io.advantageous.conekt.AbstractIoActor;
+import io.advantageous.conekt.impl.IsolatingClassLoader;
+import org.junit.Assert;
 
 /**
- * @author <a href="mailto:nmaurer@redhat.com">Norman Maurer</a>
+ * @author <a href="mailto:julien@julienviet.com">Julien Viet</a>
  */
-final class VertxThread extends FastThreadLocalThread {
-
-    private final boolean worker;
-    private long execStart;
-    private ContextImpl context;
-
-    public VertxThread(Runnable target, String name, boolean worker) {
-        super(target, name);
-        this.worker = worker;
+public class ExtraCPIoActorAlreadyInParentLoader extends AbstractIoActor {
+    @Override
+    public void start() throws Exception {
+        IsolatingClassLoader cl = (IsolatingClassLoader) Thread.currentThread().getContextClassLoader();
+        Class extraCPClass = cl.loadClass("MyIoActor");
+        Assert.assertSame(extraCPClass.getClassLoader(), cl.getParent());
     }
-
-    ContextImpl getContext() {
-        return context;
-    }
-
-    void setContext(ContextImpl context) {
-        this.context = context;
-    }
-
-    public final void executeStart() {
-        execStart = System.nanoTime();
-    }
-
-    public final void executeEnd() {
-        execStart = 0;
-    }
-
-    public long startTime() {
-        return execStart;
-    }
-
-    public boolean isWorker() {
-        return worker;
-    }
-
 }

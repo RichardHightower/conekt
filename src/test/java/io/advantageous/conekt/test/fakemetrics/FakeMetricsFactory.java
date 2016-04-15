@@ -25,19 +25,19 @@
 
 package io.advantageous.conekt.test.fakemetrics;
 
-import io.advantageous.conekt.Vertx;
-import io.advantageous.conekt.VertxOptions;
-import io.advantageous.conekt.spi.VertxMetricsFactory;
-import io.advantageous.conekt.spi.metrics.VertxMetrics;
+import io.advantageous.conekt.Conekt;
+import io.advantageous.conekt.ConektOptions;
+import io.advantageous.conekt.spi.MetricsFactory;
+import io.advantageous.conekt.spi.metrics.ConektMetrics;
 
 /**
  * @author <a href="mailto:julien@julienviet.com">Julien Viet</a>
  */
-public class FakeMetricsFactory implements VertxMetricsFactory {
+public class FakeMetricsFactory implements MetricsFactory {
 
     @Override
-    public VertxMetrics metrics(Vertx vertx, VertxOptions options) {
-        return new FakeVertxMetrics(vertx);
+    public ConektMetrics metrics(Conekt conekt, ConektOptions options) {
+        return new FakeVertxMetrics(conekt);
     }
 
 }

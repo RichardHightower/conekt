@@ -25,13 +25,13 @@
 
 package io.advantageous.conekt.test.core;
 
+import io.advantageous.conekt.Conekt;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.advantageous.conekt.Vertx;
 import io.advantageous.conekt.buffer.Buffer;
 import io.advantageous.conekt.impl.ContextInternal;
 import io.advantageous.conekt.net.NetClientOptions;
@@ -50,14 +50,14 @@ public class EventLoopGroupTest extends VertxTestBase {
     @Test
     public void testGetEventLoopGroup() {
 
-        EventLoopGroup elp = vertx.nettyEventLoopGroup();
+        EventLoopGroup elp = conekt.nettyEventLoopGroup();
         assertNotNull(elp);
 
     }
 
     @Test
     public void testNettyServerUsesContextEventLoop() throws Exception {
-        ContextInternal context = (ContextInternal) vertx.getOrCreateContext();
+        ContextInternal context = (ContextInternal) conekt.getOrCreateContext();
         AtomicReference<Thread> contextThread = new AtomicReference<>();
         CountDownLatch latch = new CountDownLatch(1);
         context.runOnContext(v -> {
@@ -75,14 +75,14 @@ public class EventLoopGroupTest extends VertxTestBase {
                 assertSame(contextThread.get(), Thread.currentThread());
                 context.executeFromIO(() -> {
                     assertSame(contextThread.get(), Thread.currentThread());
-                    assertSame(context, Vertx.currentContext());
+                    assertSame(context, Conekt.currentContext());
                     ch.pipeline().addLast(new ChannelInboundHandlerAdapter() {
                         @Override
                         public void channelActive(ChannelHandlerContext ctx) throws Exception {
                             assertSame(contextThread.get(), Thread.currentThread());
                             context.executeFromIO(() -> {
                                 assertSame(contextThread.get(), Thread.currentThread());
-                                assertSame(context, Vertx.currentContext());
+                                assertSame(context, Conekt.currentContext());
                             });
                         }
 
@@ -93,7 +93,7 @@ public class EventLoopGroupTest extends VertxTestBase {
                             assertSame(contextThread.get(), Thread.currentThread());
                             context.executeFromIO(() -> {
                                 assertSame(contextThread.get(), Thread.currentThread());
-                                assertSame(context, Vertx.currentContext());
+                                assertSame(context, Conekt.currentContext());
                             });
                         }
 
@@ -102,7 +102,7 @@ public class EventLoopGroupTest extends VertxTestBase {
                             assertSame(contextThread.get(), Thread.currentThread());
                             context.executeFromIO(() -> {
                                 assertSame(contextThread.get(), Thread.currentThread());
-                                assertSame(context, Vertx.currentContext());
+                                assertSame(context, Conekt.currentContext());
                                 ctx.writeAndFlush(Unpooled.EMPTY_BUFFER).addListener(ChannelFutureListener.CLOSE);
                             });
                         }
@@ -112,7 +112,7 @@ public class EventLoopGroupTest extends VertxTestBase {
                             assertSame(contextThread.get(), Thread.currentThread());
                             context.executeFromIO(() -> {
                                 assertSame(contextThread.get(), Thread.currentThread());
-                                assertSame(context, Vertx.currentContext());
+                                assertSame(context, Conekt.currentContext());
                                 testComplete();
                             });
                         }
@@ -126,7 +126,7 @@ public class EventLoopGroupTest extends VertxTestBase {
             }
         });
         bs.bind("localhost", 1234).sync();
-        vertx.createNetClient(new NetClientOptions()).connect(1234, "localhost", ar -> {
+        conekt.createNetClient(new NetClientOptions()).connect(1234, "localhost", ar -> {
             assertTrue(ar.succeeded());
             NetSocket so = ar.result();
             so.write(Buffer.buffer("hello"));

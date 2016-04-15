@@ -59,24 +59,24 @@ import java.util.zip.ZipFile;
  */
 public class FileResolver {
 
-    public static final String DISABLE_FILE_CACHING_PROP_NAME = "vertx.disableFileCaching";
-    public static final String DISABLE_CP_RESOLVING_PROP_NAME = "vertx.disableFileCPResolving";
-    public static final String CACHE_DIR_BASE_PROP_NAME = "vertx.cacheDirBase";
+    public static final String DISABLE_FILE_CACHING_PROP_NAME = "conekt.disableFileCaching";
+    public static final String DISABLE_CP_RESOLVING_PROP_NAME = "conekt.disableFileCPResolving";
+    public static final String CACHE_DIR_BASE_PROP_NAME = "conekt.cacheDirBase";
 
-    private static final String DEFAULT_CACHE_DIR_BASE = ".vertx";
+    private static final String DEFAULT_CACHE_DIR_BASE = ".conekt";
     private static final String FILE_SEP = System.getProperty("file.separator");
     private static final boolean ENABLE_CACHING = !Boolean.getBoolean(DISABLE_FILE_CACHING_PROP_NAME);
     private static final boolean ENABLE_CP_RESOLVING = !Boolean.getBoolean(DISABLE_CP_RESOLVING_PROP_NAME);
     private static final String CACHE_DIR_BASE = System.getProperty(CACHE_DIR_BASE_PROP_NAME, DEFAULT_CACHE_DIR_BASE);
     private static boolean NON_UNIX_FILE_SEP = !FILE_SEP.equals("/");
-    private final Vertx vertx;
+    private final Conekt conekt;
     private final File cwd;
     private File cacheDir;
     private Thread shutdownHook;
 
-    public FileResolver(Vertx vertx) {
-        this.vertx = vertx;
-        String cwdOverride = System.getProperty("vertx.cwd");
+    public FileResolver(Conekt conekt) {
+        this.conekt = conekt;
+        String cwdOverride = System.getProperty("conekt.cwd");
         if (cwdOverride != null) {
             cwd = new File(cwdOverride).getAbsoluteFile();
         } else {
@@ -143,7 +143,7 @@ public class FileResolver {
         try {
             resource = new File(URLDecoder.decode(url.getPath(), "UTF-8"));
         } catch (UnsupportedEncodingException e) {
-            throw new VertxException(e);
+            throw new ConektException(e);
         }
         boolean isDirectory = resource.isDirectory();
         File cacheFile = new File(cacheDir, fileName);
@@ -157,7 +157,7 @@ public class FileResolver {
                 }
             } catch (FileAlreadyExistsException ignore) {
             } catch (IOException e) {
-                throw new VertxException(e);
+                throw new ConektException(e);
             }
         } else {
             cacheFile.mkdirs();
@@ -209,7 +209,7 @@ public class FileResolver {
                 }
             }
         } catch (IOException e) {
-            throw new VertxException(e);
+            throw new ConektException(e);
         }
 
         return new File(cacheDir, fileName);
@@ -242,7 +242,7 @@ public class FileResolver {
                 }
             }
         } catch (IOException e) {
-            throw new VertxException(e);
+            throw new ConektException(e);
         }
         return new File(cacheDir, url.getHost() + File.separator + url.getFile());
     }
@@ -276,7 +276,7 @@ public class FileResolver {
 
     private void deleteCacheDir(Handler<AsyncResult<Void>> handler) {
         if (cacheDir != null && cacheDir.exists()) {
-            vertx.fileSystem().deleteRecursive(cacheDir.getAbsolutePath(), true, handler);
+            conekt.fileSystem().deleteRecursive(cacheDir.getAbsolutePath(), true, handler);
         } else {
             handler.handle(Future.succeededFuture());
         }

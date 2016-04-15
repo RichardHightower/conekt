@@ -28,8 +28,8 @@ package io.advantageous.conekt.net.impl;
 import io.advantageous.conekt.AsyncResult;
 import io.advantageous.conekt.Future;
 import io.advantageous.conekt.Handler;
+import io.advantageous.conekt.impl.ConektInternal;
 import io.advantageous.conekt.impl.ContextImpl;
-import io.advantageous.conekt.impl.VertxInternal;
 import io.advantageous.conekt.net.NetworkOptions;
 import io.advantageous.conekt.net.SocketAddress;
 import io.advantageous.conekt.spi.metrics.NetworkMetrics;
@@ -60,7 +60,7 @@ public abstract class ConnectionBase {
 
     private static final Logger log = LoggerFactory.getLogger(ConnectionBase.class);
 
-    protected final VertxInternal vertx;
+    protected final ConektInternal vertx;
     protected final Channel channel;
     protected final ContextImpl context;
     protected final NetworkMetrics metrics;
@@ -71,14 +71,14 @@ public abstract class ConnectionBase {
     private Thread ctxThread;
     private boolean needsAsyncFlush;
 
-    protected ConnectionBase(VertxInternal vertx, Channel channel, ContextImpl context, NetworkMetrics metrics) {
+    protected ConnectionBase(ConektInternal vertx, Channel channel, ContextImpl context, NetworkMetrics metrics) {
         this.vertx = vertx;
         this.channel = channel;
         this.context = context;
         this.metrics = metrics;
     }
 
-    protected ConnectionBase(VertxInternal vertx, Channel channel, ContextImpl context, NetworkOptions options) {
+    protected ConnectionBase(ConektInternal vertx, Channel channel, ContextImpl context, NetworkOptions options) {
         this.vertx = vertx;
         this.channel = channel;
         this.context = context;

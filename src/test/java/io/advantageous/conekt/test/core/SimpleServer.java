@@ -25,7 +25,7 @@
 
 package io.advantageous.conekt.test.core;
 
-import io.advantageous.conekt.AbstractVerticle;
+import io.advantageous.conekt.AbstractIoActor;
 import io.advantageous.conekt.Future;
 import io.advantageous.conekt.http.HttpServer;
 import io.advantageous.conekt.http.HttpServerOptions;
@@ -33,11 +33,11 @@ import io.advantageous.conekt.http.HttpServerOptions;
 /**
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
-public class SimpleServer extends AbstractVerticle {
+public class SimpleServer extends AbstractIoActor {
 
     @Override
     public void start(Future<Void> startFuture) throws Exception {
-        HttpServer server = vertx.createHttpServer(new HttpServerOptions().setPort(8080));
+        HttpServer server = conekt.createHttpServer(new HttpServerOptions().setPort(8080));
         server.requestHandler(req -> req.response().end());
         server.listen(res -> {
             if (res.succeeded()) {

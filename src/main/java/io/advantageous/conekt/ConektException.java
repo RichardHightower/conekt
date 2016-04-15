@@ -22,39 +22,44 @@
  *  * You may elect to redistribute this code under either of these licenses.
  *
  */
-package io.advantageous.conekt.impl;
+package io.advantageous.conekt;
 
-import io.advantageous.conekt.*;
-import io.advantageous.conekt.spi.VertxFactory;
 
-/**
- * @author pidster
+/*
+ * Vert.x hates Java checked exceptions and doesn't want to pollute it's API with them.
+ * <p>
+ * This is a general purpose exception class that is often thrown from Vert.x APIs if things go wrong.
+ *
  * @author <a href="http://tfox.org">Tim Fox</a>
+ *
  */
-public class VertxFactoryImpl implements VertxFactory {
+public class ConektException extends RuntimeException {
 
-    @Override
-    public Vertx vertx() {
-        return new VertxImpl();
+    /**
+     * Create an instance given a message
+     *
+     * @param message the message
+     */
+    public ConektException(String message) {
+        super(message);
     }
 
-    @Override
-    public Vertx vertx(VertxOptions options) {
-        if (options.isClustered()) {
-            throw new IllegalArgumentException("Please use Vertx.clusteredVertx() to create a clustered Vert.x instance");
-        }
-        return new VertxImpl(options);
+    /**
+     * Create an instance given a message and a cause
+     *
+     * @param message the message
+     * @param cause   the cause
+     */
+    public ConektException(String message, Throwable cause) {
+        super(message, cause);
     }
 
-    @Override
-    public void clusteredVertx(VertxOptions options, final Handler<AsyncResult<Vertx>> resultHandler) {
-        // We don't require the user to set clustered to true if they use this method
-        options.setClustered(true);
-        new VertxImpl(options, resultHandler);
-    }
-
-    @Override
-    public Context context() {
-        return VertxImpl.context();
+    /**
+     * Create an instance given a cause
+     *
+     * @param cause the cause
+     */
+    public ConektException(Throwable cause) {
+        super(cause);
     }
 }

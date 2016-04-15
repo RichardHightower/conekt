@@ -28,6 +28,7 @@ package io.advantageous.conekt.http.impl;
 import io.advantageous.conekt.AsyncResult;
 import io.advantageous.conekt.Future;
 import io.advantageous.conekt.http.HttpHeaders;
+import io.advantageous.conekt.impl.ConektInternal;
 import io.advantageous.conekt.impl.ContextImpl;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -38,7 +39,6 @@ import io.advantageous.conekt.Handler;
 import io.advantageous.conekt.MultiMap;
 import io.advantageous.conekt.buffer.Buffer;
 import io.advantageous.conekt.http.HttpServerResponse;
-import io.advantageous.conekt.impl.VertxInternal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -63,7 +63,7 @@ public class HttpServerResponseImpl implements HttpServerResponse {
 
     private static final Logger log = LoggerFactory.getLogger(HttpServerResponseImpl.class);
 
-    private final VertxInternal vertx;
+    private final ConektInternal vertx;
     private final ServerConnection conn;
     private final HttpResponse response;
     private final HttpVersion version;
@@ -85,7 +85,7 @@ public class HttpServerResponseImpl implements HttpServerResponse {
     private String statusMessage;
     private long bytesWritten;
 
-    HttpServerResponseImpl(final VertxInternal vertx, ServerConnection conn, HttpRequest request) {
+    HttpServerResponseImpl(final ConektInternal vertx, ServerConnection conn, HttpRequest request) {
         this.vertx = vertx;
         this.conn = conn;
         this.version = request.getProtocolVersion();

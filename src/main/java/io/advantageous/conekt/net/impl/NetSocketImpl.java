@@ -25,6 +25,7 @@
 
 package io.advantageous.conekt.net.impl;
 
+import io.advantageous.conekt.impl.ConektInternal;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
@@ -39,7 +40,6 @@ import io.advantageous.conekt.buffer.Buffer;
 import io.advantageous.conekt.eventbus.Message;
 import io.advantageous.conekt.eventbus.MessageConsumer;
 import io.advantageous.conekt.impl.ContextImpl;
-import io.advantageous.conekt.impl.VertxInternal;
 import io.advantageous.conekt.net.NetSocket;
 import io.advantageous.conekt.net.SocketAddress;
 import io.advantageous.conekt.spi.metrics.TCPMetrics;
@@ -80,13 +80,13 @@ public class NetSocketImpl extends ConnectionBase implements NetSocket {
     private boolean paused = false;
     private ChannelFuture writeFuture;
 
-    public NetSocketImpl(VertxInternal vertx, Channel channel, ContextImpl context, SSLHelper helper, boolean client, TCPMetrics metrics, Object metric) {
+    public NetSocketImpl(ConektInternal vertx, Channel channel, ContextImpl context, SSLHelper helper, boolean client, TCPMetrics metrics, Object metric) {
         super(vertx, channel, context, metrics);
         this.helper = helper;
         this.client = client;
         this.writeHandlerID = UUID.randomUUID().toString();
         this.metric = metric;
-        Handler<Message<Buffer>> writeHandler = msg -> write(msg.body());
+        final Handler<Message<Buffer>> writeHandler = msg -> write(msg.body());
         registration = vertx.eventBus().<Buffer>localConsumer(writeHandlerID).handler(writeHandler);
     }
 

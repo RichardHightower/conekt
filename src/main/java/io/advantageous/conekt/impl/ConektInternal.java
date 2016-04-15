@@ -26,12 +26,12 @@
 package io.advantageous.conekt.impl;
 
 
+import io.advantageous.conekt.Conekt;
 import io.advantageous.conekt.Handler;
-import io.advantageous.conekt.Vertx;
 import io.advantageous.conekt.http.impl.HttpServerImpl;
 import io.advantageous.conekt.net.impl.NetServerImpl;
 import io.advantageous.conekt.net.impl.ServerID;
-import io.advantageous.conekt.spi.metrics.VertxMetrics;
+import io.advantageous.conekt.spi.metrics.ConektMetrics;
 import io.netty.channel.EventLoopGroup;
 import io.advantageous.conekt.AsyncResult;
 
@@ -46,7 +46,7 @@ import java.util.concurrent.ExecutorService;
  *
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
-public interface VertxInternal extends Vertx {
+public interface ConektInternal extends Conekt {
 
     @Override
     ContextImpl getOrCreateContext();
@@ -61,7 +61,7 @@ public interface VertxInternal extends Vertx {
 
     Map<ServerID, NetServerImpl> sharedNetServers();
 
-    VertxMetrics metricsSPI();
+    ConektMetrics metricsSPI();
 
     /**
      * Get the current context
