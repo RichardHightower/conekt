@@ -34,7 +34,7 @@ import java.util.concurrent.Executor;
  */
 public class WorkerContext extends ContextImpl {
 
-    public WorkerContext(VertxInternal vertx, Executor orderedInternalPoolExec, Executor workerExec, String deploymentID,
+    public WorkerContext(ConektInternal vertx, Executor orderedInternalPoolExec, Executor workerExec, String deploymentID,
                          ClassLoader tccl) {
         super(vertx, orderedInternalPoolExec, workerExec, deploymentID, tccl);
     }

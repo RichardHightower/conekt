@@ -24,7 +24,7 @@
  */
 package io.advantageous.conekt.http.impl;
 
-import io.advantageous.conekt.Vertx;
+import io.advantageous.conekt.Conekt;
 import io.advantageous.conekt.http.HttpServerFileUpload;
 import io.advantageous.conekt.streams.Pump;
 import io.advantageous.conekt.Handler;
@@ -46,7 +46,7 @@ import java.nio.charset.Charset;
 class HttpServerFileUploadImpl implements HttpServerFileUpload {
 
     private final HttpServerRequestImpl req;
-    private final Vertx vertx;
+    private final Conekt conekt;
     private final String name;
     private final String filename;
     private final String contentType;
@@ -64,10 +64,10 @@ class HttpServerFileUploadImpl implements HttpServerFileUpload {
     private boolean complete;
     private boolean lazyCalculateSize;
 
-    HttpServerFileUploadImpl(Vertx vertx, HttpServerRequestImpl req, String name, String filename, String contentType,
+    HttpServerFileUploadImpl(Conekt conekt, HttpServerRequestImpl req, String name, String filename, String contentType,
                              String contentTransferEncoding,
                              Charset charset, long size) {
-        this.vertx = vertx;
+        this.conekt = conekt;
         this.req = req;
         this.name = name;
         this.filename = filename;
@@ -154,7 +154,7 @@ class HttpServerFileUploadImpl implements HttpServerFileUpload {
     @Override
     public HttpServerFileUpload streamToFileSystem(String filename) {
         pause();
-        vertx.fileSystem().open(filename, new OpenOptions(), ar -> {
+        conekt.fileSystem().open(filename, new OpenOptions(), ar -> {
             if (ar.succeeded()) {
                 file = ar.result();
                 Pump p = Pump.pump(HttpServerFileUploadImpl.this, ar.result());

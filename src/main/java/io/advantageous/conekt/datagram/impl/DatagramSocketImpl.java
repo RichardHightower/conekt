@@ -40,7 +40,7 @@ import io.advantageous.conekt.datagram.DatagramSocketOptions;
 import io.advantageous.conekt.datagram.PacketWritestream;
 import io.advantageous.conekt.impl.Arguments;
 import io.advantageous.conekt.impl.ContextImpl;
-import io.advantageous.conekt.impl.VertxInternal;
+import io.advantageous.conekt.impl.ConektInternal;
 import io.advantageous.conekt.net.NetworkOptions;
 import io.advantageous.conekt.net.impl.ConnectionBase;
 import io.advantageous.conekt.net.impl.SocketAddressImpl;
@@ -59,7 +59,7 @@ public class DatagramSocketImpl extends ConnectionBase implements DatagramSocket
 
     private Handler<io.advantageous.conekt.datagram.DatagramPacket> packetHandler;
 
-    public DatagramSocketImpl(VertxInternal vertx, DatagramSocketOptions options) {
+    public DatagramSocketImpl(ConektInternal vertx, DatagramSocketOptions options) {
         super(vertx, createChannel(options.isIpV6() ? io.advantageous.conekt.datagram.impl.InternetProtocolFamily.IPv6 : io.advantageous.conekt.datagram.impl.InternetProtocolFamily.IPv4,
                 new DatagramSocketOptions(options)), vertx.getOrCreateContext(), options);
         ContextImpl creatingContext = vertx.getContext();

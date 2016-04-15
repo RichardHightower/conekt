@@ -78,7 +78,7 @@ public class EventBusInterceptorTest extends VertxTestBase {
             fail("Should not receive message");
         });
         eb.send("some-address", "armadillo");
-        vertx.setTimer(200, tid -> testComplete());
+        conekt.setTimer(200, tid -> testComplete());
         await();
     }
 
@@ -173,7 +173,7 @@ public class EventBusInterceptorTest extends VertxTestBase {
 
         Handler<SendContext> eb1 = sc -> {
             cnt.incrementAndGet();
-            vertx.runOnContext(v -> sc.next());
+            conekt.runOnContext(v -> sc.next());
             throw new RuntimeException("foo");
         };
 
@@ -197,6 +197,6 @@ public class EventBusInterceptorTest extends VertxTestBase {
     public void setUp() throws Exception {
         super.setUp();
 
-        eb = vertx.eventBus();
+        eb = conekt.eventBus();
     }
 }

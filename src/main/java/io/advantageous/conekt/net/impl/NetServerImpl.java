@@ -41,7 +41,7 @@ import io.netty.handler.ssl.SslHandler;
 import io.netty.handler.stream.ChunkedWriteHandler;
 import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.concurrent.GlobalEventExecutor;
-import io.advantageous.conekt.impl.VertxInternal;
+import io.advantageous.conekt.impl.ConektInternal;
 import io.advantageous.conekt.net.NetServer;
 import io.advantageous.conekt.net.NetSocketStream;
 import io.advantageous.conekt.spi.metrics.MetricsProvider;
@@ -65,12 +65,12 @@ public class NetServerImpl implements NetServer, Closeable, MetricsProvider {
 
     private static final Logger log = LoggerFactory.getLogger(NetServerImpl.class);
 
-    private final VertxInternal vertx;
+    private final ConektInternal vertx;
     private final NetServerOptions options;
     private final ContextImpl creatingContext;
     private final SSLHelper sslHelper;
     private final Map<Channel, NetSocketImpl> socketMap = new ConcurrentHashMap<>();
-    private final VertxEventLoopGroup availableWorkers = new VertxEventLoopGroup();
+    private final ConektEventLoopGroup availableWorkers = new ConektEventLoopGroup();
     private final HandlerManager<NetSocket> handlerManager = new HandlerManager<>(availableWorkers);
     private final Queue<Runnable> bindListeners = new LinkedList<>();
     private final NetSocketStreamImpl connectStream = new NetSocketStreamImpl();
@@ -84,7 +84,7 @@ public class NetServerImpl implements NetServer, Closeable, MetricsProvider {
     private ContextImpl listenContext;
     private TCPMetrics metrics;
 
-    public NetServerImpl(VertxInternal vertx, NetServerOptions options) {
+    public NetServerImpl(ConektInternal vertx, NetServerOptions options) {
         this.vertx = vertx;
         this.options = new NetServerOptions(options);
         this.sslHelper = new SSLHelper(options, KeyStoreHelper.create(vertx, options.getKeyCertOptions()), KeyStoreHelper.create(vertx, options.getTrustOptions()));
@@ -156,7 +156,7 @@ public class NetServerImpl implements NetServer, Closeable, MetricsProvider {
             id = new ServerID(port, host);
             NetServerImpl shared = vertx.sharedNetServers().get(id);
             if (shared == null || port == 0) { // Wildcard port will imply a new actual server each time
-                serverChannelGroup = new DefaultChannelGroup("vertx-acceptor-channels", GlobalEventExecutor.INSTANCE);
+                serverChannelGroup = new DefaultChannelGroup("conekt-acceptor-channels", GlobalEventExecutor.INSTANCE);
 
                 ServerBootstrap bootstrap = new ServerBootstrap();
                 bootstrap.group(availableWorkers);
@@ -409,7 +409,7 @@ public class NetServerImpl implements NetServer, Closeable, MetricsProvider {
         super.finalize();
     }
 
-    private class ServerHandler extends VertxNetHandler {
+    private class ServerHandler extends ConektNetHandler {
         public ServerHandler() {
             super(socketMap);
         }

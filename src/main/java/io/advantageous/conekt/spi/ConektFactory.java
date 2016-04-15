@@ -27,18 +27,18 @@ package io.advantageous.conekt.spi;
 import io.advantageous.conekt.*;
 
 /**
- * Factory for creating Vertx instances.<p>
- * Use this to create Vertx instances when embedding Vert.x core directly.<p>
+ * Factory for creating Conekt instances.<p>
+ * Use this to create Conekt instances when embedding Vert.x core directly.<p>
  *
  * @author pidster
  */
-public interface VertxFactory {
+public interface ConektFactory {
 
-    Vertx vertx();
+    Conekt vertx();
 
-    Vertx vertx(VertxOptions options);
+    Conekt vertx(ConektOptions options);
 
-    void clusteredVertx(VertxOptions options, Handler<AsyncResult<Vertx>> resultHandler);
+    void clusteredVertx(ConektOptions options, Handler<AsyncResult<Conekt>> resultHandler);
 
     Context context();
 

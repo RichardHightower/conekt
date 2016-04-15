@@ -52,7 +52,7 @@ public class HandlerRegistration<T> implements MessageConsumer<T>, Handler<Messa
     public static final int DEFAULT_MAX_BUFFERED_MESSAGES = 1000;
 
     private static final Logger log = LoggerFactory.getLogger(HandlerRegistration.class);
-    private final Vertx vertx;
+    private final Conekt conekt;
     private final EventBusMetrics metrics;
     private final EventBusImpl eventBus;
     private final String address;
@@ -70,17 +70,17 @@ public class HandlerRegistration<T> implements MessageConsumer<T>, Handler<Messa
     private boolean paused;
     private Object metric;
 
-    public HandlerRegistration(Vertx vertx, EventBusMetrics metrics, EventBusImpl eventBus, String address,
+    public HandlerRegistration(Conekt conekt, EventBusMetrics metrics, EventBusImpl eventBus, String address,
                                String repliedAddress, boolean localOnly,
                                Handler<AsyncResult<Message<T>>> asyncResultHandler, long timeout) {
-        this.vertx = vertx;
+        this.conekt = conekt;
         this.metrics = metrics;
         this.eventBus = eventBus;
         this.address = address;
         this.repliedAddress = repliedAddress;
         this.asyncResultHandler = asyncResultHandler;
         if (timeout != -1) {
-            timeoutID = vertx.setTimer(timeout, tid -> {
+            timeoutID = conekt.setTimer(timeout, tid -> {
                 metrics.replyFailure(address, ReplyFailure.TIMEOUT);
                 sendAsyncResultFailure(ReplyFailure.TIMEOUT, "Timed out waiting for a reply");
             });
@@ -112,7 +112,7 @@ public class HandlerRegistration<T> implements MessageConsumer<T>, Handler<Messa
         Objects.requireNonNull(completionHandler);
         if (result != null) {
             AsyncResult<Void> value = result;
-            vertx.runOnContext(v -> completionHandler.handle(value));
+            conekt.runOnContext(v -> completionHandler.handle(value));
         } else {
             this.completionHandler = completionHandler;
         }
@@ -140,7 +140,7 @@ public class HandlerRegistration<T> implements MessageConsumer<T>, Handler<Messa
 
     private void doUnregister(Handler<AsyncResult<Void>> completionHandler, boolean callEndHandler) {
         if (timeoutID != -1) {
-            vertx.cancelTimer(timeoutID);
+            conekt.cancelTimer(timeoutID);
         }
         if (endHandler != null && callEndHandler) {
             Handler<Void> theEndHandler = endHandler;
@@ -163,7 +163,7 @@ public class HandlerRegistration<T> implements MessageConsumer<T>, Handler<Messa
 
     private void callCompletionHandlerAsync(Handler<AsyncResult<Void>> completionHandler) {
         if (completionHandler != null) {
-            vertx.runOnContext(v -> completionHandler.handle(Future.succeededFuture()));
+            conekt.runOnContext(v -> completionHandler.handle(Future.succeededFuture()));
         }
     }
 
@@ -174,7 +174,7 @@ public class HandlerRegistration<T> implements MessageConsumer<T>, Handler<Messa
                 metric = metrics.handlerRegistered(address, repliedAddress);
             }
             Handler<AsyncResult<Void>> callback = completionHandler;
-            vertx.runOnContext(v -> callback.handle(result));
+            conekt.runOnContext(v -> callback.handle(result));
         } else if (result.failed()) {
             log.error("Failed to propagate registration for handler " + handler + " and address " + address);
         } else {
@@ -274,7 +274,7 @@ public class HandlerRegistration<T> implements MessageConsumer<T>, Handler<Messa
     public synchronized MessageConsumer<T> endHandler(Handler<Void> endHandler) {
         if (endHandler != null) {
             // We should use the HandlerHolder context to properly do this (needs small refactoring)
-            Context endCtx = vertx.getOrCreateContext();
+            Context endCtx = conekt.getOrCreateContext();
             this.endHandler = v1 -> endCtx.runOnContext(v2 -> endHandler.handle(null));
         } else {
             this.endHandler = null;
@@ -290,7 +290,7 @@ public class HandlerRegistration<T> implements MessageConsumer<T>, Handler<Messa
     private void checkNextTick() {
         // Check if there are more pending messages in the queue that can be processed next time around
         if (!pending.isEmpty()) {
-            vertx.runOnContext(v -> {
+            conekt.runOnContext(v -> {
                 if (!paused) {
                     Message<T> message = pending.poll();
                     if (message != null) {

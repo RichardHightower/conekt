@@ -44,7 +44,7 @@ import io.advantageous.conekt.buffer.Buffer;
  * <p>
  * <p>
  * <pre>
- * Buffer store = vertx.fileSystem().readFileSync("/mykeystore.jks");
+ * Buffer store = conekt.fileSystem().readFileSync("/mykeystore.jks");
  * options.setKeyStore(JKSOptions.options().setValue(store).setPassword("foo"));
  * </pre>
  *

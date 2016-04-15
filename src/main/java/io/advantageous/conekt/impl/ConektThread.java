@@ -22,44 +22,47 @@
  *  * You may elect to redistribute this code under either of these licenses.
  *
  */
-package io.advantageous.conekt;
 
+package io.advantageous.conekt.impl;
 
-/*
- * Vert.x hates Java checked exceptions and doesn't want to pollute it's API with them.
- * <p>
- * This is a general purpose exception class that is often thrown from Vert.x APIs if things go wrong.
- *
- * @author <a href="http://tfox.org">Tim Fox</a>
- *
+import io.netty.util.concurrent.FastThreadLocalThread;
+
+/**
+ * @author <a href="mailto:nmaurer@redhat.com">Norman Maurer</a>
  */
-public class VertxException extends RuntimeException {
+final class ConektThread extends FastThreadLocalThread {
 
-    /**
-     * Create an instance given a message
-     *
-     * @param message the message
-     */
-    public VertxException(String message) {
-        super(message);
+    private final boolean worker;
+    private long execStart;
+    private ContextImpl context;
+
+    public ConektThread(Runnable target, String name, boolean worker) {
+        super(target, name);
+        this.worker = worker;
     }
 
-    /**
-     * Create an instance given a message and a cause
-     *
-     * @param message the message
-     * @param cause   the cause
-     */
-    public VertxException(String message, Throwable cause) {
-        super(message, cause);
+    ContextImpl getContext() {
+        return context;
     }
 
-    /**
-     * Create an instance given a cause
-     *
-     * @param cause the cause
-     */
-    public VertxException(Throwable cause) {
-        super(cause);
+    void setContext(ContextImpl context) {
+        this.context = context;
     }
+
+    public final void executeStart() {
+        execStart = System.nanoTime();
+    }
+
+    public final void executeEnd() {
+        execStart = 0;
+    }
+
+    public long startTime() {
+        return execStart;
+    }
+
+    public boolean isWorker() {
+        return worker;
+    }
+
 }

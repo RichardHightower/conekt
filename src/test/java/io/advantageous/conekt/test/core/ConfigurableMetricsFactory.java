@@ -25,23 +25,23 @@
 
 package io.advantageous.conekt.test.core;
 
-import io.advantageous.conekt.Vertx;
-import io.advantageous.conekt.VertxOptions;
+import io.advantageous.conekt.Conekt;
+import io.advantageous.conekt.ConektOptions;
 import io.advantageous.conekt.metrics.MetricsOptions;
-import io.advantageous.conekt.metrics.impl.DummyVertxMetrics;
-import io.advantageous.conekt.spi.VertxMetricsFactory;
-import io.advantageous.conekt.spi.metrics.VertxMetrics;
+import io.advantageous.conekt.metrics.impl.DummyConektMetrics;
+import io.advantageous.conekt.spi.MetricsFactory;
+import io.advantageous.conekt.spi.metrics.ConektMetrics;
 
 /**
  * @author <a href="mailto:julien@julienviet.com">Julien Viet</a>
  */
-public class ConfigurableMetricsFactory implements VertxMetricsFactory {
+public class ConfigurableMetricsFactory implements MetricsFactory {
 
-    public static VertxMetricsFactory delegate;
+    public static MetricsFactory delegate;
 
     @Override
-    public VertxMetrics metrics(Vertx vertx, VertxOptions options) {
-        return delegate != null ? delegate.metrics(vertx, options) : new DummyVertxMetrics();
+    public ConektMetrics metrics(Conekt conekt, ConektOptions options) {
+        return delegate != null ? delegate.metrics(conekt, options) : new DummyConektMetrics();
     }
 
     @Override

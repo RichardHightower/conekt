@@ -25,14 +25,14 @@
 
 package io.advantageous.conekt.net.impl;
 
-import io.advantageous.conekt.VertxException;
+import io.advantageous.conekt.ConektException;
 import io.advantageous.conekt.http.HttpClientOptions;
+import io.advantageous.conekt.impl.ConektInternal;
 import io.advantageous.conekt.net.NetServerOptions;
 import io.netty.handler.ssl.SslHandler;
 import io.advantageous.conekt.buffer.Buffer;
 import io.advantageous.conekt.http.ClientAuth;
 import io.advantageous.conekt.http.HttpServerOptions;
-import io.advantageous.conekt.impl.VertxInternal;
 import io.advantageous.conekt.net.NetClientOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -194,7 +194,7 @@ public class SSLHelper {
     If you don't specify a key store, and don't specify a system property no key store will be used
     You can override this by specifying the javax.echo.ssl.keyStore system property
      */
-    private SSLContext createContext(VertxInternal vertx) {
+    private SSLContext createContext(ConektInternal vertx) {
         try {
             SSLContext context = SSLContext.getInstance("TLS");
             KeyManager[] keyMgrs = keyStoreHelper == null ? null : keyStoreHelper.getKeyMgrs(vertx);
@@ -220,7 +220,7 @@ public class SSLHelper {
             context.init(keyMgrs, trustMgrs, new SecureRandom());
             return context;
         } catch (Exception e) {
-            throw new VertxException(e);
+            throw new ConektException(e);
         }
     }
 
@@ -256,7 +256,7 @@ public class SSLHelper {
         return new SslHandler(engine);
     }
 
-    private SSLContext getContext(VertxInternal vertx) {
+    private SSLContext getContext(ConektInternal vertx) {
         if (sslContext == null) {
             sslContext = createContext(vertx);
         }
@@ -264,18 +264,18 @@ public class SSLHelper {
     }
 
     // This is called to validate some of the SSL params as that only happens when the context is created
-    public synchronized void validate(VertxInternal vertx) {
+    public synchronized void validate(ConektInternal vertx) {
         if (ssl) {
             getContext(vertx);
         }
     }
 
-    public SslHandler createSslHandler(VertxInternal vertx, boolean client, String host, int port) {
+    public SslHandler createSslHandler(ConektInternal vertx, boolean client, String host, int port) {
         SSLEngine engine = getContext(vertx).createSSLEngine(host, port);
         return createHandler(engine, client);
     }
 
-    public SslHandler createSslHandler(VertxInternal vertx, boolean client) {
+    public SslHandler createSslHandler(ConektInternal vertx, boolean client) {
         SSLEngine engine = getContext(vertx).createSSLEngine();
         return createHandler(engine, client);
     }

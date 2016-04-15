@@ -25,7 +25,7 @@
 
 package io.advantageous.conekt.test.core;
 
-import io.advantageous.conekt.AbstractVerticle;
+import io.advantageous.conekt.AbstractIoActor;
 import io.advantageous.conekt.DeploymentOptions;
 import io.advantageous.conekt.dns.*;
 import io.advantageous.conekt.test.fakedns.FakeDNSServer;
@@ -77,7 +77,7 @@ public class DNSTest extends VertxTestBase {
         final String ip = "10.0.0.1";
         DnsClient dns = prepareDns(FakeDNSServer.testResolveA(ip));
 
-        dns.resolveA("vertx.io", ar -> {
+        dns.resolveA("conekt.io", ar -> {
             List<String> result = ar.result();
             assertNotNull(result);
             assertFalse(result.isEmpty());
@@ -93,7 +93,7 @@ public class DNSTest extends VertxTestBase {
     public void testResolveAAAA() throws Exception {
         DnsClient dns = prepareDns(FakeDNSServer.testResolveAAAA("::1"));
 
-        dns.resolveAAAA("vertx.io", ar -> {
+        dns.resolveAAAA("conekt.io", ar -> {
             List<String> result = ar.result();
             assertNotNull(result);
             assertFalse(result.isEmpty());
@@ -107,11 +107,11 @@ public class DNSTest extends VertxTestBase {
 
     @Test
     public void testResolveMX() throws Exception {
-        final String mxRecord = "mail.vertx.io";
+        final String mxRecord = "mail.conekt.io";
         final int prio = 10;
         DnsClient dns = prepareDns(FakeDNSServer.testResolveMX(prio, mxRecord));
 
-        dns.resolveMX("vertx.io", ar -> {
+        dns.resolveMX("conekt.io", ar -> {
             List<MxRecord> result = ar.result();
             assertNotNull(result);
             assertFalse(result.isEmpty());
@@ -127,10 +127,10 @@ public class DNSTest extends VertxTestBase {
 
     @Test
     public void testResolveTXT() throws Exception {
-        final String txt = "vertx is awesome";
+        final String txt = "conekt is awesome";
         DnsClient dns = prepareDns(FakeDNSServer.testResolveTXT(txt));
 
-        dns.resolveTXT("vertx.io", ar -> {
+        dns.resolveTXT("conekt.io", ar -> {
             List<String> result = ar.result();
             assertNotNull(result);
             assertFalse(result.isEmpty());
@@ -144,10 +144,10 @@ public class DNSTest extends VertxTestBase {
 
     @Test
     public void testResolveNS() throws Exception {
-        final String ns = "ns.vertx.io";
+        final String ns = "ns.conekt.io";
         DnsClient dns = prepareDns(FakeDNSServer.testResolveNS(ns));
 
-        dns.resolveNS("vertx.io", ar -> {
+        dns.resolveNS("conekt.io", ar -> {
             List<String> result = ar.result();
             assertNotNull(result);
             assertFalse(result.isEmpty());
@@ -161,10 +161,10 @@ public class DNSTest extends VertxTestBase {
 
     @Test
     public void testResolveCNAME() throws Exception {
-        final String cname = "cname.vertx.io";
+        final String cname = "cname.conekt.io";
         DnsClient dns = prepareDns(FakeDNSServer.testResolveCNAME(cname));
 
-        dns.resolveCNAME("vertx.io", ar -> {
+        dns.resolveCNAME("conekt.io", ar -> {
             List<String> result = ar.result();
             assertNotNull(result);
             assertFalse(result.isEmpty());
@@ -180,7 +180,7 @@ public class DNSTest extends VertxTestBase {
 
     @Test
     public void testResolvePTR() throws Exception {
-        final String ptr = "ptr.vertx.io";
+        final String ptr = "ptr.conekt.io";
         DnsClient dns = prepareDns(FakeDNSServer.testResolvePTR(ptr));
 
         dns.resolvePTR("10.0.0.1.in-addr.arpa", ar -> {
@@ -198,11 +198,11 @@ public class DNSTest extends VertxTestBase {
         final int priority = 10;
         final int weight = 1;
         final int port = 80;
-        final String target = "vertx.io";
+        final String target = "conekt.io";
 
         DnsClient dns = prepareDns(FakeDNSServer.testResolveSRV(priority, weight, port, target));
 
-        dns.resolveSRV("vertx.io", ar -> {
+        dns.resolveSRV("conekt.io", ar -> {
             List<SrvRecord> result = ar.result();
             assertNotNull(result);
             assertFalse(result.isEmpty());
@@ -226,7 +226,7 @@ public class DNSTest extends VertxTestBase {
         final String ip = "10.0.0.1";
         DnsClient dns = prepareDns(FakeDNSServer.testLookup4(ip));
 
-        dns.lookup4("vertx.io", ar -> {
+        dns.lookup4("conekt.io", ar -> {
             String result = ar.result();
             assertNotNull(result);
             assertEquals(ip, result);
@@ -240,7 +240,7 @@ public class DNSTest extends VertxTestBase {
     public void testLookup6() throws Exception {
         DnsClient dns = prepareDns(FakeDNSServer.testLookup6());
 
-        dns.lookup6("vertx.io", ar -> {
+        dns.lookup6("conekt.io", ar -> {
             String result = ar.result();
             assertNotNull(result);
             assertEquals("0:0:0:0:0:0:0:1", result);
@@ -255,7 +255,7 @@ public class DNSTest extends VertxTestBase {
         final String ip = "10.0.0.1";
         DnsClient dns = prepareDns(FakeDNSServer.testLookup(ip));
 
-        dns.lookup("vertx.io", ar -> {
+        dns.lookup("conekt.io", ar -> {
             String result = ar.result();
             assertNotNull(result);
             assertEquals(ip, result);
@@ -280,7 +280,7 @@ public class DNSTest extends VertxTestBase {
     @Test
     public void testReverseLookupIpv4() throws Exception {
         String address = "10.0.0.1";
-        final String ptr = "ptr.vertx.io";
+        final String ptr = "ptr.conekt.io";
         DnsClient dns = prepareDns(FakeDNSServer.testReverseLookup(ptr));
 
         dns.reverseLookup(address, ar -> {
@@ -295,7 +295,7 @@ public class DNSTest extends VertxTestBase {
 
     @Test
     public void testReverseLookupIpv6() throws Exception {
-        final String ptr = "ptr.vertx.io";
+        final String ptr = "ptr.conekt.io";
 
         DnsClient dns = prepareDns(FakeDNSServer.testReverseLookup(ptr));
 
@@ -311,15 +311,15 @@ public class DNSTest extends VertxTestBase {
 
     @Test
     public void testUseInMultithreadedWorker() throws Exception {
-        class MyVerticle extends AbstractVerticle {
+        class MyIoActor extends AbstractIoActor {
             @Override
             public void start() {
-                TestUtils.assertIllegalStateException(() -> vertx.createDnsClient(1234, "localhost"));
+                TestUtils.assertIllegalStateException(() -> conekt.createDnsClient(1234, "localhost"));
                 testComplete();
             }
         }
-        MyVerticle verticle = new MyVerticle();
-        vertx.deployVerticle(verticle, new DeploymentOptions().setWorker(true).setMultiThreaded(true));
+        MyIoActor verticle = new MyIoActor();
+        conekt.deployVerticle(verticle, new DeploymentOptions().setWorker(true).setMultiThreaded(true));
         await();
     }
 
@@ -327,7 +327,7 @@ public class DNSTest extends VertxTestBase {
         dnsServer = server;
         dnsServer.start();
         InetSocketAddress addr = (InetSocketAddress) dnsServer.getTransports()[0].getAcceptor().getLocalAddress();
-        return vertx.createDnsClient(addr.getPort(), addr.getAddress().getHostAddress());
+        return conekt.createDnsClient(addr.getPort(), addr.getAddress().getHostAddress());
     }
 
 }

@@ -37,11 +37,11 @@ import java.util.Map;
 /**
  * @author <a href="mailto:nmaurer@redhat.com">Norman Maurer</a>
  */
-public class VertxNetHandler extends VertxHandler<NetSocketImpl> {
+public class ConektNetHandler extends ConektHandler<NetSocketImpl> {
 
     private final Map<Channel, NetSocketImpl> connectionMap;
 
-    public VertxNetHandler(Map<Channel, NetSocketImpl> connectionMap) {
+    public ConektNetHandler(Map<Channel, NetSocketImpl> connectionMap) {
         this.connectionMap = connectionMap;
     }
 

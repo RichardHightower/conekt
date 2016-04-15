@@ -25,9 +25,9 @@
 
 package io.advantageous.conekt.test.core;
 
-import io.advantageous.conekt.AbstractVerticle;
+import io.advantageous.conekt.AbstractIoActor;
+import io.advantageous.conekt.Conekt;
 import io.advantageous.conekt.DeploymentOptions;
-import io.advantageous.conekt.Vertx;
 import io.advantageous.conekt.buffer.Buffer;
 import io.advantageous.conekt.datagram.DatagramSocket;
 import io.advantageous.conekt.datagram.DatagramSocketOptions;
@@ -74,7 +74,7 @@ public class DatagramTest extends VertxTestBase {
 
     @Test
     public void testDatagramSocket() throws Exception {
-        peer1 = vertx.createDatagramSocket(new DatagramSocketOptions());
+        peer1 = conekt.createDatagramSocket(new DatagramSocketOptions());
 
         TestUtils.assertNullPointerException(() -> peer1.send((Buffer) null, 1, "127.0.0.1", ar -> {
         }));
@@ -114,8 +114,8 @@ public class DatagramTest extends VertxTestBase {
 
     @Test
     public void testSendReceive() {
-        peer1 = vertx.createDatagramSocket(new DatagramSocketOptions());
-        peer2 = vertx.createDatagramSocket(new DatagramSocketOptions());
+        peer1 = conekt.createDatagramSocket(new DatagramSocketOptions());
+        peer2 = conekt.createDatagramSocket(new DatagramSocketOptions());
         peer2.exceptionHandler(t -> fail(t.getMessage()));
         peer2.listen(1234, "127.0.0.1", ar -> {
             assertTrue(ar.succeeded());
@@ -132,8 +132,8 @@ public class DatagramTest extends VertxTestBase {
     @Test
     public void testSendReceiveLargePacket() {
         int packetSize = 10000;
-        peer1 = vertx.createDatagramSocket(new DatagramSocketOptions().setSendBufferSize(packetSize));
-        peer2 = vertx.createDatagramSocket(new DatagramSocketOptions().setReceiveBufferSize(packetSize + 16)); // OSX needs 16 more
+        peer1 = conekt.createDatagramSocket(new DatagramSocketOptions().setSendBufferSize(packetSize));
+        peer2 = conekt.createDatagramSocket(new DatagramSocketOptions().setReceiveBufferSize(packetSize + 16)); // OSX needs 16 more
         peer2.exceptionHandler(t -> fail(t.getMessage()));
         peer2.listen(1234, "127.0.0.1", ar -> {
             assertTrue(ar.succeeded());
@@ -151,11 +151,11 @@ public class DatagramTest extends VertxTestBase {
     public void testEndHandler() {
         ThreadLocal<Object> stack = new ThreadLocal<>();
         stack.set(true);
-        peer2 = vertx.createDatagramSocket(new DatagramSocketOptions());
+        peer2 = conekt.createDatagramSocket(new DatagramSocketOptions());
         peer2.listen(1234, "127.0.0.1", ar -> {
             assertTrue(ar.succeeded());
             peer2.endHandler(v -> {
-                assertTrue(Vertx.currentContext().isEventLoopContext());
+                assertTrue(Conekt.currentContext().isEventLoopContext());
                 assertNull(stack.get());
                 testComplete();
             });
@@ -166,8 +166,8 @@ public class DatagramTest extends VertxTestBase {
 
     @Test
     public void testPauseResume() {
-        peer1 = vertx.createDatagramSocket(new DatagramSocketOptions());
-        peer2 = vertx.createDatagramSocket(new DatagramSocketOptions());
+        peer1 = conekt.createDatagramSocket(new DatagramSocketOptions());
+        peer2 = conekt.createDatagramSocket(new DatagramSocketOptions());
         peer2.exceptionHandler(t -> fail(t.getMessage()));
         peer2.listen(1234, "127.0.0.1", ar -> {
             Buffer buffer = TestUtils.randomBuffer(128);
@@ -177,7 +177,7 @@ public class DatagramTest extends VertxTestBase {
             peer1.send(buffer, 1234, "127.0.0.1", ar2 -> {
                 assertTrue(ar2.succeeded());
             });
-            vertx.setTimer(1000, l -> {
+            conekt.setTimer(1000, l -> {
                 AtomicInteger count = new AtomicInteger();
                 peer2.handler(packet -> {
                     switch (count.getAndIncrement()) {
@@ -204,8 +204,8 @@ public class DatagramTest extends VertxTestBase {
 
     @Test
     public void testSender() {
-        peer1 = vertx.createDatagramSocket(new DatagramSocketOptions());
-        peer2 = vertx.createDatagramSocket(new DatagramSocketOptions());
+        peer1 = conekt.createDatagramSocket(new DatagramSocketOptions());
+        peer2 = conekt.createDatagramSocket(new DatagramSocketOptions());
         peer2.exceptionHandler(t -> fail(t.getMessage()));
         peer2.listen(1234, "127.0.0.1", ar -> {
             Buffer buffer = TestUtils.randomBuffer(128);
@@ -221,7 +221,7 @@ public class DatagramTest extends VertxTestBase {
 
     @Test
     public void testListenHostPort() {
-        peer2 = vertx.createDatagramSocket(new DatagramSocketOptions());
+        peer2 = conekt.createDatagramSocket(new DatagramSocketOptions());
         peer2.listen(1234, "127.0.0.1", ar -> {
             assertTrue(ar.succeeded());
             testComplete();
@@ -231,7 +231,7 @@ public class DatagramTest extends VertxTestBase {
 
     @Test
     public void testListenPort() {
-        peer2 = vertx.createDatagramSocket(new DatagramSocketOptions());
+        peer2 = conekt.createDatagramSocket(new DatagramSocketOptions());
         peer2.listen(1234, "localhost", ar -> {
             assertTrue(ar.succeeded());
             testComplete();
@@ -241,7 +241,7 @@ public class DatagramTest extends VertxTestBase {
 
     @Test
     public void testListenInetSocketAddress() {
-        peer2 = vertx.createDatagramSocket(new DatagramSocketOptions());
+        peer2 = conekt.createDatagramSocket(new DatagramSocketOptions());
         peer2.listen(1234, "127.0.0.1", ar -> {
             assertTrue(ar.succeeded());
             testComplete();
@@ -251,8 +251,8 @@ public class DatagramTest extends VertxTestBase {
 
     @Test
     public void testListenSamePortMultipleTimes() {
-        peer2 = vertx.createDatagramSocket(new DatagramSocketOptions());
-        peer1 = vertx.createDatagramSocket(new DatagramSocketOptions());
+        peer2 = conekt.createDatagramSocket(new DatagramSocketOptions());
+        peer1 = conekt.createDatagramSocket(new DatagramSocketOptions());
         peer2.listen(1234, "127.0.0.1", ar1 -> {
             assertTrue(ar1.succeeded());
             peer1.listen(1234, "127.0.0.1", ar2 -> {
@@ -265,8 +265,8 @@ public class DatagramTest extends VertxTestBase {
 
     @Test
     public void testEcho() {
-        peer1 = vertx.createDatagramSocket(new DatagramSocketOptions());
-        peer2 = vertx.createDatagramSocket(new DatagramSocketOptions());
+        peer1 = conekt.createDatagramSocket(new DatagramSocketOptions());
+        peer2 = conekt.createDatagramSocket(new DatagramSocketOptions());
         peer1.exceptionHandler(t -> fail(t.getMessage()));
         peer2.exceptionHandler(t -> fail(t.getMessage()));
         peer2.listen(1234, "127.0.0.1", ar -> {
@@ -293,8 +293,8 @@ public class DatagramTest extends VertxTestBase {
 
     @Test
     public void testSendAfterCloseFails() {
-        peer1 = vertx.createDatagramSocket(new DatagramSocketOptions());
-        peer2 = vertx.createDatagramSocket(new DatagramSocketOptions());
+        peer1 = conekt.createDatagramSocket(new DatagramSocketOptions());
+        peer2 = conekt.createDatagramSocket(new DatagramSocketOptions());
         peer1.close(ar -> {
             assertTrue(ar.succeeded());
             peer1.send("Test", 1234, "127.0.0.1", ar2 -> {
@@ -315,8 +315,8 @@ public class DatagramTest extends VertxTestBase {
 
     @Test
     public void testBroadcast() {
-        peer1 = vertx.createDatagramSocket(new DatagramSocketOptions().setBroadcast(true));
-        peer2 = vertx.createDatagramSocket(new DatagramSocketOptions().setBroadcast(true));
+        peer1 = conekt.createDatagramSocket(new DatagramSocketOptions().setBroadcast(true));
+        peer2 = conekt.createDatagramSocket(new DatagramSocketOptions().setBroadcast(true));
         peer2.exceptionHandler(t -> fail(t.getMessage()));
         peer2.listen(1234, "0.0.0.0", ar1 -> {
             assertTrue(ar1.succeeded());
@@ -334,7 +334,7 @@ public class DatagramTest extends VertxTestBase {
 
     @Test
     public void testBroadcastFailsIfNotConfigured() {
-        peer1 = vertx.createDatagramSocket(new DatagramSocketOptions());
+        peer1 = conekt.createDatagramSocket(new DatagramSocketOptions());
         peer1.send("test", 1234, "255.255.255.255", ar -> {
             assertTrue(ar.failed());
             testComplete();
@@ -353,8 +353,8 @@ public class DatagramTest extends VertxTestBase {
         String groupAddress = "230.0.0.1";
         String iface = NetworkInterface.getByInetAddress(InetAddress.getByName("127.0.0.1")).getName();
         AtomicBoolean received = new AtomicBoolean();
-        peer1 = vertx.createDatagramSocket(new DatagramSocketOptions().setMulticastNetworkInterface(iface));
-        peer2 = vertx.createDatagramSocket(new DatagramSocketOptions().setMulticastNetworkInterface(iface));
+        peer1 = conekt.createDatagramSocket(new DatagramSocketOptions().setMulticastNetworkInterface(iface));
+        peer2 = conekt.createDatagramSocket(new DatagramSocketOptions().setMulticastNetworkInterface(iface));
 
         peer1.handler(packet -> {
             assertEquals(buffer, packet.data());
@@ -368,7 +368,7 @@ public class DatagramTest extends VertxTestBase {
                 peer2.send(buffer, 1234, groupAddress, ar3 -> {
                     assertTrue(ar3.succeeded());
                     // leave group in 1 second so give it enough time to really receive the packet first
-                    vertx.setTimer(1000, id -> {
+                    conekt.setTimer(1000, id -> {
                         peer1.unlistenMulticastGroup(groupAddress, iface, null, ar4 -> {
                             assertTrue(ar4.succeeded());
                             AtomicBoolean receivedAfter = new AtomicBoolean();
@@ -380,7 +380,7 @@ public class DatagramTest extends VertxTestBase {
                                 assertTrue(ar5.succeeded());
                                 // schedule a timer which will check in 1 second if we received a message after the group
                                 // was left before
-                                vertx.setTimer(1000, id2 -> {
+                                conekt.setTimer(1000, id2 -> {
                                     assertFalse(receivedAfter.get());
                                     assertTrue(received.get());
                                     testComplete();
@@ -478,8 +478,8 @@ public class DatagramTest extends VertxTestBase {
     public void testOptionsCopied() {
         DatagramSocketOptions options = new DatagramSocketOptions();
         options.setReuseAddress(true);
-        peer1 = vertx.createDatagramSocket(options);
-        peer2 = vertx.createDatagramSocket(options);
+        peer1 = conekt.createDatagramSocket(options);
+        peer2 = conekt.createDatagramSocket(options);
         // Listening on same address:port so will only work if reuseAddress = true
         // Set to false, but because options are copied internally should still work
         options.setReuseAddress(false);
@@ -495,15 +495,15 @@ public class DatagramTest extends VertxTestBase {
 
     @Test
     public void testUseInMultithreadedWorker() throws Exception {
-        class MyVerticle extends AbstractVerticle {
+        class MyIoActor extends AbstractIoActor {
             @Override
             public void start() {
-                TestUtils.assertIllegalStateException(() -> peer1 = vertx.createDatagramSocket(new DatagramSocketOptions()));
+                TestUtils.assertIllegalStateException(() -> peer1 = conekt.createDatagramSocket(new DatagramSocketOptions()));
                 testComplete();
             }
         }
-        MyVerticle verticle = new MyVerticle();
-        vertx.deployVerticle(verticle, new DeploymentOptions().setWorker(true).setMultiThreaded(true));
+        MyIoActor verticle = new MyIoActor();
+        conekt.deployVerticle(verticle, new DeploymentOptions().setWorker(true).setMultiThreaded(true));
         await();
     }
 }

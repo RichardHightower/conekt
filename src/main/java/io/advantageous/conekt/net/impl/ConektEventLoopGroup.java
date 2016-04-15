@@ -40,7 +40,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
 @SuppressWarnings("deprecation")
-public final class VertxEventLoopGroup extends AbstractEventExecutorGroup implements EventLoopGroup {
+public final class ConektEventLoopGroup extends AbstractEventExecutorGroup implements EventLoopGroup {
 
     private final List<EventLoopHolder> workers = new ArrayList<>();
     private final CountDownLatch latch = new CountDownLatch(1);

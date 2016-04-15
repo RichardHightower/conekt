@@ -28,6 +28,7 @@ package io.advantageous.conekt.http.impl;
 import io.advantageous.conekt.*;
 import io.advantageous.conekt.http.*;
 import io.advantageous.conekt.http.impl.ws.WebSocketFrameImpl;
+import io.advantageous.conekt.impl.ConektInternal;
 import io.advantageous.conekt.impl.ContextImpl;
 import io.advantageous.conekt.net.impl.KeyStoreHelper;
 import io.advantageous.conekt.net.impl.PartialPooledByteBufAllocator;
@@ -42,7 +43,6 @@ import io.netty.handler.ssl.SslHandler;
 import io.netty.handler.timeout.IdleStateHandler;
 import io.advantageous.conekt.buffer.Buffer;
 import io.advantageous.conekt.http.impl.ws.WebSocketFrameInternal;
-import io.advantageous.conekt.impl.VertxInternal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -66,7 +66,7 @@ public class HttpClientImpl implements HttpClient, MetricsProvider {
 
     private static final Logger log = LoggerFactory.getLogger(HttpClientImpl.class);
 
-    private final VertxInternal vertx;
+    private final ConektInternal vertx;
     private final HttpClientOptions options;
     private final Map<Channel, ClientConnection> connectionMap = new ConcurrentHashMap<>();
     private final ContextImpl creatingContext;
@@ -76,7 +76,7 @@ public class HttpClientImpl implements HttpClient, MetricsProvider {
     private final HttpClientMetrics metrics;
     private volatile boolean closed;
 
-    public HttpClientImpl(VertxInternal vertx, HttpClientOptions options) {
+    public HttpClientImpl(ConektInternal vertx, HttpClientOptions options) {
         this.vertx = vertx;
         this.options = new HttpClientOptions(options);
         this.sslHelper = new SSLHelper(options, KeyStoreHelper.create(vertx, options.getKeyCertOptions()), KeyStoreHelper.create(vertx, options.getTrustOptions()));
@@ -680,9 +680,9 @@ public class HttpClientImpl implements HttpClient, MetricsProvider {
     }
 
     /**
-     * @return the vertx, for use in package related classes only.
+     * @return the conekt, for use in package related classes only.
      */
-    VertxInternal getVertx() {
+    ConektInternal getVertx() {
         return vertx;
     }
 
@@ -785,7 +785,7 @@ public class HttpClientImpl implements HttpClient, MetricsProvider {
         try {
             return new URL(surl);
         } catch (MalformedURLException e) {
-            throw new VertxException("Invalid url: " + surl);
+            throw new ConektException("Invalid url: " + surl);
         }
     }
 
@@ -860,11 +860,11 @@ public class HttpClientImpl implements HttpClient, MetricsProvider {
         super.finalize();
     }
 
-    private class ClientHandler extends VertxHttpHandler<ClientConnection> {
+    private class ClientHandler extends ConektHttpHandler<ClientConnection> {
         private boolean closeFrameSent;
         private ContextImpl context;
 
-        public ClientHandler(VertxInternal vertx, ContextImpl context) {
+        public ClientHandler(ConektInternal vertx, ContextImpl context) {
             super(HttpClientImpl.this.connectionMap);
             this.context = context;
         }

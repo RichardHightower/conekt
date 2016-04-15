@@ -25,7 +25,7 @@
 package io.advantageous.conekt.http.impl;
 
 import io.advantageous.conekt.impl.ContextImpl;
-import io.advantageous.conekt.net.impl.VertxHandler;
+import io.advantageous.conekt.net.impl.ConektHandler;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 import io.netty.buffer.ByteBufHolder;
@@ -46,11 +46,11 @@ import java.util.Map;
 /**
  * @author <a href="mailto:nmaurer@redhat.com">Norman Maurer</a>
  */
-public abstract class VertxHttpHandler<C extends ConnectionBase> extends VertxHandler<C> {
+public abstract class ConektHttpHandler<C extends ConnectionBase> extends ConektHandler<C> {
 
     protected Map<Channel, C> connectionMap;
 
-    protected VertxHttpHandler(Map<Channel, C> connectionMap) {
+    protected ConektHttpHandler(Map<Channel, C> connectionMap) {
         this.connectionMap = connectionMap;
     }
 

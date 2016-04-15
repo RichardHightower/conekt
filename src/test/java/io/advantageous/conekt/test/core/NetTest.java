@@ -66,8 +66,8 @@ public class NetTest extends VertxTestBase {
 
     public void setUp() throws Exception {
         super.setUp();
-        client = vertx.createNetClient(new NetClientOptions().setConnectTimeout(1000));
-        server = vertx.createNetServer(new NetServerOptions().setPort(1234).setHost("localhost"));
+        client = conekt.createNetClient(new NetClientOptions().setConnectTimeout(1000));
+        server = conekt.createNetServer(new NetServerOptions().setPort(1234).setHost("localhost"));
     }
 
     protected void awaitClose(NetServer server) throws InterruptedException {
@@ -550,7 +550,7 @@ public class NetTest extends VertxTestBase {
     /* Port 80 is free to use by any application on Windows, so this test fails. */
         Assume.assumeFalse(System.getProperty("os.name").startsWith("Windows"));
         server.close();
-        server = vertx.createNetServer(new NetServerOptions().setPort(80));
+        server = conekt.createNetServer(new NetServerOptions().setPort(80));
         server.connectHandler((netSocket) -> {
         }).listen(ar -> {
             assertTrue(ar.failed());
@@ -564,7 +564,7 @@ public class NetTest extends VertxTestBase {
     @Test
     public void testListenInvalidHost() {
         server.close();
-        server = vertx.createNetServer(new NetServerOptions().setPort(1234).setHost("uhqwduhqwudhqwuidhqwiudhqwudqwiuhd"));
+        server = conekt.createNetServer(new NetServerOptions().setPort(1234).setHost("uhqwduhqwudhqwuidhqwiudhqwudqwiuhd"));
         server.connectHandler(netSocket -> {
         }).listen(ar -> {
             assertTrue(ar.failed());
@@ -578,7 +578,7 @@ public class NetTest extends VertxTestBase {
     @Test
     public void testListenOnWildcardPort() {
         server.close();
-        server = vertx.createNetServer(new NetServerOptions().setPort(0));
+        server = conekt.createNetServer(new NetServerOptions().setPort(0));
         server.connectHandler((netSocket) -> {
         }).listen(ar -> {
             assertFalse(ar.failed());
@@ -652,16 +652,16 @@ public class NetTest extends VertxTestBase {
                 assertFalse(sock.writeQueueFull());
                 sock.setWriteQueueMaxSize(1000);
                 Buffer buff = TestUtils.randomBuffer(10000);
-                vertx.setPeriodic(1, id -> {
+                conekt.setPeriodic(1, id -> {
                     sock.write(buff.copy());
                     if (sock.writeQueueFull()) {
-                        vertx.cancelTimer(id);
+                        conekt.cancelTimer(id);
                         sock.drainHandler(v -> {
                             assertFalse(sock.writeQueueFull());
                             testComplete();
                         });
                         // Tell the server to resume
-                        vertx.eventBus().send("server_resume", "");
+                        conekt.eventBus().send("server_resume", "");
                     }
                 });
             });
@@ -673,7 +673,7 @@ public class NetTest extends VertxTestBase {
         server.connectHandler(sock -> {
             sock.pause();
             Handler<Message<Buffer>> resumeHandler = (m) -> sock.resume();
-            MessageConsumer reg = vertx.eventBus().<Buffer>consumer("server_resume").handler(resumeHandler);
+            MessageConsumer reg = conekt.eventBus().<Buffer>consumer("server_resume").handler(resumeHandler);
             sock.closeHandler(v -> reg.unregister());
         }).listen(listenHandler);
     }
@@ -694,7 +694,7 @@ public class NetTest extends VertxTestBase {
 
     void setHandlers(NetSocket sock) {
         Handler<Message<Buffer>> resumeHandler = m -> sock.resume();
-        MessageConsumer reg = vertx.eventBus().<Buffer>consumer("client_resume").handler(resumeHandler);
+        MessageConsumer reg = conekt.eventBus().<Buffer>consumer("client_resume").handler(resumeHandler);
         sock.closeHandler(v -> reg.unregister());
     }
 
@@ -705,18 +705,18 @@ public class NetTest extends VertxTestBase {
 
             Buffer buff = TestUtils.randomBuffer(10000);
             //Send data until the buffer is full
-            vertx.setPeriodic(1, id -> {
+            conekt.setPeriodic(1, id -> {
                 sock.write(buff.copy());
                 if (sock.writeQueueFull()) {
-                    vertx.cancelTimer(id);
+                    conekt.cancelTimer(id);
                     sock.drainHandler(v -> {
                         assertFalse(sock.writeQueueFull());
                         // End test after a short delay to give the client some time to read the data
-                        vertx.setTimer(100, id2 -> testComplete());
+                        conekt.setTimer(100, id2 -> testComplete());
                     });
 
                     // Tell the client to resume
-                    vertx.eventBus().send("client_resume", "");
+                    conekt.eventBus().send("client_resume", "");
                 }
             });
         }).listen(listenHandler);
@@ -734,7 +734,7 @@ public class NetTest extends VertxTestBase {
 
     void reconnectAttempts(int attempts) {
         client.close();
-        client = vertx.createNetClient(new NetClientOptions().setReconnectAttempts(attempts).setReconnectInterval(10));
+        client = conekt.createNetClient(new NetClientOptions().setReconnectAttempts(attempts).setReconnectInterval(10));
 
         //The server delays starting for a a few seconds, but it should still connect
         client.connect(1234, "localhost", (res) -> {
@@ -744,7 +744,7 @@ public class NetTest extends VertxTestBase {
         });
 
         // Start the server after a delay
-        vertx.setTimer(2000, id -> startEchoServer(s -> {
+        conekt.setTimer(2000, id -> startEchoServer(s -> {
         }));
 
         await();
@@ -753,7 +753,7 @@ public class NetTest extends VertxTestBase {
     @Test
     public void testReconnectAttemptsNotEnough() {
         client.close();
-        client = vertx.createNetClient(new NetClientOptions().setReconnectAttempts(100).setReconnectInterval(10));
+        client = conekt.createNetClient(new NetClientOptions().setReconnectAttempts(100).setReconnectInterval(10));
 
         client.connect(1234, "localhost", (res) -> {
             assertFalse(res.succeeded());
@@ -767,7 +767,7 @@ public class NetTest extends VertxTestBase {
     @Test
     public void testServerIdleTimeout() {
         server.close();
-        server = vertx.createNetServer(new NetServerOptions().setPort(1234).setHost("localhost").setIdleTimeout(1));
+        server = conekt.createNetServer(new NetServerOptions().setPort(1234).setHost("localhost").setIdleTimeout(1));
         server.connectHandler(s -> {
         }).listen(ar -> {
             assertTrue(ar.succeeded());
@@ -783,7 +783,7 @@ public class NetTest extends VertxTestBase {
     @Test
     public void testClientIdleTimeout() {
         client.close();
-        client = vertx.createNetClient(new NetClientOptions().setIdleTimeout(1));
+        client = conekt.createNetClient(new NetClientOptions().setIdleTimeout(1));
 
         server.connectHandler(s -> {
         }).listen(ar -> {
@@ -877,7 +877,7 @@ public class NetTest extends VertxTestBase {
         }
 
         options.setPort(4043);
-        server = vertx.createNetServer(options);
+        server = conekt.createNetServer(options);
         Handler<NetSocket> serverHandler = socket -> {
             try {
                 X509Certificate[] certs = socket.peerCertificateChain();
@@ -921,7 +921,7 @@ public class NetTest extends VertxTestBase {
                     clientOptions.addEnabledCipherSuite(suite);
                 }
             }
-            client = vertx.createNetClient(clientOptions);
+            client = conekt.createNetClient(clientOptions);
             client.connect(4043, "localhost", ar2 -> {
                 if (ar2.succeeded()) {
                     if (!shouldPass) {
@@ -995,7 +995,7 @@ public class NetTest extends VertxTestBase {
         CountDownLatch latchListen = new CountDownLatch(numServers);
         CountDownLatch latchConns = new CountDownLatch(numConnections);
         for (int i = 0; i < numServers; i++) {
-            NetServer theServer = vertx.createNetServer(new NetServerOptions().setHost("localhost").setPort(1234));
+            NetServer theServer = conekt.createNetServer(new NetServerOptions().setHost("localhost").setPort(1234));
             servers.add(theServer);
             theServer.connectHandler(sock -> {
                 connectedServers.add(theServer);
@@ -1016,7 +1016,7 @@ public class NetTest extends VertxTestBase {
 
         // Create a bunch of connections
         client.close();
-        client = vertx.createNetClient(new NetClientOptions());
+        client = conekt.createNetClient(new NetClientOptions());
         CountDownLatch latchClient = new CountDownLatch(numConnections);
         for (int i = 0; i < numConnections; i++) {
             client.connect(1234, "localhost", res -> {
@@ -1060,7 +1060,7 @@ public class NetTest extends VertxTestBase {
         CountDownLatch latch = new CountDownLatch(1);
         // Have a server running on a different port to make sure it doesn't interact
         server.close();
-        server = vertx.createNetServer(new NetServerOptions().setPort(4321));
+        server = conekt.createNetServer(new NetServerOptions().setPort(4321));
         server.connectHandler(sock -> {
             fail("Should not connect");
         }).listen(ar2 -> {
@@ -1079,7 +1079,7 @@ public class NetTest extends VertxTestBase {
         // Start and stop a server on the same port/host before hand to make sure it doesn't interact
         server.close();
         CountDownLatch latch = new CountDownLatch(1);
-        server = vertx.createNetServer(new NetServerOptions().setPort(1234));
+        server = conekt.createNetServer(new NetServerOptions().setPort(1234));
         server.connectHandler(sock -> {
             fail("Should not connect");
         }).listen(ar -> {
@@ -1110,7 +1110,7 @@ public class NetTest extends VertxTestBase {
             connections.add(socket.writeHandlerID());
             socket.handler(buffer -> {
                 for (String actorID : connections) {
-                    vertx.eventBus().publish(actorID, buffer);
+                    conekt.eventBus().publish(actorID, buffer);
                 }
             });
             socket.closeHandler(v -> {
@@ -1152,7 +1152,7 @@ public class NetTest extends VertxTestBase {
             assertEquals("127.0.0.1", addr.host());
         }).listen(ar -> {
             assertTrue(ar.succeeded());
-            vertx.createNetClient(new NetClientOptions()).connect(1234, "localhost", result -> {
+            conekt.createNetClient(new NetClientOptions()).connect(1234, "localhost", result -> {
                 NetSocket socket = result.result();
                 SocketAddress addr = socket.remoteAddress();
                 assertEquals("127.0.0.1", addr.host());
@@ -1275,7 +1275,7 @@ public class NetTest extends VertxTestBase {
     public void testServerOptionsCopiedBeforeUse() {
         server.close();
         NetServerOptions options = new NetServerOptions().setPort(1234);
-        NetServer server = vertx.createNetServer(options);
+        NetServer server = conekt.createNetServer(options);
         // Now change something - but server should still listen at previous port
         options.setPort(1235);
         server.connectHandler(sock -> {
@@ -1294,7 +1294,7 @@ public class NetTest extends VertxTestBase {
     public void testClientOptionsCopiedBeforeUse() {
         client.close();
         NetClientOptions options = new NetClientOptions();
-        client = vertx.createNetClient(options);
+        client = conekt.createNetClient(options);
         options.setSsl(true);
         // Now change something - but server should ignore this
         server.connectHandler(sock -> {
@@ -1463,7 +1463,7 @@ public class NetTest extends VertxTestBase {
     private void testInVerticle(boolean worker) throws Exception {
         client.close();
         server.close();
-        class MyVerticle extends AbstractVerticle {
+        class MyIoActor extends AbstractIoActor {
             Context ctx;
 
             @Override
@@ -1475,7 +1475,7 @@ public class NetTest extends VertxTestBase {
                     assertTrue(ctx instanceof EventLoopContext);
                 }
                 Thread thr = Thread.currentThread();
-                server = vertx.createNetServer(new NetServerOptions().setPort(1234).setHost("localhost"));
+                server = conekt.createNetServer(new NetServerOptions().setPort(1234).setHost("localhost"));
                 server.connectHandler(sock -> {
                     sock.handler(buff -> {
                         sock.write(buff);
@@ -1491,7 +1491,7 @@ public class NetTest extends VertxTestBase {
                     if (!worker) {
                         assertSame(thr, Thread.currentThread());
                     }
-                    client = vertx.createNetClient(new NetClientOptions());
+                    client = conekt.createNetClient(new NetClientOptions());
                     client.connect(1234, "localhost", ar2 -> {
                         assertSame(ctx, context);
                         if (!worker) {
@@ -1516,24 +1516,24 @@ public class NetTest extends VertxTestBase {
                 });
             }
         }
-        MyVerticle verticle = new MyVerticle();
-        vertx.deployVerticle(verticle, new DeploymentOptions().setWorker(worker));
+        MyIoActor verticle = new MyIoActor();
+        conekt.deployVerticle(verticle, new DeploymentOptions().setWorker(worker));
         await();
     }
 
     @Test
     public void testInMultithreadedWorker() throws Exception {
-        class MyVerticle extends AbstractVerticle {
+        class MyIoActor extends AbstractIoActor {
             @Override
             public void start() {
                 try {
-                    server = vertx.createNetServer(new NetServerOptions());
+                    server = conekt.createNetServer(new NetServerOptions());
                     fail("Should throw exception");
                 } catch (IllegalStateException e) {
                     // OK
                 }
                 try {
-                    client = vertx.createNetClient(new NetClientOptions());
+                    client = conekt.createNetClient(new NetClientOptions());
                     fail("Should throw exception");
                 } catch (IllegalStateException e) {
                     // OK
@@ -1541,8 +1541,8 @@ public class NetTest extends VertxTestBase {
                 testComplete();
             }
         }
-        MyVerticle verticle = new MyVerticle();
-        vertx.deployVerticle(verticle, new DeploymentOptions().setWorker(true).setMultiThreaded(true));
+        MyIoActor verticle = new MyIoActor();
+        conekt.deployVerticle(verticle, new DeploymentOptions().setWorker(true).setMultiThreaded(true));
         await();
     }
 
@@ -1554,7 +1554,7 @@ public class NetTest extends VertxTestBase {
         // Server connect handler should always be called with same context
         server.connectHandler(sock -> {
             sock.handler(sock::write);
-            ContextImpl serverContext = ((VertxInternal) vertx).getContext();
+            ContextImpl serverContext = ((ConektInternal) conekt).getContext();
             if (serverConnectContext.get() != null) {
                 assertSame(serverConnectContext.get(), serverContext);
             } else {
@@ -1565,7 +1565,7 @@ public class NetTest extends VertxTestBase {
         AtomicReference<ContextImpl> listenContext = new AtomicReference<>();
         server.listen(ar -> {
             assertTrue(ar.succeeded());
-            listenContext.set(((VertxInternal) vertx).getContext());
+            listenContext.set(((ConektInternal) conekt).getContext());
             latch.countDown();
         });
         awaitLatch(latch);
@@ -1574,7 +1574,7 @@ public class NetTest extends VertxTestBase {
         // Each connect should be in its own context
         for (int i = 0; i < numConns; i++) {
             client.connect(1234, "localhost", conn -> {
-                contexts.add(((VertxInternal) vertx).getContext());
+                contexts.add(((ConektInternal) conekt).getContext());
                 if (cnt.incrementAndGet() == numConns) {
                     assertEquals(numConns, contexts.size());
                     latch2.countDown();
@@ -1585,7 +1585,7 @@ public class NetTest extends VertxTestBase {
         // Close should be in own context
         server.close(ar -> {
             assertTrue(ar.succeeded());
-            ContextImpl closeContext = ((VertxInternal) vertx).getContext();
+            ContextImpl closeContext = ((ConektInternal) conekt).getContext();
             assertFalse(contexts.contains(closeContext));
             assertNotSame(serverConnectContext.get(), closeContext);
             assertFalse(contexts.contains(listenContext.get()));
@@ -1600,7 +1600,7 @@ public class NetTest extends VertxTestBase {
     @Test
     public void testReadStreamPauseResume() {
         server.close();
-        server = vertx.createNetServer(new NetServerOptions().setAcceptBacklog(1).setPort(1234).setHost("localhost"));
+        server = conekt.createNetServer(new NetServerOptions().setAcceptBacklog(1).setPort(1234).setHost("localhost"));
         NetSocketStream socketStream = server.connectStream();
         AtomicBoolean paused = new AtomicBoolean();
         socketStream.handler(so -> {
@@ -1639,7 +1639,7 @@ public class NetTest extends VertxTestBase {
 
     @Test
     public void testNetSocketStreamCallbackIsAsync() {
-        this.server = vertx.createNetServer(new NetServerOptions());
+        this.server = conekt.createNetServer(new NetServerOptions());
         AtomicInteger done = new AtomicInteger();
         NetSocketStream stream = server.connectStream();
         stream.handler(req -> {
@@ -1647,19 +1647,19 @@ public class NetTest extends VertxTestBase {
         ThreadLocal<Object> stack = new ThreadLocal<>();
         stack.set(true);
         stream.endHandler(v -> {
-            assertTrue(Vertx.currentContext().isEventLoopContext());
+            assertTrue(Conekt.currentContext().isEventLoopContext());
             assertNull(stack.get());
             if (done.incrementAndGet() == 2) {
                 testComplete();
             }
         });
         server.listen(ar -> {
-            assertTrue(Vertx.currentContext().isEventLoopContext());
+            assertTrue(Conekt.currentContext().isEventLoopContext());
             assertNull(stack.get());
             ThreadLocal<Object> stack2 = new ThreadLocal<>();
             stack2.set(true);
             server.close(v -> {
-                assertTrue(Vertx.currentContext().isEventLoopContext());
+                assertTrue(Conekt.currentContext().isEventLoopContext());
                 assertNull(stack2.get());
                 if (done.incrementAndGet() == 2) {
                     testComplete();
@@ -1672,19 +1672,19 @@ public class NetTest extends VertxTestBase {
 
     @Test
     public void testMultipleServerClose() {
-        this.server = vertx.createNetServer(new NetServerOptions());
+        this.server = conekt.createNetServer(new NetServerOptions());
         AtomicInteger times = new AtomicInteger();
         // We assume the endHandler and the close completion handler are invoked in the same context task
         ThreadLocal stack = new ThreadLocal();
         stack.set(true);
         server.connectStream().endHandler(v -> {
             assertNull(stack.get());
-            assertTrue(Vertx.currentContext().isEventLoopContext());
+            assertTrue(Conekt.currentContext().isEventLoopContext());
             times.incrementAndGet();
         });
         server.close(ar1 -> {
             assertNull(stack.get());
-            assertTrue(Vertx.currentContext().isEventLoopContext());
+            assertTrue(Conekt.currentContext().isEventLoopContext());
             server.close(ar2 -> {
                 server.close(ar3 -> {
                     assertEquals(1, times.get());
@@ -1697,35 +1697,35 @@ public class NetTest extends VertxTestBase {
 
     @Test
     public void testInWorker() throws Exception {
-        vertx.deployVerticle(new AbstractVerticle() {
+        conekt.deployVerticle(new AbstractIoActor() {
             @Override
             public void start() throws Exception {
-                assertTrue(Vertx.currentContext().isWorkerContext());
+                assertTrue(Conekt.currentContext().isWorkerContext());
                 assertTrue(Context.isOnWorkerThread());
-                final Context context = Vertx.currentContext();
-                NetServer server1 = vertx.createNetServer(new NetServerOptions().setHost("localhost").setPort(1234));
+                final Context context = Conekt.currentContext();
+                NetServer server1 = conekt.createNetServer(new NetServerOptions().setHost("localhost").setPort(1234));
                 server1.connectHandler(conn -> {
-                    assertTrue(Vertx.currentContext().isWorkerContext());
+                    assertTrue(Conekt.currentContext().isWorkerContext());
                     assertTrue(Context.isOnWorkerThread());
-                    assertSame(context, Vertx.currentContext());
+                    assertSame(context, Conekt.currentContext());
                     conn.handler(conn::write);
                     conn.closeHandler(v -> {
                         testComplete();
                     });
                 }).listen(onSuccess(s -> {
-                    assertTrue(Vertx.currentContext().isWorkerContext());
+                    assertTrue(Conekt.currentContext().isWorkerContext());
                     assertTrue(Context.isOnWorkerThread());
-                    assertSame(context, Vertx.currentContext());
-                    NetClient client = vertx.createNetClient();
+                    assertSame(context, Conekt.currentContext());
+                    NetClient client = conekt.createNetClient();
                     client.connect(1234, "localhost", onSuccess(res -> {
-                        assertTrue(Vertx.currentContext().isWorkerContext());
+                        assertTrue(Conekt.currentContext().isWorkerContext());
                         assertTrue(Context.isOnWorkerThread());
-                        assertSame(context, Vertx.currentContext());
+                        assertSame(context, Conekt.currentContext());
                         res.write("foo");
                         res.handler(buff -> {
-                            assertTrue(Vertx.currentContext().isWorkerContext());
+                            assertTrue(Conekt.currentContext().isWorkerContext());
                             assertTrue(Context.isOnWorkerThread());
-                            assertSame(context, Vertx.currentContext());
+                            assertSame(context, Conekt.currentContext());
                             res.close();
                         });
                     }));
@@ -1753,7 +1753,7 @@ public class NetTest extends VertxTestBase {
         List<Context> workers = createWorkers(size + 1);
         CountDownLatch latch1 = new CountDownLatch(workers.size() - 1);
         workers.get(0).runOnContext(v -> {
-            NetServer server = vertx.createNetServer();
+            NetServer server = conekt.createNetServer();
             server.connectHandler(so -> {
                 so.handler(buf -> {
                     assertEquals("hello", buf.toString());
@@ -1775,7 +1775,7 @@ public class NetTest extends VertxTestBase {
             });
         });
         awaitLatch(latch1);
-        NetClient client = vertx.createNetClient();
+        NetClient client = conekt.createNetClient();
         client.connect(1234, "localhost", ar -> {
             assertTrue(ar.succeeded());
             NetSocket so = ar.result();
@@ -1790,7 +1790,7 @@ public class NetTest extends VertxTestBase {
         List<Context> workers = createWorkers(size + 1);
         CountDownLatch latch1 = new CountDownLatch(1);
         CountDownLatch latch2 = new CountDownLatch(size);
-        NetServer server = vertx.createNetServer();
+        NetServer server = conekt.createNetServer();
         server.connectHandler(so -> {
             try {
                 awaitLatch(latch2);
@@ -1806,7 +1806,7 @@ public class NetTest extends VertxTestBase {
         });
         awaitLatch(latch1);
         workers.get(0).runOnContext(v -> {
-            NetClient client = vertx.createNetClient();
+            NetClient client = conekt.createNetClient();
             client.connect(1234, "localhost", ar -> {
                 assertTrue(ar.succeeded());
                 NetSocket so = ar.result();

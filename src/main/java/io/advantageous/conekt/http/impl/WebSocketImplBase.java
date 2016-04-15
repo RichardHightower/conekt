@@ -34,7 +34,7 @@ import io.advantageous.conekt.eventbus.MessageConsumer;
 import io.advantageous.conekt.http.WebSocketBase;
 import io.advantageous.conekt.http.impl.ws.WebSocketFrameImpl;
 import io.advantageous.conekt.http.impl.ws.WebSocketFrameInternal;
-import io.advantageous.conekt.impl.VertxInternal;
+import io.advantageous.conekt.impl.ConektInternal;
 import io.advantageous.conekt.net.SocketAddress;
 import io.advantageous.conekt.net.impl.ConnectionBase;
 
@@ -65,7 +65,7 @@ public abstract class WebSocketImplBase implements WebSocketBase {
     protected Handler<Void> endHandler;
     protected boolean closed;
 
-    protected WebSocketImplBase(VertxInternal vertx, ConnectionBase conn, boolean supportsContinuation,
+    protected WebSocketImplBase(ConektInternal vertx, ConnectionBase conn, boolean supportsContinuation,
                                 int maxWebSocketFrameSize) {
         this.supportsContinuation = supportsContinuation;
         this.textHandlerID = UUID.randomUUID().toString();

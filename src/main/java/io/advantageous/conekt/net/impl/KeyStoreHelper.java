@@ -25,7 +25,7 @@
 package io.advantageous.conekt.net.impl;
 
 import io.advantageous.conekt.buffer.Buffer;
-import io.advantageous.conekt.impl.VertxInternal;
+import io.advantageous.conekt.impl.ConektInternal;
 import io.advantageous.conekt.net.*;
 
 import javax.net.ssl.KeyManager;
@@ -58,7 +58,7 @@ public abstract class KeyStoreHelper {
         this.password = password;
     }
 
-    public static KeyStoreHelper create(VertxInternal vertx, KeyCertOptions options) {
+    public static KeyStoreHelper create(ConektInternal vertx, KeyCertOptions options) {
         if (options instanceof JksOptions) {
             JksOptions jks = (JksOptions) options;
             Supplier<Buffer> value;
@@ -107,7 +107,7 @@ public abstract class KeyStoreHelper {
         }
     }
 
-    public static KeyStoreHelper create(VertxInternal vertx, TrustOptions options) {
+    public static KeyStoreHelper create(ConektInternal vertx, TrustOptions options) {
         if (options instanceof KeyCertOptions) {
             return create(vertx, (KeyCertOptions) options);
         } else if (options instanceof PemTrustOptions) {
@@ -163,14 +163,14 @@ public abstract class KeyStoreHelper {
         return certFactory.generateCertificates(new ByteArrayInputStream(value)).toArray(new Certificate[0]);
     }
 
-    public KeyManager[] getKeyMgrs(VertxInternal vertx) throws Exception {
+    public KeyManager[] getKeyMgrs(ConektInternal vertx) throws Exception {
         KeyManagerFactory fact = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
         KeyStore ks = loadStore(vertx);
         fact.init(ks, password != null ? password.toCharArray() : null);
         return fact.getKeyManagers();
     }
 
-    public TrustManager[] getTrustMgrs(VertxInternal vertx) throws Exception {
+    public TrustManager[] getTrustMgrs(ConektInternal vertx) throws Exception {
         TrustManagerFactory fact = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
         KeyStore ts = loadStore(vertx);
         fact.init(ts);
@@ -180,10 +180,10 @@ public abstract class KeyStoreHelper {
     /**
      * Load the keystore.
      *
-     * @param vertx the vertx instance
+     * @param vertx the conekt instance
      * @return the key store
      */
-    public abstract KeyStore loadStore(VertxInternal vertx) throws Exception;
+    public abstract KeyStore loadStore(ConektInternal vertx) throws Exception;
 
     static class JKSOrPKCS12 extends KeyStoreHelper {
 
@@ -196,7 +196,7 @@ public abstract class KeyStoreHelper {
             this.value = value;
         }
 
-        public KeyStore loadStore(VertxInternal vertx) throws Exception {
+        public KeyStore loadStore(ConektInternal vertx) throws Exception {
             KeyStore ks = KeyStore.getInstance(type);
             InputStream in = null;
             try {
@@ -226,7 +226,7 @@ public abstract class KeyStoreHelper {
         }
 
         @Override
-        public KeyStore loadStore(VertxInternal vertx) throws Exception {
+        public KeyStore loadStore(ConektInternal vertx) throws Exception {
             KeyStore keyStore = KeyStore.getInstance("jks");
             keyStore.load(null, null);
             PrivateKey key = loadPrivateKey(this.keyValue.get());
@@ -246,7 +246,7 @@ public abstract class KeyStoreHelper {
         }
 
         @Override
-        public KeyStore loadStore(VertxInternal vertx) throws Exception {
+        public KeyStore loadStore(ConektInternal vertx) throws Exception {
             KeyStore keyStore = KeyStore.getInstance("jks");
             keyStore.load(null, null);
             int count = 0;

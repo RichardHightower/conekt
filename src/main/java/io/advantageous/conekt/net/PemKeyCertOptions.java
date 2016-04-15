@@ -65,8 +65,8 @@ import io.advantageous.conekt.buffer.Buffer;
  * Or directly provided as a buffer:<p>
  * <p>
  * <pre>
- * Buffer key = vertx.fileSystem().readFileSync("/mykey.pem");
- * Buffer cert = vertx.fileSystem().readFileSync("/mycert.pem");
+ * Buffer key = conekt.fileSystem().readFileSync("/mykey.pem");
+ * Buffer cert = conekt.fileSystem().readFileSync("/mycert.pem");
  * options.setPemKeyCertOptions(new PemKeyCertOptions().setKeyValue(key).setCertValue(cert));
  * </pre>
  *

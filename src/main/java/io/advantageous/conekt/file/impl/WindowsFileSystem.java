@@ -25,12 +25,12 @@
 
 package io.advantageous.conekt.file.impl;
 
+import io.advantageous.conekt.impl.ConektInternal;
 import io.advantageous.conekt.impl.ContextImpl;
 import io.advantageous.conekt.AsyncResult;
 import io.advantageous.conekt.Handler;
 import io.advantageous.conekt.file.AsyncFile;
 import io.advantageous.conekt.file.OpenOptions;
-import io.advantageous.conekt.impl.VertxInternal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,7 +44,7 @@ public class WindowsFileSystem extends FileSystemImpl {
 
     private static final Logger log = LoggerFactory.getLogger(WindowsFileSystem.class);
 
-    public WindowsFileSystem(final VertxInternal vertx) {
+    public WindowsFileSystem(final ConektInternal vertx) {
         super(vertx);
     }
 

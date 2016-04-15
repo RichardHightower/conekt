@@ -25,17 +25,17 @@
 
 package io.advantageous.conekt.test.core;
 
-import io.advantageous.conekt.Verticle;
-import io.advantageous.conekt.Vertx;
-import io.advantageous.conekt.spi.VerticleFactory;
+import io.advantageous.conekt.IoActor;
+import io.advantageous.conekt.Conekt;
+import io.advantageous.conekt.spi.IoActorFactory;
 
 /**
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
-public class ClasspathVerticleFactory implements VerticleFactory {
+public class ClasspathVerticleFactory implements IoActorFactory {
 
     @Override
-    public void init(Vertx vertx) {
+    public void init(Conekt conekt) {
     }
 
     @Override
@@ -44,7 +44,7 @@ public class ClasspathVerticleFactory implements VerticleFactory {
     }
 
     @Override
-    public Verticle createVerticle(String verticleName, ClassLoader classLoader) throws Exception {
+    public IoActor createVerticle(String verticleName, ClassLoader classLoader) throws Exception {
         return null;
     }
 

@@ -25,13 +25,13 @@
 
 package io.advantageous.conekt.impl;
 
-import io.advantageous.conekt.spi.VerticleFactory;
-import io.advantageous.conekt.Verticle;
+import io.advantageous.conekt.IoActor;
+import io.advantageous.conekt.spi.IoActorFactory;
 
 /**
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
-public class JavaVerticleFactory implements VerticleFactory {
+public class JavaVerticleFactory implements IoActorFactory {
 
     @Override
     public String prefix() {
@@ -39,10 +39,10 @@ public class JavaVerticleFactory implements VerticleFactory {
     }
 
     @Override
-    public Verticle createVerticle(String verticleName, ClassLoader classLoader) throws Exception {
-        verticleName = VerticleFactory.removePrefix(verticleName);
+    public IoActor createVerticle(String verticleName, ClassLoader classLoader) throws Exception {
+        verticleName = IoActorFactory.removePrefix(verticleName);
         Class clazz = classLoader.loadClass(verticleName);
-        return (Verticle) clazz.newInstance();
+        return (IoActor) clazz.newInstance();
     }
 
 }

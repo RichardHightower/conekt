@@ -30,7 +30,7 @@ import io.advantageous.conekt.http.WebSocketFrame;
 import io.advantageous.conekt.Handler;
 import io.advantageous.conekt.MultiMap;
 import io.advantageous.conekt.buffer.Buffer;
-import io.advantageous.conekt.impl.VertxInternal;
+import io.advantageous.conekt.impl.ConektInternal;
 import io.advantageous.conekt.net.impl.ConnectionBase;
 
 import javax.net.ssl.SSLPeerUnverifiedException;
@@ -56,7 +56,7 @@ public class ServerWebSocketImpl extends WebSocketImplBase implements ServerWebS
     private boolean connected;
     private boolean rejected;
 
-    public ServerWebSocketImpl(VertxInternal vertx, String uri, String path, String query, MultiMap headers,
+    public ServerWebSocketImpl(ConektInternal vertx, String uri, String path, String query, MultiMap headers,
                                ConnectionBase conn, boolean supportsContinuation, Runnable connectRunnable,
                                int maxWebSocketFrameSize) {
         super(vertx, conn, supportsContinuation, maxWebSocketFrameSize);

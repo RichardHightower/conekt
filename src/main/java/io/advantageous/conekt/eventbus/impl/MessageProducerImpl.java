@@ -26,7 +26,7 @@
 package io.advantageous.conekt.eventbus.impl;
 
 import io.advantageous.conekt.AsyncResult;
-import io.advantageous.conekt.Vertx;
+import io.advantageous.conekt.Conekt;
 import io.advantageous.conekt.eventbus.*;
 import io.advantageous.conekt.Handler;
 
@@ -41,7 +41,7 @@ public class MessageProducerImpl<T> implements MessageProducer<T> {
 
     public static final String CREDIT_ADDRESS_HEADER_NAME = "__vertx.credit";
 
-    private final Vertx vertx;
+    private final Conekt conekt;
     private final EventBus bus;
     private final boolean send;
     private final String address;
@@ -51,9 +51,9 @@ public class MessageProducerImpl<T> implements MessageProducer<T> {
     private int credits = DEFAULT_WRITE_QUEUE_MAX_SIZE;
     private Handler<Void> drainHandler;
 
-    public MessageProducerImpl(Vertx vertx, String address, boolean send, DeliveryOptions options) {
-        this.vertx = vertx;
-        this.bus = vertx.eventBus();
+    public MessageProducerImpl(Conekt conekt, String address, boolean send, DeliveryOptions options) {
+        this.conekt = conekt;
+        this.bus = conekt.eventBus();
         this.address = address;
         this.send = send;
         this.options = options;
@@ -169,7 +169,7 @@ public class MessageProducerImpl<T> implements MessageProducer<T> {
         final Handler<Void> theDrainHandler = drainHandler;
         if (theDrainHandler != null && pending.isEmpty()) {
             this.drainHandler = null;
-            vertx.runOnContext(v -> theDrainHandler.handle(null));
+            conekt.runOnContext(v -> theDrainHandler.handle(null));
         }
     }
 

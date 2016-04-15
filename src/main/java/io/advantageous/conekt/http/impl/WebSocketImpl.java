@@ -29,7 +29,7 @@ import io.advantageous.conekt.Handler;
 import io.advantageous.conekt.buffer.Buffer;
 import io.advantageous.conekt.http.WebSocket;
 import io.advantageous.conekt.http.WebSocketFrame;
-import io.advantageous.conekt.impl.VertxInternal;
+import io.advantageous.conekt.impl.ConektInternal;
 
 /**
  * This class is optimised for performance when used on the same event loop. However it can be used safely from other threads.
@@ -43,7 +43,7 @@ public class WebSocketImpl extends WebSocketImplBase implements WebSocket {
 
     private Object metric;
 
-    public WebSocketImpl(VertxInternal vertx,
+    public WebSocketImpl(ConektInternal vertx,
                          ClientConnection conn, boolean supportsContinuation,
                          int maxWebSocketFrameSize) {
         super(vertx, conn, supportsContinuation, maxWebSocketFrameSize);

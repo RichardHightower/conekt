@@ -44,7 +44,7 @@ import io.advantageous.conekt.buffer.Buffer;
  * Or directly provided as a buffer:<p>
  * <p>
  * <pre>
- * Buffer store = vertx.fileSystem().readFileSync("/mykeystore.p12");
+ * Buffer store = conekt.fileSystem().readFileSync("/mykeystore.p12");
  * options.setPfxKeyCertOptions(new PfxOptions().setValue(store).setPassword("foo"));
  * </pre>
  *

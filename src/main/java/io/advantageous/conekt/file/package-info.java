@@ -28,7 +28,7 @@
  * <p>
  * The Vert.x {@link io.advantageous.conekt.file.FileSystem} object provides many operations for manipulating the file system.
  * <p>
- * There is one file system object per Vert.x instance, and you obtain it with  {@link io.advantageous.conekt.Vertx#fileSystem()}.
+ * There is one file system object per Vert.x instance, and you obtain it with  {@link io.advantageous.conekt.Conekt#fileSystem()}.
  * <p>
  * A blocking and a non blocking version of each operation is provided. The non blocking versions take a handler
  * which is called when the operation completes or an error occurs.
@@ -169,12 +169,12 @@
  * system).
  * <p>
  * This caching behaviour can be disabled by setting the system
- * property `vertx.disableFileCaching` to `true`. The path where the files are
- * cached is `.vertx` by default and can be customized by setting the system
- * property `vertx.cacheDirBase`.
+ * property `conekt.disableFileCaching` to `true`. The path where the files are
+ * cached is `.conekt` by default and can be customized by setting the system
+ * property `conekt.cacheDirBase`.
  * <p>
  * The whole classpath resolving feature can be disabled by setting the system
- * property `vertx.disableFileCPResolving` to `true`.
+ * property `conekt.disableFileCPResolving` to `true`.
  * <p>
  * ==== Closing an AsyncFile
  * <p>

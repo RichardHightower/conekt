@@ -25,20 +25,24 @@
 
 package io.advantageous.conekt.test.core;
 
-import io.advantageous.conekt.AbstractVerticle;
-import io.advantageous.conekt.Future;
+import io.advantageous.conekt.AbstractIoActor;
+import io.advantageous.conekt.impl.IsolatingClassLoader;
+import org.junit.Assert;
 
 /**
- * @author <a href="http://tfox.org">Tim Fox</a>
+ * @author <a href="mailto:julien@julienviet.com">Julien Viet</a>
  */
-public class TestVerticle3 extends AbstractVerticle {
-
+public class ExtraCPIoActorNotInParentLoader extends AbstractIoActor {
     @Override
     public void start() throws Exception {
-        vertx.eventBus().send("instanceCount", vertx.getOrCreateContext().getInstanceCount());
-    }
-
-    @Override
-    public void stop(Future<Void> stopFuture) throws Exception {
+        IsolatingClassLoader cl = (IsolatingClassLoader) Thread.currentThread().getContextClassLoader();
+        Class extraCPClass = cl.loadClass("MyIoActor");
+        Assert.assertSame(extraCPClass.getClassLoader(), cl);
+        try {
+            cl.getParent().loadClass("MyIoActor");
+            Assert.fail("Parent classloader should not see this class");
+        } catch (ClassNotFoundException expected) {
+            //
+        }
     }
 }

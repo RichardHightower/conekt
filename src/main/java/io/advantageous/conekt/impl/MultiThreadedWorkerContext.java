@@ -34,7 +34,7 @@ import java.util.concurrent.Executor;
  */
 public class MultiThreadedWorkerContext extends WorkerContext {
 
-    public MultiThreadedWorkerContext(VertxInternal vertx, Executor orderedInternalExec, Executor workerExec,
+    public MultiThreadedWorkerContext(ConektInternal vertx, Executor orderedInternalExec, Executor workerExec,
                                       String deploymentID, ClassLoader tccl) {
         super(vertx, orderedInternalExec, workerExec, deploymentID, tccl);
     }

@@ -26,7 +26,7 @@
 package io.advantageous.conekt.impl;
 
 import io.advantageous.conekt.*;
-import io.advantageous.conekt.spi.VerticleFactory;
+import io.advantageous.conekt.spi.IoActorFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,23 +48,23 @@ public class DeploymentManager {
 
     private static final Logger log = LoggerFactory.getLogger(DeploymentManager.class);
 
-    private final VertxInternal vertx;
+    private final ConektInternal vertx;
     private final Map<String, Deployment> deployments = new ConcurrentHashMap<>();
     private final Map<String, ClassLoader> classloaders = new WeakHashMap<>();
-    private final Map<String, List<VerticleFactory>> verticleFactories = new ConcurrentHashMap<>();
-    private final List<VerticleFactory> defaultFactories = new ArrayList<>();
+    private final Map<String, List<IoActorFactory>> verticleFactories = new ConcurrentHashMap<>();
+    private final List<IoActorFactory> defaultFactories = new ArrayList<>();
 
-    public DeploymentManager(VertxInternal vertx) {
+    public DeploymentManager(ConektInternal vertx) {
         this.vertx = vertx;
         loadVerticleFactories();
     }
 
     private void loadVerticleFactories() {
-        ServiceLoader<VerticleFactory> factories = ServiceLoader.load(VerticleFactory.class);
-        for (VerticleFactory factory : factories) {
+        ServiceLoader<IoActorFactory> factories = ServiceLoader.load(IoActorFactory.class);
+        for (IoActorFactory factory : factories) {
             registerVerticleFactory(factory);
         }
-        VerticleFactory defaultFactory = new JavaVerticleFactory();
+        IoActorFactory defaultFactory = new JavaVerticleFactory();
         defaultFactory.init(vertx);
         defaultFactories.add(defaultFactory);
     }
@@ -73,23 +73,23 @@ public class DeploymentManager {
         return UUID.randomUUID().toString();
     }
 
-    public void deployVerticle(Verticle verticle, DeploymentOptions options,
+    public void deployVerticle(IoActor ioActor, DeploymentOptions options,
                                Handler<AsyncResult<String>> completionHandler) {
         if (options.getInstances() != 1) {
-            throw new IllegalArgumentException("Can't specify > 1 instances for already created verticle");
+            throw new IllegalArgumentException("Can't specify > 1 instances for already created ioActor");
         }
         if (options.getExtraClasspath() != null) {
-            throw new IllegalArgumentException("Can't specify extraClasspath for already created verticle");
+            throw new IllegalArgumentException("Can't specify extraClasspath for already created ioActor");
         }
         if (options.getIsolationGroup() != null) {
-            throw new IllegalArgumentException("Can't specify isolationGroup for already created verticle");
+            throw new IllegalArgumentException("Can't specify isolationGroup for already created ioActor");
         }
         if (options.getIsolatedClasses() != null) {
-            throw new IllegalArgumentException("Can't specify isolatedClasses for already created verticle");
+            throw new IllegalArgumentException("Can't specify isolatedClasses for already created ioActor");
         }
         ContextImpl currentContext = vertx.getOrCreateContext();
-        doDeploy("java:" + verticle.getClass().getName(), generateDeploymentID(), options, currentContext, currentContext, completionHandler,
-                getCurrentClassLoader(), verticle);
+        doDeploy("java:" + ioActor.getClass().getName(), generateDeploymentID(), options, currentContext, currentContext, completionHandler,
+                getCurrentClassLoader(), ioActor);
     }
 
     public void deployVerticle(String identifier,
@@ -107,12 +107,12 @@ public class DeploymentManager {
                                   ContextImpl callingContext,
                                   ClassLoader cl,
                                   Handler<AsyncResult<String>> completionHandler) {
-        List<VerticleFactory> verticleFactories = resolveFactories(identifier);
-        Iterator<VerticleFactory> iter = verticleFactories.iterator();
+        List<IoActorFactory> verticleFactories = resolveFactories(identifier);
+        Iterator<IoActorFactory> iter = verticleFactories.iterator();
         doDeployVerticle(iter, null, identifier, deploymentID, options, parentContext, callingContext, cl, completionHandler);
     }
 
-    private void doDeployVerticle(Iterator<VerticleFactory> iter,
+    private void doDeployVerticle(Iterator<IoActorFactory> iter,
                                   Throwable prevErr,
                                   String identifier,
                                   String deploymentID,
@@ -122,7 +122,7 @@ public class DeploymentManager {
                                   ClassLoader cl,
                                   Handler<AsyncResult<String>> completionHandler) {
         if (iter.hasNext()) {
-            VerticleFactory verticleFactory = iter.next();
+            IoActorFactory verticleFactory = iter.next();
             Future<String> fut = Future.future();
             if (verticleFactory.requiresResolve()) {
                 try {
@@ -146,10 +146,10 @@ public class DeploymentManager {
                         return;
                     } else {
                         if (verticleFactory.blockingCreate()) {
-                            vertx.<Verticle[]>executeBlocking(createFut -> {
+                            vertx.<IoActor[]>executeBlocking(createFut -> {
                                 try {
-                                    Verticle[] verticles = createVerticles(verticleFactory, identifier, options.getInstances(), cl);
-                                    createFut.complete(verticles);
+                                    IoActor[] ioActors = createVerticles(verticleFactory, identifier, options.getInstances(), cl);
+                                    createFut.complete(ioActors);
                                 } catch (Exception e) {
                                     createFut.fail(e);
                                 }
@@ -164,8 +164,8 @@ public class DeploymentManager {
                             return;
                         } else {
                             try {
-                                Verticle[] verticles = createVerticles(verticleFactory, identifier, options.getInstances(), cl);
-                                doDeploy(identifier, deploymentID, options, parentContext, callingContext, completionHandler, cl, verticles);
+                                IoActor[] ioActors = createVerticles(verticleFactory, identifier, options.getInstances(), cl);
+                                doDeploy(identifier, deploymentID, options, parentContext, callingContext, completionHandler, cl, ioActors);
                                 return;
                             } catch (Exception e) {
                                 err = e;
@@ -188,15 +188,15 @@ public class DeploymentManager {
         }
     }
 
-    private Verticle[] createVerticles(VerticleFactory verticleFactory, String identifier, int instances, ClassLoader cl) throws Exception {
-        Verticle[] verticles = new Verticle[instances];
+    private IoActor[] createVerticles(IoActorFactory verticleFactory, String identifier, int instances, ClassLoader cl) throws Exception {
+        IoActor[] ioActors = new IoActor[instances];
         for (int i = 0; i < instances; i++) {
-            verticles[i] = verticleFactory.createVerticle(identifier, cl);
-            if (verticles[i] == null) {
-                throw new NullPointerException("VerticleFactory::createVerticle returned null");
+            ioActors[i] = verticleFactory.createVerticle(identifier, cl);
+            if (ioActors[i] == null) {
+                throw new NullPointerException("IoActorFactory::createVerticle returned null");
             }
         }
-        return verticles;
+        return ioActors;
     }
 
     private String getSuffix(int pos, String str) {
@@ -225,7 +225,7 @@ public class DeploymentManager {
     }
 
     public void undeployAll(Handler<AsyncResult<Void>> completionHandler) {
-        // TODO timeout if it takes too long - e.g. async stop verticle fails to call future
+        // TODO timeout if it takes too long - e.g. async stop ioActor fails to call future
 
         // We only deploy the top level verticles as the children will be undeployed when the parent is
         Set<String> deploymentIDs = new HashSet<>();
@@ -253,12 +253,12 @@ public class DeploymentManager {
         }
     }
 
-    public void registerVerticleFactory(VerticleFactory factory) {
+    public void registerVerticleFactory(IoActorFactory factory) {
         String prefix = factory.prefix();
         if (prefix == null) {
             throw new IllegalArgumentException("factory.prefix() cannot be null");
         }
-        List<VerticleFactory> facts = verticleFactories.get(prefix);
+        List<IoActorFactory> facts = verticleFactories.get(prefix);
         if (facts == null) {
             facts = new ArrayList<>();
             verticleFactories.put(prefix, facts);
@@ -272,12 +272,12 @@ public class DeploymentManager {
         factory.init(vertx);
     }
 
-    public void unregisterVerticleFactory(VerticleFactory factory) {
+    public void unregisterVerticleFactory(IoActorFactory factory) {
         String prefix = factory.prefix();
         if (prefix == null) {
             throw new IllegalArgumentException("factory.prefix() cannot be null");
         }
-        List<VerticleFactory> facts = verticleFactories.get(prefix);
+        List<IoActorFactory> facts = verticleFactories.get(prefix);
         boolean removed = false;
         if (facts != null) {
             if (facts.remove(factory)) {
@@ -292,26 +292,26 @@ public class DeploymentManager {
         }
     }
 
-    public Set<VerticleFactory> verticleFactories() {
-        Set<VerticleFactory> facts = new HashSet<>();
-        for (List<VerticleFactory> list : verticleFactories.values()) {
+    public Set<IoActorFactory> verticleFactories() {
+        Set<IoActorFactory> facts = new HashSet<>();
+        for (List<IoActorFactory> list : verticleFactories.values()) {
             facts.addAll(list);
         }
         return facts;
     }
 
-    private List<VerticleFactory> resolveFactories(String identifier) {
+    private List<IoActorFactory> resolveFactories(String identifier) {
     /*
-      We resolve the verticle factory list to use as follows:
+      We resolve the ioActor factory list to use as follows:
       1. We look for a prefix in the identifier.
       E.g. the identifier might be "js:app.js" <-- the prefix is "js"
-      If it exists we use that to lookup the verticle factory list
+      If it exists we use that to lookup the ioActor factory list
       2. We look for a suffix (like a file extension),
       E.g. the identifier might be just "app.js"
       If it exists we use that to lookup the factory list
       3. If there is no prefix or suffix OR there is no match then defaults will be used
     */
-        List<VerticleFactory> factoryList = null;
+        List<IoActorFactory> factoryList = null;
         int pos = identifier.indexOf(':');
         String lookup = null;
         if (pos != -1) {
@@ -414,7 +414,7 @@ public class DeploymentManager {
                           ContextImpl parentContext,
                           ContextImpl callingContext,
                           Handler<AsyncResult<String>> completionHandler,
-                          ClassLoader tccl, Verticle... verticles) {
+                          ClassLoader tccl, IoActor... ioActors) {
         if (options.isMultiThreaded() && !options.isWorker()) {
             throw new IllegalArgumentException("If multi-threaded then must be worker too");
         }
@@ -424,25 +424,25 @@ public class DeploymentManager {
 
         AtomicInteger deployCount = new AtomicInteger();
         AtomicBoolean failureReported = new AtomicBoolean();
-        for (Verticle verticle : verticles) {
+        for (IoActor ioActor : ioActors) {
             ContextImpl context = options.isWorker() ? vertx.createWorkerContext(options.isMultiThreaded(), deploymentID, tccl) :
                     vertx.createEventLoopContext(deploymentID, tccl);
             context.setDeployment(deployment);
-            deployment.addVerticle(new VerticleHolder(verticle, context));
+            deployment.addVerticle(new VerticleHolder(ioActor, context));
             context.runOnContext(v -> {
                 try {
-                    verticle.init(vertx, context);
+                    ioActor.init(vertx, context);
                     Future<Void> startFuture = Future.future();
-                    verticle.start(startFuture);
+                    ioActor.start(startFuture);
                     startFuture.setHandler(ar -> {
                         if (ar.succeeded()) {
                             if (parent != null) {
                                 parent.addChild(deployment);
                                 deployment.child = true;
                             }
-                            vertx.metricsSPI().verticleDeployed(verticle);
+                            vertx.metricsSPI().verticleDeployed(ioActor);
                             deployments.put(deploymentID, deployment);
-                            if (deployCount.incrementAndGet() == verticles.length) {
+                            if (deployCount.incrementAndGet() == ioActors.length) {
                                 reportSuccess(deploymentID, callingContext, completionHandler);
                             }
                         } else if (!failureReported.get()) {
@@ -457,11 +457,11 @@ public class DeploymentManager {
     }
 
     static class VerticleHolder {
-        final Verticle verticle;
+        final IoActor ioActor;
         final ContextImpl context;
 
-        VerticleHolder(Verticle verticle, ContextImpl context) {
-            this.verticle = verticle;
+        VerticleHolder(IoActor ioActor, ContextImpl context) {
+            this.ioActor = ioActor;
             this.context = context;
         }
     }
@@ -530,7 +530,7 @@ public class DeploymentManager {
                         AtomicBoolean failureReported = new AtomicBoolean();
                         stopFuture.setHandler(ar -> {
                             deployments.remove(deploymentID);
-                            vertx.metricsSPI().verticleUndeployed(verticleHolder.verticle);
+                            vertx.metricsSPI().verticleUndeployed(verticleHolder.ioActor);
                             context.runCloseHooks(ar2 -> {
 
                                 if (ar2.failed()) {
@@ -546,7 +546,7 @@ public class DeploymentManager {
                             });
                         });
                         try {
-                            verticleHolder.verticle.stop(stopFuture);
+                            verticleHolder.ioActor.stop(stopFuture);
                         } catch (Throwable t) {
                             stopFuture.fail(t);
                         } finally {
@@ -581,10 +581,10 @@ public class DeploymentManager {
         }
 
         @Override
-        public Set<Verticle> getVerticles() {
-            Set<Verticle> verts = new HashSet<>();
+        public Set<IoActor> getVerticles() {
+            Set<IoActor> verts = new HashSet<>();
             for (VerticleHolder holder : verticles) {
-                verts.add(holder.verticle);
+                verts.add(holder.ioActor);
             }
             return verts;
         }

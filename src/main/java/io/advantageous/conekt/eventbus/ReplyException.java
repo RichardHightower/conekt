@@ -25,7 +25,7 @@
 
 package io.advantageous.conekt.eventbus;
 
-import io.advantageous.conekt.VertxException;
+import io.advantageous.conekt.ConektException;
 
 /**
  * Represents the failure of a message send.
@@ -35,7 +35,7 @@ import io.advantageous.conekt.VertxException;
  *
  * @author <a href="http://tfox.org">Tim Fox</a>
  */
-public class ReplyException extends VertxException {
+public class ReplyException extends ConektException {
 
     private final ReplyFailure failureType;
     private final int failureCode;

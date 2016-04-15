@@ -58,7 +58,7 @@ import java.util.Objects;
  * <p>
  * <p>
  * <pre>
- * Buffer cert = vertx.fileSystem().readFileSync("/cert.pem");
+ * Buffer cert = conekt.fileSystem().readFileSync("/cert.pem");
  * HttpServerOptions options = new HttpServerOptions();
  * options.setPemTrustOptions(new PemTrustOptions().addCertValue(cert));
  * </pre>

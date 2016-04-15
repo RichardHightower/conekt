@@ -30,7 +30,7 @@ import io.advantageous.conekt.impl.ContextImpl;
 /**
  * The execution context of a {@link Handler} execution.
  * <p>
- * When Vert.x provides an event to a handler or calls the start or stop methods of a {@link Verticle},
+ * When Vert.x provides an event to a handler or calls the start or stop methods of a {@link IoActor},
  * the execution is associated with a {@code Context}.
  * <p>
  * Usually a context is an *event-loop context* and is tied to a specific event loop thread. So executions for that
@@ -134,16 +134,16 @@ public interface Context {
     <T> void executeBlocking(Handler<Future<T>> blockingCodeHandler, Handler<AsyncResult<T>> resultHandler);
 
     /**
-     * If the context is associated with a Verticle deployment, this returns the deployment ID of that deployment.
+     * If the context is associated with a IoActor deployment, this returns the deployment ID of that deployment.
      *
-     * @return the deployment ID of the deployment or null if not a Verticle deployment
+     * @return the deployment ID of the deployment or null if not a IoActor deployment
      */
     String deploymentID();
 
     /**
      * Is the current context an event loop context?
      * <p>
-     * NOTE! when running blocking code using {@link Vertx#executeBlocking(Handler, Handler)} from a
+     * NOTE! when running blocking code using {@link Conekt#executeBlocking(Handler, Handler)} from a
      * standard (not worker) verticle, the context will still an event loop context and this {@link this#isEventLoopContext()}
      * will return true.
      *
@@ -154,7 +154,7 @@ public interface Context {
     /**
      * Is the current context a worker context?
      * <p>
-     * NOTE! when running blocking code using {@link Vertx#executeBlocking(Handler, Handler)} from a
+     * NOTE! when running blocking code using {@link Conekt#executeBlocking(Handler, Handler)} from a
      * standard (not worker) verticle, the context will still an event loop context and this {@link this#isWorkerContext()}
      * will return false.
      *
@@ -197,9 +197,9 @@ public interface Context {
     boolean remove(String key);
 
     /**
-     * @return The Vertx instance that created the context
+     * @return The Conekt instance that created the context
      */
-    Vertx owner();
+    Conekt owner();
 
     /**
      * @return the number of instances of the verticle that were deployed in the deployment (if any) related

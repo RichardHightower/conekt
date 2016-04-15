@@ -122,28 +122,28 @@ public class VertxTestBase extends AsyncTestBase {
     private static final Logger log = LoggerFactory.getLogger(VertxTestBase.class);
     @Rule
     public RepeatRule repeatRule = new RepeatRule();
-    protected Vertx vertx;
-    protected Vertx[] vertices;
+    protected Conekt conekt;
+    protected Conekt[] vertices;
 
     protected void vinit() {
-        vertx = null;
+        conekt = null;
         vertices = null;
     }
 
     public void setUp() throws Exception {
         super.setUp();
         vinit();
-        vertx = Vertx.vertx(getOptions());
+        conekt = Conekt.vertx(getOptions());
     }
 
-    protected VertxOptions getOptions() {
-        return new VertxOptions();
+    protected ConektOptions getOptions() {
+        return new ConektOptions();
     }
 
     protected void tearDown() throws Exception {
-        if (vertx != null) {
+        if (conekt != null) {
             CountDownLatch latch = new CountDownLatch(1);
-            vertx.close(ar -> {
+            conekt.close(ar -> {
                 latch.countDown();
             });
             awaitLatch(latch);
@@ -156,9 +156,9 @@ public class VertxTestBase extends AsyncTestBase {
                 }
             }
             CountDownLatch latch = new CountDownLatch(numVertices);
-            for (Vertx vertx : vertices) {
-                if (vertx != null) {
-                    vertx.close(ar -> {
+            for (Conekt conekt : vertices) {
+                if (conekt != null) {
+                    conekt.close(ar -> {
                         if (ar.failed()) {
                             log.error("Failed to shutdown vert.x", ar.cause());
                         }
@@ -176,12 +176,12 @@ public class VertxTestBase extends AsyncTestBase {
         startNodes(numNodes, getOptions());
     }
 
-    protected void startNodes(int numNodes, VertxOptions options) {
+    protected void startNodes(int numNodes, ConektOptions options) {
         CountDownLatch latch = new CountDownLatch(numNodes);
-        vertices = new Vertx[numNodes];
+        vertices = new Conekt[numNodes];
         for (int i = 0; i < numNodes; i++) {
             int index = i;
-            Vertx.clusteredVertx(options.setClusterHost("localhost").setClusterPort(0).setClustered(false)
+            Conekt.clusteredVertx(options.setClusterHost("localhost").setClusterPort(0).setClustered(false)
                     , ar -> {
                         if (ar.failed()) {
                             ar.cause().printStackTrace();
@@ -207,7 +207,7 @@ public class VertxTestBase extends AsyncTestBase {
             File file = new File(url.toURI());
             return file.getAbsolutePath();
         } catch (URISyntaxException e) {
-            throw new VertxException(e);
+            throw new ConektException(e);
         }
     }
 
@@ -308,14 +308,14 @@ public class VertxTestBase extends AsyncTestBase {
     }
 
     /**
-     * Create a worker verticle for the current Vert.x and return its context.
+     * Create a worker ioActor for the current Vert.x and return its context.
      *
      * @return the context
      * @throws Exception anything preventing the creation of the worker
      */
     protected Context createWorker() throws Exception {
         CompletableFuture<Context> fut = new CompletableFuture<>();
-        vertx.deployVerticle(new AbstractVerticle() {
+        conekt.deployVerticle(new AbstractIoActor() {
             @Override
             public void start() throws Exception {
                 fut.complete(context);

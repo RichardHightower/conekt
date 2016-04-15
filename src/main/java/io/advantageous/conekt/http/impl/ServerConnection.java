@@ -26,14 +26,15 @@
 package io.advantageous.conekt.http.impl;
 
 import io.advantageous.conekt.AsyncResult;
-import io.advantageous.conekt.Vertx;
+import io.advantageous.conekt.Conekt;
 import io.advantageous.conekt.http.HttpServerRequest;
 import io.advantageous.conekt.http.ServerWebSocket;
 import io.advantageous.conekt.http.WebSocketFrame;
+import io.advantageous.conekt.impl.ConektInternal;
 import io.advantageous.conekt.impl.ContextImpl;
 import io.advantageous.conekt.net.NetSocket;
 import io.advantageous.conekt.net.impl.NetSocketImpl;
-import io.advantageous.conekt.net.impl.VertxNetHandler;
+import io.advantageous.conekt.net.impl.ConektNetHandler;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.*;
 import io.netty.handler.codec.DecoderResult;
@@ -48,7 +49,6 @@ import io.advantageous.conekt.Handler;
 import io.advantageous.conekt.VoidHandler;
 import io.advantageous.conekt.buffer.Buffer;
 import io.advantageous.conekt.http.impl.ws.WebSocketFrameInternal;
-import io.advantageous.conekt.impl.VertxInternal;
 import io.advantageous.conekt.net.impl.ConnectionBase;
 import io.advantageous.conekt.spi.metrics.HttpServerMetrics;
 import org.slf4j.Logger;
@@ -97,7 +97,7 @@ class ServerConnection extends ConnectionBase {
     private long bytesWritten;
     private Object metric;
 
-    ServerConnection(VertxInternal vertx, HttpServerImpl server, Channel channel, ContextImpl context, String serverOrigin,
+    ServerConnection(ConektInternal vertx, HttpServerImpl server, Channel channel, ContextImpl context, String serverOrigin,
                      WebSocketServerHandshaker handshaker, HttpServerMetrics metrics) {
         super(vertx, channel, context, metrics);
         this.serverOrigin = serverOrigin;
@@ -165,7 +165,7 @@ class ServerConnection extends ConnectionBase {
         return serverOrigin;
     }
 
-    Vertx vertx() {
+    Conekt vertx() {
         return vertx;
     }
 
@@ -235,7 +235,7 @@ class ServerConnection extends ConnectionBase {
             pipeline.remove("chunkedWriter");
         }
 
-        channel.pipeline().replace("handler", "handler", new VertxNetHandler(connectionMap) {
+        channel.pipeline().replace("handler", "handler", new ConektNetHandler(connectionMap) {
             @Override
             public void exceptionCaught(ChannelHandlerContext chctx, Throwable t) throws Exception {
                 // remove from the real mapping

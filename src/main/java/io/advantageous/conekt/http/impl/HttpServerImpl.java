@@ -27,6 +27,7 @@ package io.advantageous.conekt.http.impl;
 
 import io.advantageous.conekt.*;
 import io.advantageous.conekt.http.*;
+import io.advantageous.conekt.impl.ConektInternal;
 import io.advantageous.conekt.net.impl.*;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
@@ -48,7 +49,6 @@ import io.netty.util.concurrent.GlobalEventExecutor;
 import io.advantageous.conekt.http.impl.ws.WebSocketFrameImpl;
 import io.advantageous.conekt.http.impl.ws.WebSocketFrameInternal;
 import io.advantageous.conekt.impl.ContextImpl;
-import io.advantageous.conekt.impl.VertxInternal;
 import io.advantageous.conekt.spi.metrics.HttpServerMetrics;
 import io.advantageous.conekt.spi.metrics.Metrics;
 import io.advantageous.conekt.spi.metrics.MetricsProvider;
@@ -75,16 +75,16 @@ public class HttpServerImpl implements HttpServer, Closeable, MetricsProvider {
 
 
     private static final Logger log = LoggerFactory.getLogger(HttpServerImpl.class);
-    private static final String FLASH_POLICY_HANDLER_PROP_NAME = "vertx.flashPolicyHandler";
-    private static final String DISABLE_WEBSOCKETS_PROP_NAME = "vertx.disableWebsockets";
+    private static final String FLASH_POLICY_HANDLER_PROP_NAME = "conekt.flashPolicyHandler";
+    private static final String DISABLE_WEBSOCKETS_PROP_NAME = "conekt.disableWebsockets";
     private static final boolean DISABLE_WEBSOCKETS = Boolean.getBoolean(DISABLE_WEBSOCKETS_PROP_NAME);
 
     private final HttpServerOptions options;
-    private final VertxInternal vertx;
+    private final ConektInternal vertx;
     private final SSLHelper sslHelper;
     private final ContextImpl creatingContext;
     private final Map<Channel, ServerConnection> connectionMap = new ConcurrentHashMap<>();
-    private final VertxEventLoopGroup availableWorkers = new VertxEventLoopGroup();
+    private final ConektEventLoopGroup availableWorkers = new ConektEventLoopGroup();
     private final HandlerManager<HttpServerRequest> reqHandlerManager = new HandlerManager<>(availableWorkers);
     private final HandlerManager<ServerWebSocket> wsHandlerManager = new HandlerManager<>(availableWorkers);
     private final ServerWebSocketStreamImpl wsStream = new ServerWebSocketStreamImpl();
@@ -100,7 +100,7 @@ public class HttpServerImpl implements HttpServer, Closeable, MetricsProvider {
     private ContextImpl listenContext;
     private HttpServerMetrics metrics;
 
-    public HttpServerImpl(VertxInternal vertx, HttpServerOptions options) {
+    public HttpServerImpl(ConektInternal vertx, HttpServerOptions options) {
         this.options = new HttpServerOptions(options);
         this.vertx = vertx;
         this.creatingContext = vertx.getContext();
@@ -186,7 +186,7 @@ public class HttpServerImpl implements HttpServer, Closeable, MetricsProvider {
             id = new ServerID(port, host);
             HttpServerImpl shared = vertx.sharedHttpServers().get(id);
             if (shared == null) {
-                serverChannelGroup = new DefaultChannelGroup("vertx-acceptor-channels", GlobalEventExecutor.INSTANCE);
+                serverChannelGroup = new DefaultChannelGroup("conekt-acceptor-channels", GlobalEventExecutor.INSTANCE);
                 ServerBootstrap bootstrap = new ServerBootstrap();
                 bootstrap.group(vertx.getAcceptorEventLoopGroup(), availableWorkers);
                 bootstrap.channelFactory(new VertxNioServerChannelFactory());
@@ -451,7 +451,7 @@ public class HttpServerImpl implements HttpServer, Closeable, MetricsProvider {
 
             return shake;
         } catch (Exception e) {
-            throw new VertxException(e);
+            throw new ConektException(e);
         }
     }
 
@@ -505,7 +505,7 @@ public class HttpServerImpl implements HttpServer, Closeable, MetricsProvider {
         return connectionMap;
     }
 
-    public class ServerHandler extends VertxHttpHandler<ServerConnection> {
+    public class ServerHandler extends ConektHttpHandler<ServerConnection> {
         FullHttpRequest wsRequest;
         private boolean closeFrameSent;
 

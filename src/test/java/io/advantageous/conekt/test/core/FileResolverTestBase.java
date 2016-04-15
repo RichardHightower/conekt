@@ -25,9 +25,9 @@
 
 package io.advantageous.conekt.test.core;
 
-import io.advantageous.conekt.Vertx;
+import io.advantageous.conekt.Conekt;
+import io.advantageous.conekt.impl.ConektInternal;
 import io.advantageous.conekt.impl.FileResolver;
-import io.advantageous.conekt.impl.VertxInternal;
 import org.junit.Test;
 
 import java.io.File;
@@ -45,7 +45,7 @@ public abstract class FileResolverTestBase extends VertxTestBase {
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        resolver = new FileResolver(vertx);
+        resolver = new FileResolver(conekt);
     }
 
     @Override
@@ -88,7 +88,7 @@ public abstract class FileResolverTestBase extends VertxTestBase {
         for (int i = 0; i < 2; i++) {
             File file = resolver.resolveFile(webRoot + "/subdir");
             assertTrue(file.exists());
-            assertTrue(file.getPath().startsWith(".vertx" + File.separator + "file-cache-"));
+            assertTrue(file.getPath().startsWith(".conekt" + File.separator + "file-cache-"));
             assertTrue(file.isDirectory());
         }
     }
@@ -98,15 +98,15 @@ public abstract class FileResolverTestBase extends VertxTestBase {
 
     @Test
     public void testDeleteCacheDir() throws Exception {
-        Vertx vertx2 = Vertx.vertx();
-        FileResolver resolver2 = new FileResolver(vertx2);
+        Conekt conekt2 = Conekt.vertx();
+        FileResolver resolver2 = new FileResolver(conekt2);
         File file = resolver2.resolveFile(webRoot + "/somefile.html");
         assertTrue(file.exists());
         File cacheDir = file.getParentFile().getParentFile();
         assertTrue(cacheDir.exists());
         resolver2.close(onSuccess(res -> {
             assertFalse(cacheDir.exists());
-            vertx2.close(res2 -> {
+            conekt2.close(res2 -> {
                 testComplete();
             });
         }));
@@ -115,7 +115,7 @@ public abstract class FileResolverTestBase extends VertxTestBase {
 
     @Test
     public void testCacheDirDeletedOnVertxClose() {
-        VertxInternal vertx2 = (VertxInternal) Vertx.vertx();
+        ConektInternal vertx2 = (ConektInternal) Conekt.vertx();
         File file = vertx2.resolveFile(webRoot + "/somefile.html");
         assertTrue(file.exists());
         File cacheDir = file.getParentFile().getParentFile();
@@ -130,13 +130,13 @@ public abstract class FileResolverTestBase extends VertxTestBase {
 
     @Test
     public void testFileSystemReadDirectory() {
-        assertTrue(vertx.fileSystem().existsBlocking("webroot"));
-        assertTrue(vertx.fileSystem().propsBlocking("webroot").isDirectory());
+        assertTrue(conekt.fileSystem().existsBlocking("webroot"));
+        assertTrue(conekt.fileSystem().propsBlocking("webroot").isDirectory());
     }
 
 
     private String readFile(File file) {
-        return vertx.fileSystem().readFileBlocking(file.getAbsolutePath()).toString();
+        return conekt.fileSystem().readFileBlocking(file.getAbsolutePath()).toString();
     }
 
 }

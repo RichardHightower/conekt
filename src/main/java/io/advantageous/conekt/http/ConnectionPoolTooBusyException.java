@@ -25,7 +25,7 @@
 
 package io.advantageous.conekt.http;
 
-import io.advantageous.conekt.VertxException;
+import io.advantageous.conekt.ConektException;
 
 /**
  * Represents a failure to add a HttpClientRequest to the wait queue on an ConnectionManager.
@@ -37,7 +37,7 @@ import io.advantageous.conekt.VertxException;
  * @author <a href="mailto:ddimensia@gmail.com">Gil Markham</a>
  * @author <a href="mailto:wangjunbo924@gmail.com">Junbo Wang</a>
  */
-public class ConnectionPoolTooBusyException extends VertxException {
+public class ConnectionPoolTooBusyException extends ConektException {
 
     /**
      * Create a ConnectionPoolTooBusyException

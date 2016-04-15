@@ -39,7 +39,7 @@ import io.advantageous.conekt.net.SocketAddress;
  * <p>
  * Unless specified otherwise, all the methods on this object including the methods inherited from the super interfaces are invoked
  * with the thread of the http client and therefore are the same than the
- * {@link VertxMetrics} {@code createMetrics} method that created and returned
+ * {@link ConektMetrics} {@code createMetrics} method that created and returned
  * this metrics object.
  * <p>
  * <h3>Worker context</h3>

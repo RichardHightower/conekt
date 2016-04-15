@@ -28,7 +28,7 @@ package io.advantageous.conekt.impl;
 import io.advantageous.conekt.AsyncResult;
 import io.advantageous.conekt.DeploymentOptions;
 import io.advantageous.conekt.Handler;
-import io.advantageous.conekt.Verticle;
+import io.advantageous.conekt.IoActor;
 
 import java.util.Set;
 
@@ -51,7 +51,7 @@ public interface Deployment {
 
     DeploymentOptions deploymentOptions();
 
-    Set<Verticle> getVerticles();
+    Set<IoActor> getVerticles();
 
     boolean isChild();
 }

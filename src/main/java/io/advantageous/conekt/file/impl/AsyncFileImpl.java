@@ -26,6 +26,7 @@
 package io.advantageous.conekt.file.impl;
 
 import io.advantageous.conekt.impl.Arguments;
+import io.advantageous.conekt.impl.ConektInternal;
 import io.netty.buffer.ByteBuf;
 import io.advantageous.conekt.AsyncResult;
 import io.advantageous.conekt.Future;
@@ -35,7 +36,6 @@ import io.advantageous.conekt.file.AsyncFile;
 import io.advantageous.conekt.file.FileSystemException;
 import io.advantageous.conekt.file.OpenOptions;
 import io.advantageous.conekt.impl.ContextImpl;
-import io.advantageous.conekt.impl.VertxInternal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -66,7 +66,7 @@ public class AsyncFileImpl implements AsyncFile {
 
     public static final int DEFAULT_READ_BUFFER_SIZE = 8192;
     private static final Logger log = LoggerFactory.getLogger(AsyncFile.class);
-    private final VertxInternal vertx;
+    private final ConektInternal vertx;
     private final AsynchronousFileChannel ch;
     private final ContextImpl context;
     private boolean closed;
@@ -84,7 +84,7 @@ public class AsyncFileImpl implements AsyncFile {
     private long readPos;
     private boolean readInProgress;
 
-    AsyncFileImpl(VertxInternal vertx, String path, OpenOptions options, ContextImpl context) {
+    AsyncFileImpl(ConektInternal vertx, String path, OpenOptions options, ContextImpl context) {
         if (!options.isRead() && !options.isWrite()) {
             throw new FileSystemException("Cannot open file for neither reading nor writing");
         }
