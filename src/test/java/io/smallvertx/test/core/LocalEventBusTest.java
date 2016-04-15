@@ -18,9 +18,9 @@ package io.smallvertx.test.core;
 
 import io.smallvertx.core.*;
 import io.smallvertx.core.eventbus.*;
-import io.smallvertx.core.impl.*;
 import io.smallvertx.core.eventbus.impl.HandlerRegistration;
 import io.smallvertx.core.http.CaseInsensitiveHeaders;
+import io.smallvertx.core.impl.*;
 import io.smallvertx.core.streams.Pump;
 import io.smallvertx.core.streams.ReadStream;
 import io.smallvertx.core.streams.WriteStream;
@@ -39,6 +39,7 @@ import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
 import static io.smallvertx.test.core.TestUtils.*;
+
 /**
  * @author <a href="http://tfox.org">Tim Fox</a>
  */

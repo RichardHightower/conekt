@@ -22,8 +22,6 @@ import io.smallvertx.core.DeploymentOptions;
 import io.smallvertx.core.buffer.Buffer;
 import io.smallvertx.core.eventbus.DeliveryOptions;
 import io.smallvertx.core.eventbus.MessageCodec;
-import io.smallvertx.core.json.JsonArray;
-import io.smallvertx.core.json.JsonObject;
 import org.junit.Test;
 
 import java.util.concurrent.CountDownLatch;
@@ -261,66 +259,6 @@ public abstract class EventBusTestBase extends VertxTestBase {
     }
 
     @Test
-    public void testSendJsonArray() {
-        JsonArray arr = new JsonArray();
-        arr.add(TestUtils.randomUnicodeString(100)).add(TestUtils.randomInt()).add(TestUtils.randomBoolean());
-        testSend(arr, (received) -> {
-            assertEquals(arr, received);
-            assertFalse(arr == received); // Make sure it's copied
-        });
-    }
-
-    @Test
-    public void testReplyJsonArray() {
-        JsonArray arr = new JsonArray();
-        arr.add(TestUtils.randomUnicodeString(100)).add(TestUtils.randomInt()).add(TestUtils.randomBoolean());
-        testReply(arr, (received) -> {
-            assertEquals(arr, received);
-            assertFalse(arr == received); // Make sure it's copied
-        });
-    }
-
-    @Test
-    public void testPublishJsonArray() {
-        JsonArray arr = new JsonArray();
-        arr.add(TestUtils.randomUnicodeString(100)).add(TestUtils.randomInt()).add(TestUtils.randomBoolean());
-        testPublish(arr, (received) -> {
-            assertEquals(arr, received);
-            assertFalse(arr == received); // Make sure it's copied
-        });
-    }
-
-    @Test
-    public void testSendJsonObject() {
-        JsonObject obj = new JsonObject();
-        obj.put(TestUtils.randomUnicodeString(100), TestUtils.randomUnicodeString(100)).put(TestUtils.randomUnicodeString(100), TestUtils.randomInt());
-        testSend(obj, (received) -> {
-            assertEquals(obj, received);
-            assertFalse(obj == received); // Make sure it's copied
-        });
-    }
-
-    @Test
-    public void testReplyJsonObject() {
-        JsonObject obj = new JsonObject();
-        obj.put(TestUtils.randomUnicodeString(100), TestUtils.randomUnicodeString(100)).put(TestUtils.randomUnicodeString(100), TestUtils.randomInt());
-        testReply(obj, (received) -> {
-            assertEquals(obj, received);
-            assertFalse(obj == received); // Make sure it's copied
-        });
-    }
-
-    @Test
-    public void testPublishJsonObject() {
-        JsonObject obj = new JsonObject();
-        obj.put(TestUtils.randomUnicodeString(100), TestUtils.randomUnicodeString(100)).put(TestUtils.randomUnicodeString(100), TestUtils.randomInt());
-        testPublish(obj, (received) -> {
-            assertEquals(obj, received);
-            assertFalse(obj == received); // Make sure it's copied
-        });
-    }
-
-    @Test
     public void testSendWithHeaders() {
         testSend("foo", "foo", null, new DeliveryOptions().addHeader("uhqwduh", "qijwdqiuwd").addHeader("iojdijef", "iqjwddh"));
     }
@@ -380,7 +318,7 @@ public abstract class EventBusTestBase extends VertxTestBase {
 
             if (reply.failed()) {
                 Throwable cause = reply.cause();
-                if (cause!=null) {
+                if (cause != null) {
                     cause.printStackTrace();
                 }
             }

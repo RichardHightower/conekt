@@ -17,7 +17,6 @@
 package io.smallvertx.core;
 
 import io.smallvertx.core.impl.ContextImpl;
-import io.smallvertx.core.json.JsonObject;
 
 /**
  * The execution context of a {@link Handler} execution.
@@ -131,15 +130,6 @@ public interface Context {
      * @return the deployment ID of the deployment or null if not a Verticle deployment
      */
     String deploymentID();
-
-    /**
-     * If the context is associated with a Verticle deployment, this returns the configuration that was specified when
-     * the verticle was deployed.
-     *
-     * @return the configuration of the deployment or null if not a Verticle deployment
-     */
-    JsonObject config();
-
 
     /**
      * Is the current context an event loop context?

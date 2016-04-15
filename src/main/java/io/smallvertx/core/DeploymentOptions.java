@@ -16,8 +16,6 @@
 
 package io.smallvertx.core;
 
-import io.smallvertx.core.json.JsonArray;
-import io.smallvertx.core.json.JsonObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +33,6 @@ public class DeploymentOptions {
     public static final String DEFAULT_ISOLATION_GROUP = null;
     public static final int DEFAULT_INSTANCES = 1;
 
-    private JsonObject config;
     private boolean worker;
     private boolean multiThreaded;
     private String isolationGroup;
@@ -48,7 +45,6 @@ public class DeploymentOptions {
      */
     public DeploymentOptions() {
         this.worker = DEFAULT_WORKER;
-        this.config = null;
         this.multiThreaded = DEFAULT_MULTI_THREADED;
         this.isolationGroup = DEFAULT_ISOLATION_GROUP;
         this.instances = DEFAULT_INSTANCES;
@@ -60,7 +56,6 @@ public class DeploymentOptions {
      * @param other the instance to copy
      */
     public DeploymentOptions(DeploymentOptions other) {
-        this.config = other.getConfig() == null ? null : other.getConfig().copy();
         this.worker = other.isWorker();
         this.multiThreaded = other.isMultiThreaded();
         this.isolationGroup = other.getIsolationGroup();
@@ -69,47 +64,6 @@ public class DeploymentOptions {
         this.isolatedClasses = other.getIsolatedClasses() == null ? null : new ArrayList<>(other.getIsolatedClasses());
     }
 
-
-    /**
-     * Initialise the fields of this instance from the specified JSON
-     *
-     * @param json the JSON
-     */
-    public void fromJson(JsonObject json) {
-        this.config = json.getJsonObject("config");
-        this.worker = json.getBoolean("worker", DEFAULT_WORKER);
-        this.multiThreaded = json.getBoolean("multiThreaded", DEFAULT_MULTI_THREADED);
-        this.isolationGroup = json.getString("isolationGroup", DEFAULT_ISOLATION_GROUP);
-        JsonArray arr = json.getJsonArray("extraClasspath", null);
-        if (arr != null) {
-            this.extraClasspath = arr.getList();
-        }
-        this.instances = json.getInteger("instances", DEFAULT_INSTANCES);
-        JsonArray arrIsolated = json.getJsonArray("isolatedClasses", null);
-        if (arrIsolated != null) {
-            this.isolatedClasses = arrIsolated.getList();
-        }
-    }
-
-    /**
-     * Get the JSON configuration that will be passed to the verticle(s) when deployed.
-     *
-     * @return the JSON config
-     */
-    public JsonObject getConfig() {
-        return config;
-    }
-
-    /**
-     * Set the JSON configuration that will be passed to the verticle(s) when it's deployed
-     *
-     * @param config the JSON config
-     * @return a reference to this, so the API can be used fluently
-     */
-    public DeploymentOptions setConfig(JsonObject config) {
-        this.config = config;
-        return this;
-    }
 
     /**
      * Should the verticle(s) be deployed as a worker verticle?
@@ -238,24 +192,6 @@ public class DeploymentOptions {
         return this;
     }
 
-    /**
-     * Convert this to JSON
-     *
-     * @return the JSON
-     */
-    public JsonObject toJson() {
-        JsonObject json = new JsonObject();
-        if (worker) json.put("worker", true);
-        if (multiThreaded) json.put("multiThreaded", true);
-        if (isolationGroup != null) json.put("isolationGroup", isolationGroup);
-        if (config != null) json.put("config", config);
-        if (extraClasspath != null) json.put("extraClasspath", new JsonArray(extraClasspath));
-        if (instances != DEFAULT_INSTANCES) {
-            json.put("instances", instances);
-        }
-        if (isolatedClasses != null) json.put("isolatedClasses", new JsonArray(isolatedClasses));
-        return json;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -267,7 +203,6 @@ public class DeploymentOptions {
         if (worker != that.worker) return false;
         if (multiThreaded != that.multiThreaded) return false;
         if (instances != that.instances) return false;
-        if (config != null ? !config.equals(that.config) : that.config != null) return false;
         if (isolationGroup != null ? !isolationGroup.equals(that.isolationGroup) : that.isolationGroup != null)
             return false;
         if (extraClasspath != null ? !extraClasspath.equals(that.extraClasspath) : that.extraClasspath != null)
@@ -278,7 +213,7 @@ public class DeploymentOptions {
 
     @Override
     public int hashCode() {
-        int result = config != null ? config.hashCode() : 0;
+        int result = 13;
         result = 31 * result + (worker ? 1 : 0);
         result = 31 * result + (multiThreaded ? 1 : 0);
         result = 31 * result + (isolationGroup != null ? isolationGroup.hashCode() : 0);

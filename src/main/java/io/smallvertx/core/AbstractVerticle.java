@@ -1,22 +1,30 @@
 /*
- * Copyright (c) 2011-2014 The original author or authors
- * ------------------------------------------------------
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * and Apache License v2.0 which accompanies this distribution.
  *
- *     The Eclipse Public License is available at
- *     http://www.eclipse.org/legal/epl-v10.html
+ *  * Copyright (c) 2011-2016 The original author or authors
+ *  * This project contains modified work from the Vert.x Project.
+ *  * The Vert.x project Copyright is owned by Red Hat and/or the
+ *  * original authors of the Vert.x project including Tim Fox, Julien Vet,
+ *  * Norman Maurer, and many others.
+ *  * We have left the original author tags on this MODIFIED COPY/FORK.
+ *  *
+ *  * Modified work is Copyright (c) 2015-2016 Rick Hightower and Geoff Chandler.
+ *  * ------------------------------------------------------
+ *  * All rights reserved. This program and the accompanying materials
+ *  * are made available under the terms of the Eclipse Public License v1.0
+ *  * and Apache License v2.0 which accompanies this distribution.
+ *  *
+ *  *     The Eclipse Public License is available at
+ *  *     http://www.eclipse.org/legal/epl-v10.html
+ *  *
+ *  *     The Apache License v2.0 is available at
+ *  *     http://www.opensource.org/licenses/apache2.0.php
+ *  *
+ *  * You may elect to redistribute this code under either of these licenses.
  *
- *     The Apache License v2.0 is available at
- *     http://www.opensource.org/licenses/apache2.0.php
- *
- * You may elect to redistribute this code under either of these licenses.
  */
 
 package io.smallvertx.core;
 
-import io.smallvertx.core.json.JsonObject;
 
 /**
  * An abstract base class that you can extend to write your own Verticle classes.
@@ -30,7 +38,6 @@ import io.smallvertx.core.json.JsonObject;
  * <p>
  * This class also provides maintains references to the {@link Vertx} and {@link Context}
  * instances of the verticle for easy access.<p>
- * It also provides methods for getting the {@link #config verticle configuration},
  * and {@link #deploymentID deployment ID}.
  *
  * @author <a href="http://tfox.org">Tim Fox</a>
@@ -78,17 +85,6 @@ public abstract class AbstractVerticle implements Verticle {
      */
     public String deploymentID() {
         return context.deploymentID();
-    }
-
-    /**
-     * Get the configuration of the verticle.
-     * <p>
-     * This can be specified when the verticle is deployed.
-     *
-     * @return the configuration
-     */
-    public JsonObject config() {
-        return context.config();
     }
 
 

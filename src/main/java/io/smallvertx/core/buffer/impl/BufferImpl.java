@@ -1,4 +1,6 @@
 /*
+ * NOTICE THIS FILE WAS MODIFIED.
+ *
  * Copyright 2014 Red Hat, Inc.
  *
  * All rights reserved. This program and the accompanying materials
@@ -21,13 +23,13 @@ import io.netty.buffer.Unpooled;
 import io.netty.util.CharsetUtil;
 import io.smallvertx.core.buffer.Buffer;
 import io.smallvertx.core.impl.Arguments;
-import io.smallvertx.core.json.JsonArray;
-import io.smallvertx.core.json.JsonObject;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
+
+;
 
 /**
  * @author <a href="http://tfox.org">Tim Fox</a>
@@ -74,17 +76,6 @@ public class BufferImpl implements Buffer {
 
     public String toString(Charset enc) {
         return buffer.toString(enc);
-    }
-
-
-    @Override
-    public JsonObject toJsonObject() {
-        return new JsonObject(toString());
-    }
-
-    @Override
-    public JsonArray toJsonArray() {
-        return new JsonArray(toString());
     }
 
     public byte getByte(int pos) {

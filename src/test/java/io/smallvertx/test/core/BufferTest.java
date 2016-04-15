@@ -18,16 +18,14 @@ package io.smallvertx.test.core;
 
 import io.netty.buffer.ByteBuf;
 import io.smallvertx.core.buffer.Buffer;
-import io.smallvertx.core.json.DecodeException;
-import io.smallvertx.core.json.JsonArray;
-import io.smallvertx.core.json.JsonObject;
 import org.junit.Test;
 
-import static io.smallvertx.test.core.TestUtils.*;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 
-import static org.junit.Assert.*;
+import static io.smallvertx.test.core.TestUtils.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author <a href="http://tfox.org">Tim Fox</a>
@@ -797,37 +795,4 @@ public class BufferTest {
         assertEquals(10, sliced.length());
     }
 
-    @Test
-    public void testToJsonObject() throws Exception {
-        JsonObject obj = new JsonObject();
-        obj.put("wibble", "wibble_value");
-        obj.put("foo", 5);
-        obj.put("bar", true);
-        Buffer buff = Buffer.buffer(obj.encode());
-        assertEquals(obj, buff.toJsonObject());
-
-        buff = Buffer.buffer(TestUtils.randomAlphaString(10));
-        try {
-            buff.toJsonObject();
-            fail();
-        } catch (DecodeException ignore) {
-        }
-    }
-
-    @Test
-    public void testToJsonArray() throws Exception {
-        JsonArray arr = new JsonArray();
-        arr.add("wibble");
-        arr.add(5);
-        arr.add(true);
-        Buffer buff = Buffer.buffer(arr.encode());
-        assertEquals(arr, buff.toJsonArray());
-
-        buff = Buffer.buffer(TestUtils.randomAlphaString(10));
-        try {
-            buff.toJsonObject();
-            fail();
-        } catch (DecodeException ignore) {
-        }
-    }
 }

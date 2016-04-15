@@ -17,7 +17,6 @@
 package io.smallvertx.core.impl;
 
 import io.smallvertx.core.*;
-import io.smallvertx.core.json.JsonObject;
 import io.smallvertx.core.spi.VerticleFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -410,7 +409,6 @@ public class DeploymentManager {
         if (options.isMultiThreaded() && !options.isWorker()) {
             throw new IllegalArgumentException("If multi-threaded then must be worker too");
         }
-        JsonObject conf = options.getConfig() == null ? new JsonObject() : options.getConfig().copy(); // Copy it
 
         Deployment parent = parentContext.getDeployment();
         DeploymentImpl deployment = new DeploymentImpl(parent, deploymentID, identifier, options);
@@ -418,8 +416,8 @@ public class DeploymentManager {
         AtomicInteger deployCount = new AtomicInteger();
         AtomicBoolean failureReported = new AtomicBoolean();
         for (Verticle verticle : verticles) {
-            ContextImpl context = options.isWorker() ? vertx.createWorkerContext(options.isMultiThreaded(), deploymentID, conf, tccl) :
-                    vertx.createEventLoopContext(deploymentID, conf, tccl);
+            ContextImpl context = options.isWorker() ? vertx.createWorkerContext(options.isMultiThreaded(), deploymentID, tccl) :
+                    vertx.createEventLoopContext(deploymentID, tccl);
             context.setDeployment(deployment);
             deployment.addVerticle(new VerticleHolder(verticle, context));
             context.runOnContext(v -> {

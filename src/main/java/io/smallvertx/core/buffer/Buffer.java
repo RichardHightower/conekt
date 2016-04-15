@@ -18,8 +18,6 @@ package io.smallvertx.core.buffer;
 
 import io.netty.buffer.ByteBuf;
 import io.smallvertx.core.ServiceHelper;
-import io.smallvertx.core.json.JsonArray;
-import io.smallvertx.core.json.JsonObject;
 import io.smallvertx.core.spi.BufferFactory;
 
 import java.nio.ByteBuffer;
@@ -37,7 +35,7 @@ import java.nio.charset.Charset;
  */
 public interface Buffer {
 
-    static final BufferFactory factory = ServiceHelper.loadFactory(BufferFactory.class);
+    BufferFactory factory = ServiceHelper.loadFactory(BufferFactory.class);
 
     /**
      * Create a new, empty buffer.
@@ -116,16 +114,6 @@ public interface Buffer {
      * Returns a {@code String} representation of the Buffer with the encoding specified by {@code enc}
      */
     String toString(Charset enc);
-
-    /**
-     * Returns a Json object representation of the Buffer
-     */
-    JsonObject toJsonObject();
-
-    /**
-     * Returns a Json array representation of the Buffer
-     */
-    JsonArray toJsonArray();
 
     /**
      * Returns the {@code byte} at position {@code pos} in the Buffer.

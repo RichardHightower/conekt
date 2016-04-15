@@ -18,8 +18,6 @@ package io.smallvertx.test.core;
 
 import io.smallvertx.core.AsyncResult;
 import io.smallvertx.core.Handler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.hamcrest.Matcher;
 import org.junit.After;
 import org.junit.Assert;
@@ -27,6 +25,8 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.internal.ArrayComparisonFailure;
 import org.junit.rules.TestName;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

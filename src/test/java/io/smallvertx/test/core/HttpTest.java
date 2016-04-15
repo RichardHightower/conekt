@@ -19,13 +19,13 @@ package io.smallvertx.test.core;
 import io.netty.handler.codec.http.DefaultHttpHeaders;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.smallvertx.core.*;
-import io.smallvertx.core.http.*;
-import io.smallvertx.core.impl.*;
-import io.smallvertx.core.net.*;
 import io.smallvertx.core.buffer.Buffer;
 import io.smallvertx.core.eventbus.Message;
 import io.smallvertx.core.eventbus.MessageConsumer;
+import io.smallvertx.core.http.*;
 import io.smallvertx.core.http.impl.HeadersAdaptor;
+import io.smallvertx.core.impl.*;
+import io.smallvertx.core.net.*;
 import io.smallvertx.core.parsetools.RecordParser;
 import io.smallvertx.core.streams.Pump;
 import org.junit.Assume;
@@ -4519,36 +4519,6 @@ public class HttpTest extends HttpTestBase {
             });
         });
         clientRequest.end();
-        await();
-    }
-
-    @Test
-    public void testSendOpenRangeFileFromClasspath() {
-        vertx.createHttpServer(new HttpServerOptions().setPort(8080)).requestHandler(res -> {
-            res.response().sendFile("webroot/somefile.html", 6);
-        }).listen(onSuccess(res -> {
-            vertx.createHttpClient(new HttpClientOptions()).request(HttpMethod.GET, 8080, "localhost", "/", resp -> {
-                resp.bodyHandler(buff -> {
-                    assertTrue(buff.toString().startsWith("<body>blah</body></html>"));
-                    testComplete();
-                });
-            }).end();
-        }));
-        await();
-    }
-
-    @Test
-    public void testSendRangeFileFromClasspath() {
-        vertx.createHttpServer(new HttpServerOptions().setPort(8080)).requestHandler(res -> {
-            res.response().sendFile("webroot/somefile.html", 6, 6);
-        }).listen(onSuccess(res -> {
-            vertx.createHttpClient(new HttpClientOptions()).request(HttpMethod.GET, 8080, "localhost", "/", resp -> {
-                resp.bodyHandler(buff -> {
-                    assertEquals("<body>", buff.toString());
-                    testComplete();
-                });
-            }).end();
-        }));
         await();
     }
 

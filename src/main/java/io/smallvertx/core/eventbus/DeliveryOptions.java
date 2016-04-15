@@ -19,9 +19,7 @@ package io.smallvertx.core.eventbus;
 import io.smallvertx.core.MultiMap;
 import io.smallvertx.core.http.CaseInsensitiveHeaders;
 import io.smallvertx.core.impl.Arguments;
-import io.smallvertx.core.json.JsonObject;
 
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -60,25 +58,6 @@ public class DeliveryOptions {
         this.headers = other.getHeaders();
     }
 
-    /**
-     * Create a delivery options from JSON
-     *
-     * @param json the JSON
-     */
-    public DeliveryOptions(JsonObject json) {
-        this.timeout = json.getLong("timeout", DEFAULT_TIMEOUT);
-        this.codecName = json.getString("codecName", null);
-        JsonObject hdrs = json.getJsonObject("headers", null);
-        if (hdrs != null) {
-            headers = new CaseInsensitiveHeaders();
-            for (Map.Entry<String, Object> entry : hdrs) {
-                if (!(entry.getValue() instanceof String)) {
-                    throw new IllegalStateException("Invalid type for message header value " + entry.getValue().getClass());
-                }
-                headers.set(entry.getKey(), (String) entry.getValue());
-            }
-        }
-    }
 
     /**
      * Get the send timeout.

@@ -19,7 +19,6 @@ package io.smallvertx.core.impl;
 import io.netty.channel.EventLoop;
 import io.netty.channel.EventLoopGroup;
 import io.smallvertx.core.*;
-import io.smallvertx.core.json.JsonObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,7 +48,6 @@ public abstract class ContextImpl implements ContextInternal {
 
     protected final VertxInternal owner;
     protected final String deploymentID;
-    protected final JsonObject config;
     protected final Executor orderedInternalPoolExec;
     protected final Executor workerExec;
     private final ClassLoader tccl;
@@ -60,7 +58,7 @@ public abstract class ContextImpl implements ContextInternal {
     private volatile boolean closeHooksRun;
     private Map<String, Object> contextData;
 
-    protected ContextImpl(VertxInternal vertx, Executor orderedInternalPoolExec, Executor workerExec, String deploymentID, JsonObject config,
+    protected ContextImpl(VertxInternal vertx, Executor orderedInternalPoolExec, Executor workerExec, String deploymentID,
                           ClassLoader tccl) {
         if (DISABLE_TCCL && !tccl.getClass().getName().equals("sun.misc.Launcher$AppClassLoader")) {
             log.warn("You have disabled TCCL checks but you have a custom TCCL to set.");
@@ -68,7 +66,6 @@ public abstract class ContextImpl implements ContextInternal {
         this.orderedInternalPoolExec = orderedInternalPoolExec;
         this.workerExec = workerExec;
         this.deploymentID = deploymentID;
-        this.config = config;
         EventLoopGroup group = vertx.getEventLoopGroup();
         if (group != null) {
             this.eventLoop = group.next();
@@ -239,11 +236,6 @@ public abstract class ContextImpl implements ContextInternal {
     @Override
     public String deploymentID() {
         return deploymentID;
-    }
-
-    @Override
-    public JsonObject config() {
-        return config;
     }
 
 

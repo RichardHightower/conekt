@@ -38,7 +38,6 @@ import io.smallvertx.core.http.HttpServer;
 import io.smallvertx.core.http.HttpServerOptions;
 import io.smallvertx.core.http.impl.HttpClientImpl;
 import io.smallvertx.core.http.impl.HttpServerImpl;
-import io.smallvertx.core.json.JsonObject;
 import io.smallvertx.core.metrics.impl.DummyVertxMetrics;
 import io.smallvertx.core.net.NetClient;
 import io.smallvertx.core.net.NetClientOptions;
@@ -268,7 +267,7 @@ public class VertxImpl implements VertxInternal, MetricsProvider {
         ContextImpl ctx = getContext();
         if (ctx == null) {
             // We are running embedded - Create a context
-            ctx = createEventLoopContext(null, new JsonObject(), Thread.currentThread().getContextClassLoader());
+            ctx = createEventLoopContext(null, Thread.currentThread().getContextClassLoader());
         }
         return ctx;
     }
@@ -301,8 +300,9 @@ public class VertxImpl implements VertxInternal, MetricsProvider {
         }
     }
 
-    public EventLoopContext createEventLoopContext(String deploymentID, JsonObject config, ClassLoader tccl) {
-        return new EventLoopContext(this, internalOrderedFact.getExecutor(), workerOrderedFact.getExecutor(), deploymentID, config, tccl);
+    public EventLoopContext createEventLoopContext(String deploymentID, ClassLoader tccl) {
+        return new EventLoopContext(this, internalOrderedFact.getExecutor(), workerOrderedFact.getExecutor(),
+                deploymentID, tccl);
     }
 
     @Override
@@ -337,13 +337,13 @@ public class VertxImpl implements VertxInternal, MetricsProvider {
         return timerId;
     }
 
-    public ContextImpl createWorkerContext(boolean multiThreaded, String deploymentID, JsonObject config,
+    public ContextImpl createWorkerContext(boolean multiThreaded, String deploymentID,
                                            ClassLoader tccl) {
         if (multiThreaded) {
-            return new MultiThreadedWorkerContext(this, internalOrderedFact.getExecutor(), workerPool, deploymentID, config, tccl);
+            return new MultiThreadedWorkerContext(this, internalOrderedFact.getExecutor(), workerPool, deploymentID, tccl);
         } else {
             return new WorkerContext(this, internalOrderedFact.getExecutor(), workerOrderedFact.getExecutor(), deploymentID,
-                    config, tccl);
+                    tccl);
         }
     }
 

@@ -18,9 +18,9 @@ package io.smallvertx.test.core;
 
 import io.smallvertx.core.*;
 import io.smallvertx.core.net.*;
+import org.junit.Rule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.junit.Rule;
 
 import java.io.File;
 import java.net.URISyntaxException;
@@ -173,14 +173,14 @@ public class VertxTestBase extends AsyncTestBase {
         for (int i = 0; i < numNodes; i++) {
             int index = i;
             Vertx.clusteredVertx(options.setClusterHost("localhost").setClusterPort(0).setClustered(false)
-                   , ar -> {
-                if (ar.failed()) {
-                    ar.cause().printStackTrace();
-                }
-                assertTrue("Failed to start node", ar.succeeded());
-                vertices[index] = ar.result();
-                latch.countDown();
-            });
+                    , ar -> {
+                        if (ar.failed()) {
+                            ar.cause().printStackTrace();
+                        }
+                        assertTrue("Failed to start node", ar.succeeded());
+                        vertices[index] = ar.result();
+                        latch.countDown();
+                    });
         }
         try {
             assertTrue(latch.await(2, TimeUnit.MINUTES));

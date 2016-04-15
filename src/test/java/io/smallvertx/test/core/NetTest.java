@@ -17,12 +17,12 @@
 package io.smallvertx.test.core;
 
 import io.smallvertx.core.*;
-import io.smallvertx.core.impl.*;
-import io.smallvertx.core.net.*;
 import io.smallvertx.core.buffer.Buffer;
 import io.smallvertx.core.eventbus.Message;
 import io.smallvertx.core.eventbus.MessageConsumer;
 import io.smallvertx.core.http.ClientAuth;
+import io.smallvertx.core.impl.*;
+import io.smallvertx.core.net.*;
 import io.smallvertx.core.net.impl.SocketAddressImpl;
 import org.junit.Assume;
 import org.junit.Rule;

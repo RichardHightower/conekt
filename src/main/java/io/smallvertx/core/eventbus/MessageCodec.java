@@ -17,14 +17,12 @@
 package io.smallvertx.core.eventbus;
 
 import io.smallvertx.core.buffer.Buffer;
-import io.smallvertx.core.json.JsonArray;
-import io.smallvertx.core.json.JsonObject;
 
 /**
  * A message codec allows a custom message type to be marshalled across the event bus.
  * <p>
  * Usually the event bus only allows a certain set of message types to be sent across the event bus, including primitive types,
- * boxed primitive types, {@code byte[]}, {@link JsonObject}, {@link JsonArray},
+ * boxed primitive types, {@code byte[]},
  * {@link Buffer}.
  * <p>
  * By specifying a message codec you can pass any other type across the event bus, e.g. POJOs.

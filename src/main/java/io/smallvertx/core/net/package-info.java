@@ -162,7 +162,6 @@
  * <p>
  * [source,$lang]
  * ----
- * {@link examples.NetExamples#example10}
  * ----
  * <p>
  * === Streaming sockets
@@ -192,7 +191,6 @@
  * <p>
  * [source,$lang]
  * ----
- * {@link examples.NetExamples#example9}
  * ----
  * <p>
  * === Automatic clean-up in verticles
@@ -213,7 +211,6 @@
  * <p>
  * [source,$lang]
  * ----
- * {@link examples.NetExamples#example11}
  * ----
  * <p>
  * or, if you are using verticles you can simply deploy more instances of your server verticle by using the `-instances` option
@@ -225,7 +222,6 @@
  * <p>
  * [source,$lang]
  * ----
- * {@link examples.NetExamples#example12}
  * ----
  * <p>
  * Once you do this you will find the echo server works functionally identically to before, but all your cores on your
@@ -250,7 +246,6 @@
  * <p>
  * [source,$lang]
  * ----
- * {@link examples.NetExamples#example13}
  * ----
  * <p>
  * === Configuring a TCP client
@@ -260,7 +255,6 @@
  * <p>
  * [source,$lang]
  * ----
- * {@link examples.NetExamples#example14}
  * ----
  * <p>
  * === Making connections

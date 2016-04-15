@@ -22,7 +22,6 @@ import io.smallvertx.core.AsyncResult;
 import io.smallvertx.core.Handler;
 import io.smallvertx.core.Vertx;
 import io.smallvertx.core.http.impl.HttpServerImpl;
-import io.smallvertx.core.json.JsonObject;
 import io.smallvertx.core.net.impl.NetServerImpl;
 import io.smallvertx.core.net.impl.ServerID;
 import io.smallvertx.core.spi.metrics.VertxMetrics;
@@ -65,12 +64,12 @@ public interface VertxInternal extends Vertx {
     /**
      * @return event loop context
      */
-    EventLoopContext createEventLoopContext(String deploymentID, JsonObject config, ClassLoader tccl);
+    EventLoopContext createEventLoopContext(String deploymentID, ClassLoader tccl);
 
     /**
      * @return worker loop context
      */
-    ContextImpl createWorkerContext(boolean multiThreaded, String deploymentID, JsonObject config, ClassLoader tccl);
+    ContextImpl createWorkerContext(boolean multiThreaded, String deploymentID, ClassLoader tccl);
 
 
     Deployment getDeployment(String deploymentID);

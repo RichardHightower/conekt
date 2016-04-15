@@ -16,7 +16,6 @@
 
 package io.smallvertx.core.metrics;
 
-import io.smallvertx.core.json.JsonObject;
 
 /**
  * Vert.x metrics base configuration, this class can be extended by provider implementations to configure
@@ -32,7 +31,6 @@ public class MetricsOptions {
     public static final boolean DEFAULT_METRICS_ENABLED = false;
 
     private boolean enabled;
-    private JsonObject json; // Keep a copy of the original json, so we don't lose info when building options subclasses
 
     /**
      * Default constructor
@@ -71,9 +69,6 @@ public class MetricsOptions {
         return this;
     }
 
-    public JsonObject toJson() {
-        return json != null ? json.copy() : new JsonObject();
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -83,14 +78,13 @@ public class MetricsOptions {
         MetricsOptions that = (MetricsOptions) o;
 
         if (enabled != that.enabled) return false;
-        return !(json != null ? !json.equals(that.json) : that.json != null);
+        return true;
 
     }
 
     @Override
     public int hashCode() {
         int result = (enabled ? 1 : 0);
-        result = 31 * result + (json != null ? json.hashCode() : 0);
         return result;
     }
 
@@ -98,7 +92,6 @@ public class MetricsOptions {
     public String toString() {
         return "MetricsOptions{" +
                 "enabled=" + enabled +
-                ", json=" + json +
                 '}';
     }
 }

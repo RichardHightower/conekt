@@ -17,7 +17,6 @@
 package io.smallvertx.core.impl;
 
 import io.smallvertx.core.Handler;
-import io.smallvertx.core.json.JsonObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,9 +30,9 @@ public class EventLoopContext extends ContextImpl {
 
     private static final Logger log = LoggerFactory.getLogger(EventLoopContext.class);
 
-    public EventLoopContext(VertxInternal vertx, Executor internalBlockingExec, Executor workerExec, String deploymentID, JsonObject config,
+    public EventLoopContext(VertxInternal vertx, Executor internalBlockingExec, Executor workerExec, String deploymentID,
                             ClassLoader tccl) {
-        super(vertx, internalBlockingExec, workerExec, deploymentID, config, tccl);
+        super(vertx, internalBlockingExec, workerExec, deploymentID, tccl);
     }
 
     public void executeAsync(Handler<Void> task) {

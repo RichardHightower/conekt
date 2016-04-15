@@ -1,7 +1,6 @@
 package io.smallvertx.test.core;
 
 import io.smallvertx.core.impl.IsolatingClassLoader;
-import io.smallvertx.core.json.JsonObject;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -116,8 +115,6 @@ public class IsolatingClassLoaderTest {
 
             try (Scanner scanner = new Scanner(is, "UTF-8").useDelimiter("\\A")) {
                 assertTrue(scanner.hasNext());
-                JsonObject json = new JsonObject(scanner.next());
-                assertEquals(ver, json.getLong("ver", -1L).longValue());
             }
         }
 
