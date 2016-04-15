@@ -76,7 +76,6 @@ public class HttpServerImpl implements HttpServer, Closeable, MetricsProvider {
 
     private static final Logger log = LoggerFactory.getLogger(HttpServerImpl.class);
     private static final String FLASH_POLICY_HANDLER_PROP_NAME = "vertx.flashPolicyHandler";
-    private static final boolean USE_FLASH_POLICY_HANDLER = Boolean.getBoolean(FLASH_POLICY_HANDLER_PROP_NAME);
     private static final String DISABLE_WEBSOCKETS_PROP_NAME = "vertx.disableWebsockets";
     private static final boolean DISABLE_WEBSOCKETS = Boolean.getBoolean(DISABLE_WEBSOCKETS_PROP_NAME);
 

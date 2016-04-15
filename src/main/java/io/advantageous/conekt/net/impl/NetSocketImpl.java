@@ -86,7 +86,7 @@ public class NetSocketImpl extends ConnectionBase implements NetSocket {
         this.client = client;
         this.writeHandlerID = UUID.randomUUID().toString();
         this.metric = metric;
-        Handler<Message<Buffer>> writeHandler = msg -> write(msg.body());
+        final Handler<Message<Buffer>> writeHandler = msg -> write(msg.body());
         registration = vertx.eventBus().<Buffer>localConsumer(writeHandlerID).handler(writeHandler);
     }
 
